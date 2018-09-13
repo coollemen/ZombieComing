@@ -113,6 +113,56 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
+--- !u!1001 &28247146
+Prefab:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 498128, guid: cc0bdf0fe6e8a4549a7b70e00278444e, type: 2}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 498128, guid: cc0bdf0fe6e8a4549a7b70e00278444e, type: 2}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 498128, guid: cc0bdf0fe6e8a4549a7b70e00278444e, type: 2}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 498128, guid: cc0bdf0fe6e8a4549a7b70e00278444e, type: 2}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 498128, guid: cc0bdf0fe6e8a4549a7b70e00278444e, type: 2}
+      propertyPath: m_LocalRotation.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 498128, guid: cc0bdf0fe6e8a4549a7b70e00278444e, type: 2}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 498128, guid: cc0bdf0fe6e8a4549a7b70e00278444e, type: 2}
+      propertyPath: m_LocalRotation.w
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 498128, guid: cc0bdf0fe6e8a4549a7b70e00278444e, type: 2}
+      propertyPath: m_RootOrder
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 498128, guid: cc0bdf0fe6e8a4549a7b70e00278444e, type: 2}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 498128, guid: cc0bdf0fe6e8a4549a7b70e00278444e, type: 2}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 180
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: cc0bdf0fe6e8a4549a7b70e00278444e, type: 2}
+  m_IsPrefabAsset: 0
 --- !u!1 &50938047
 GameObject:
   m_ObjectHideFlags: 0
@@ -175,6 +225,23 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &122299935 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 136402, guid: cc0bdf0fe6e8a4549a7b70e00278444e,
+    type: 2}
+  m_PrefabInternal: {fileID: 28247146}
+--- !u!114 &122299936
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 122299935}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 97d42fbb774b75e458c738db05f530a5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ainm: {fileID: 0}
 --- !u!1 &170076733
 GameObject:
   m_ObjectHideFlags: 0
@@ -241,6 +308,26 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 50, y: -30, z: 0}
+--- !u!114 &367859562
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2d31b62ec9d586a4e94389d9071559ca, type: 3}
+  m_Name: Button FlowScript
+  m_EditorClassIdentifier: 
+  _serializedGraph: '{"version":2.8,"type":"FlowCanvas.FlowScript","translation":{"x":-5016.0,"y":-5068.0},"nodes":[{"value":{"_value":"hello
+    world!!!"},"_position":{"x":5344.0,"y":5478.0},"$type":"FlowCanvas.Nodes.GetVariable`1[[System.String,
+    mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]]","$id":"2"},{"_simplexNode":{},"_inputPortValues":{},"_position":{"x":5632.0,"y":5323.0},"$type":"FlowCanvas.Nodes.SimplexNodeWrapper`1[[FlowCanvas.Nodes.LogText,
+    Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null]]","$id":"4"},{"target":{},"_position":{"x":5326.0,"y":5270.0},"$type":"FlowCanvas.Nodes.UIButtonEvent","$id":"7"}],"connections":[{"_sourcePortName":"Value","_targetPortName":"text","_sourceNode":{"$ref":"2"},"_targetNode":{"$ref":"4"},"$type":"FlowCanvas.BinderConnection`1[[System.String,
+    mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]]"},{"_sourcePortName":"Clicked","_targetPortName":"
+    ","_sourceNode":{"$ref":"7"},"_targetNode":{"$ref":"4"},"$type":"FlowCanvas.BinderConnection"}],"localBlackboard":{"_name":"Local
+    Blackboard","_variables":{}}}'
+  _objectReferences: []
+  _deserializationFailed: 0
 --- !u!1 &410460790
 GameObject:
   m_ObjectHideFlags: 0
@@ -355,7 +442,7 @@ MonoBehaviour:
   boundGraphObjectReferences: []
   enableAction: 0
   disableAction: 0
-  _graph: {fileID: 1988033481}
+  _graph: {fileID: 367859562}
   _blackboard: {fileID: 512378977}
 --- !u!114 &512378979
 MonoBehaviour:
@@ -718,23 +805,3 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 0}
---- !u!114 &1988033481
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2d31b62ec9d586a4e94389d9071559ca, type: 3}
-  m_Name: Button FlowScript
-  m_EditorClassIdentifier: 
-  _serializedGraph: '{"version":2.8,"type":"FlowCanvas.FlowScript","translation":{"x":-5016.0,"y":-5068.0},"nodes":[{"value":{"_value":"hello
-    world!!!"},"_position":{"x":5344.0,"y":5478.0},"$type":"FlowCanvas.Nodes.GetVariable`1[[System.String,
-    mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]]","$id":"2"},{"_simplexNode":{},"_inputPortValues":{},"_position":{"x":5632.0,"y":5323.0},"$type":"FlowCanvas.Nodes.SimplexNodeWrapper`1[[FlowCanvas.Nodes.LogText,
-    Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null]]","$id":"4"},{"target":{},"_position":{"x":5326.0,"y":5270.0},"$type":"FlowCanvas.Nodes.UIButtonEvent","$id":"7"}],"connections":[{"_sourcePortName":"Value","_targetPortName":"text","_sourceNode":{"$ref":"2"},"_targetNode":{"$ref":"4"},"$type":"FlowCanvas.BinderConnection`1[[System.String,
-    mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]]"},{"_sourcePortName":"Clicked","_targetPortName":"
-    ","_sourceNode":{"$ref":"7"},"_targetNode":{"$ref":"4"},"$type":"FlowCanvas.BinderConnection"}],"localBlackboard":{"_name":"Local
-    Blackboard","_variables":{}}}'
-  _objectReferences: []
-  _deserializationFailed: 0
