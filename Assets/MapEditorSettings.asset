@@ -1,0 +1,162 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 04ce82dbfcc2d134ea4f3af7181649c8, type: 3}
+  m_Name: MapEditorSettings
+  m_EditorClassIdentifier: 
+  resPath: Assets/MapEditorSettings.asset
+  brushGroups:
+  - name: default
+    brushes:
+    - name: SA_Bld_Apartment_Damaged_01
+      prefabPath: Assets/Prefabs/Buildings/SA_Bld_Apartment_Damaged_01.prefab
+      texture: {fileID: 0}
+    - name: SA_Bld_BioTentMedical_01
+      prefabPath: Assets/Prefabs/Buildings/SA_Bld_BioTentMedical_01.prefab
+      texture: {fileID: 0}
+    - name: SA_Bld_Building_Damaged_01
+      prefabPath: Assets/Prefabs/Buildings/SA_Bld_Building_Damaged_01.prefab
+      texture: {fileID: 0}
+    - name: SA_Bld_Building_Damaged_02
+      prefabPath: Assets/Prefabs/Buildings/SA_Bld_Building_Damaged_02.prefab
+      texture: {fileID: 0}
+    - name: SA_Bld_Building_Damaged_03
+      prefabPath: Assets/Prefabs/Buildings/SA_Bld_Building_Damaged_03.prefab
+      texture: {fileID: 0}
+    - name: SA_Bld_Bunker
+      prefabPath: Assets/Prefabs/Buildings/SA_Bld_Bunker.prefab
+      texture: {fileID: 0}
+    - name: SA_Bld_BurntHouse_01
+      prefabPath: Assets/Prefabs/Buildings/SA_Bld_BurntHouse_01.prefab
+      texture: {fileID: 0}
+    - name: SA_Bld_Church_Damaged_01
+      prefabPath: Assets/Prefabs/Buildings/SA_Bld_Church_Damaged_01.prefab
+      texture: {fileID: 0}
+    - name: SA_Bld_CoffeeShop_Damaged_01
+      prefabPath: Assets/Prefabs/Buildings/SA_Bld_CoffeeShop_Damaged_01.prefab
+      texture: {fileID: 0}
+    - name: SA_Bld_CoolingTowerLarge_Damaged_01
+      prefabPath: Assets/Prefabs/Buildings/SA_Bld_CoolingTowerLarge_Damaged_01.prefab
+      texture: {fileID: 0}
+    - name: SA_Bld_CoolingTowerLarge_Rubble_01
+      prefabPath: Assets/Prefabs/Buildings/SA_Bld_CoolingTowerLarge_Rubble_01.prefab
+      texture: {fileID: 0}
+    - name: SA_Bld_CoolingTowerSmall_Damaged_01
+      prefabPath: Assets/Prefabs/Buildings/SA_Bld_CoolingTowerSmall_Damaged_01.prefab
+      texture: {fileID: 0}
+    - name: SA_Bld_CoolingTowerSmall_Rubble_01
+      prefabPath: Assets/Prefabs/Buildings/SA_Bld_CoolingTowerSmall_Rubble_01.prefab
+      texture: {fileID: 0}
+    - name: SA_Bld_Diner_01
+      prefabPath: Assets/Prefabs/Buildings/SA_Bld_Diner_01.prefab
+      texture: {fileID: 0}
+    - name: SA_Bld_Diner_Damaged_01
+      prefabPath: Assets/Prefabs/Buildings/SA_Bld_Diner_Damaged_01.prefab
+      texture: {fileID: 0}
+    - name: SA_Bld_HospitalBuilding_01
+      prefabPath: Assets/Prefabs/Buildings/SA_Bld_HospitalBuilding_01.prefab
+      texture: {fileID: 0}
+    - name: SA_Bld_HospitalBuilding_Damaged_01
+      prefabPath: Assets/Prefabs/Buildings/SA_Bld_HospitalBuilding_Damaged_01.prefab
+      texture: {fileID: 0}
+    - name: SA_Bld_HospitalBuildingMain_01
+      prefabPath: Assets/Prefabs/Buildings/SA_Bld_HospitalBuildingMain_01.prefab
+      texture: {fileID: 0}
+    - name: SA_Bld_HospitalBuildingMain_Damaged_01
+      prefabPath: Assets/Prefabs/Buildings/SA_Bld_HospitalBuildingMain_Damaged_01.prefab
+      texture: {fileID: 0}
+    description: 
+  - name: "\u89D2\u8272"
+    brushes:
+    - name: SA_Zombie_AirportSecurity
+      prefabPath: Assets/Prefabs/Characters/Zombies/SA_Zombie_AirportSecurity.prefab
+      texture: {fileID: 0}
+    - name: SA_Zombie_AirportWorker
+      prefabPath: Assets/Prefabs/Characters/Zombies/SA_Zombie_AirportWorker.prefab
+      texture: {fileID: 0}
+    - name: SA_Zombie_Bellhop
+      prefabPath: Assets/Prefabs/Characters/Zombies/SA_Zombie_Bellhop.prefab
+      texture: {fileID: 0}
+    - name: SA_Zombie_Businessman
+      prefabPath: Assets/Prefabs/Characters/Zombies/SA_Zombie_Businessman.prefab
+      texture: {fileID: 0}
+    - name: SA_Zombie_Cheerleader
+      prefabPath: Assets/Prefabs/Characters/Zombies/SA_Zombie_Cheerleader.prefab
+      texture: {fileID: 0}
+    - name: SA_Zombie_Clown
+      prefabPath: Assets/Prefabs/Characters/Zombies/SA_Zombie_Clown.prefab
+      texture: {fileID: 0}
+    - name: SA_Zombie_Farmer
+      prefabPath: Assets/Prefabs/Characters/Zombies/SA_Zombie_Farmer.prefab
+      texture: {fileID: 0}
+    - name: SA_Zombie_FarmersDaughter
+      prefabPath: Assets/Prefabs/Characters/Zombies/SA_Zombie_FarmersDaughter.prefab
+      texture: {fileID: 0}
+    - name: SA_Zombie_Firefighter
+      prefabPath: Assets/Prefabs/Characters/Zombies/SA_Zombie_Firefighter.prefab
+      texture: {fileID: 0}
+    - name: SA_Zombie_FootballPlayer
+      prefabPath: Assets/Prefabs/Characters/Zombies/SA_Zombie_FootballPlayer.prefab
+      texture: {fileID: 0}
+    - name: SA_Zombie_Grandma
+      prefabPath: Assets/Prefabs/Characters/Zombies/SA_Zombie_Grandma.prefab
+      texture: {fileID: 0}
+    - name: SA_Zombie_Hobo
+      prefabPath: Assets/Prefabs/Characters/Zombies/SA_Zombie_Hobo.prefab
+      texture: {fileID: 0}
+    - name: SA_Zombie_Industrial
+      prefabPath: Assets/Prefabs/Characters/Zombies/SA_Zombie_Industrial.prefab
+      texture: {fileID: 0}
+    - name: SA_Zombie_Mechanic
+      prefabPath: Assets/Prefabs/Characters/Zombies/SA_Zombie_Mechanic.prefab
+      texture: {fileID: 0}
+    - name: SA_Zombie_Mountie
+      prefabPath: Assets/Prefabs/Characters/Zombies/SA_Zombie_Mountie.prefab
+      texture: {fileID: 0}
+    - name: SA_Zombie_Pilot
+      prefabPath: Assets/Prefabs/Characters/Zombies/SA_Zombie_Pilot.prefab
+      texture: {fileID: 0}
+    - name: SA_Zombie_Pimp
+      prefabPath: Assets/Prefabs/Characters/Zombies/SA_Zombie_Pimp.prefab
+      texture: {fileID: 0}
+    - name: SA_Zombie_Prisoner
+      prefabPath: Assets/Prefabs/Characters/Zombies/SA_Zombie_Prisoner.prefab
+      texture: {fileID: 0}
+    - name: SA_Zombie_Prostitute
+      prefabPath: Assets/Prefabs/Characters/Zombies/SA_Zombie_Prostitute.prefab
+      texture: {fileID: 0}
+    - name: SA_Zombie_RoadWorker
+      prefabPath: Assets/Prefabs/Characters/Zombies/SA_Zombie_RoadWorker.prefab
+      texture: {fileID: 0}
+    - name: SA_Zombie_Robber
+      prefabPath: Assets/Prefabs/Characters/Zombies/SA_Zombie_Robber.prefab
+      texture: {fileID: 0}
+    - name: SA_Zombie_Runner
+      prefabPath: Assets/Prefabs/Characters/Zombies/SA_Zombie_Runner.prefab
+      texture: {fileID: 0}
+    - name: SA_Zombie_Santa
+      prefabPath: Assets/Prefabs/Characters/Zombies/SA_Zombie_Santa.prefab
+      texture: {fileID: 0}
+    - name: SA_Zombie_Shopkeeper
+      prefabPath: Assets/Prefabs/Characters/Zombies/SA_Zombie_Shopkeeper.prefab
+      texture: {fileID: 0}
+    - name: SA_Zombie_Soldier
+      prefabPath: Assets/Prefabs/Characters/Zombies/SA_Zombie_Soldier.prefab
+      texture: {fileID: 0}
+    - name: SA_Zombie_Streetman
+      prefabPath: Assets/Prefabs/Characters/Zombies/SA_Zombie_Streetman.prefab
+      texture: {fileID: 0}
+    - name: SA_Zombie_Tourist
+      prefabPath: Assets/Prefabs/Characters/Zombies/SA_Zombie_Tourist.prefab
+      texture: {fileID: 0}
+    - name: SA_Zombie_Trucker
+      prefabPath: Assets/Prefabs/Characters/Zombies/SA_Zombie_Trucker.prefab
+      texture: {fileID: 0}
+    description: 
