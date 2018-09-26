@@ -16,6 +16,7 @@ public class MapInspector : Editor
     }
     public void OnSceneGUI()
     {
+
     }
     /// <summary>
     ///  打开编辑器窗口
