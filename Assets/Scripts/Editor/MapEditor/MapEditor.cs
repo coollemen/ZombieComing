@@ -302,11 +302,21 @@ public class MapEditor : EditorWindow
     private Vector3 GetWorldPosition(SceneView sceneView, Transform parent)
     {
         Camera cam = sceneView.camera;
+
         Vector3 mousepos = Event.current.mousePosition;
-//        mousepos.z = cam.worldToCameraMatrix.MultiplyPoint(parent.position).z;
-        mousepos.y = cam.pixelHeight - mousepos.y;
-        mousepos = sceneView.camera.ScreenToWorldPoint(mousepos);
-        mousepos.y =0;
+        float mult = EditorGUIUtility.pixelsPerPoint;
+        mousepos.y = sceneView.camera.pixelHeight - mousepos.y * mult;
+        mousepos.x *= mult;
+        RaycastHit hit;
+        Ray ray = sceneView.camera.ScreenPointToRay(mousepos);
+        if (Physics.Raycast(ray, out hit))
+        {
+            mousepos = hit.point;
+        }
+        //        mousepos.z = cam.worldToCameraMatrix.MultiplyPoint(parent.position).z;
+//        mousepos.y = cam.pixelHeight - mousepos.y;
+//        mousepos = sceneView.camera.ScreenToWorldPoint(mousepos);
+//        mousepos.y =0;
         return mousepos;
     }
     #region 初始化
