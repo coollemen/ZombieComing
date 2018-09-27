@@ -97,6 +97,7 @@ public class Map : MonoBehaviour
     private void OnDrawGizmos()
     {
         this.CalculateSize();
+        Gizmos.DrawCube(transform.position, new Vector3(mapLength, 0, mapWidth));
         Gizmos.color = Color.green;
         //绘制行
         for (int row = 0; row <= countZ; row++)
