@@ -21,6 +21,7 @@ public class MapEditor : EditorWindow
     public int buttonWidth = 80;
     public Texture2D prefabIcon;
     public Vector2 scrollPos = new Vector2();
+    public string msg = "";
     private void Awake()
     {
         editorSkin = AssetDatabase.LoadAssetAtPath<GUISkin>("Assets/Scripts/Application/Map/MapEditorSkin.guiskin");
@@ -236,6 +237,15 @@ public class MapEditor : EditorWindow
         Debug.Log(map.name);
     }
 
+    private void CreateMapObjectAtMousePosition(Vector3 mousePos)
+    {
+        var brush = this.activeGroup.brushes[selectBrushIndex];
+        var prefab = AssetDatabase.LoadAssetAtPath<GameObject>(brush.prefabPath);
+        var go = Instantiate(prefab,mousePos,Quaternion.identity);
+        var mapRoot = GameObject.FindGameObjectWithTag("GameMap");
+        go.transform.parent = mapRoot.transform;
+    }
+
     public void SaveEditorConfig()
     {
         Debug.Log("save config");
@@ -277,8 +287,29 @@ public class MapEditor : EditorWindow
     {
         this.LoadEditorConfig();
     }
+    public void OnSceneGUI(SceneView sceneView)
+    {
+        var e = Event.current;
+        if (e.type == EventType.MouseDown && e.control)
+        {
+            var mousePos = GetWorldPosition(sceneView,map.transform);
+            CreateMapObjectAtMousePosition(mousePos);
+            msg =e.mousePosition.ToString()+",WorldMousePosition"+mousePos;
+            e.Use();
+        }
+        Handles.Label(Vector3.zero,msg);   
+    }
+    private Vector3 GetWorldPosition(SceneView sceneView, Transform parent)
+    {
+        Camera cam = sceneView.camera;
+        Vector3 mousepos = Event.current.mousePosition;
+//        mousepos.z = cam.worldToCameraMatrix.MultiplyPoint(parent.position).z;
+        mousepos.y = cam.pixelHeight - mousepos.y;
+        mousepos = sceneView.camera.ScreenToWorldPoint(mousepos);
+        mousepos.y =0;
+        return mousepos;
+    }
     #region 初始化
-
     [MenuItem("GameDesign/Map Editor")]
     static void Init()
     {
@@ -290,7 +321,9 @@ public class MapEditor : EditorWindow
         {
             window.map = mapObj.GetComponent<Map>();
         }
+        SceneView.onSceneGUIDelegate += window.OnSceneGUI;
     }
+
 
     #endregion
 }
