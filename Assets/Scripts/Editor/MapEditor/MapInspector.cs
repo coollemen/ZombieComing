@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
 
-//[CustomEditor(typeof(Map))]
+[CustomEditor(typeof(Map))]
 public class MapInspector : Editor
 {
     public override void OnInspectorGUI()
@@ -16,7 +16,27 @@ public class MapInspector : Editor
     }
     public void OnSceneGUI()
     {
-
+//        var e = Event.current;
+//        Handles.BeginGUI();
+//        Color oldColor = GUI.contentColor;
+//        Color oldBgColor = GUI.backgroundColor;
+//        var workMode = "正常模式";
+//        GUI.Label(new Rect(6, 6, 300, 300), workMode);
+//        if (e.control)
+//        {
+//            workMode = "绘制模式";
+//            GUI.backgroundColor = Color.red;
+//            GUI.contentColor = Color.white;
+//            GUILayout.Box(workMode, "GroupBox", GUILayout.Width(80));
+//            GUI.backgroundColor = oldBgColor;
+//            GUI.contentColor = oldColor;
+//        }
+//        else
+//        {
+//            workMode = "正常模式";
+//            GUILayout.Box(workMode, "GroupBox", GUILayout.Width(80));
+//        }
+//        Handles.EndGUI();
     }
     /// <summary>
     ///  打开编辑器窗口

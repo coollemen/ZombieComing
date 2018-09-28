@@ -300,7 +300,7 @@ public class MapEditor : EditorWindow
     public void OnSceneGUI(SceneView sceneView)
     {
         var e = Event.current;
-        GUILayout.BeginArea(new Rect(6, 6, 300, 300));
+        Handles.BeginGUI();
         Color oldColor = GUI.contentColor;
         Color oldBgColor = GUI.backgroundColor;
         if (e.control)
@@ -317,7 +317,7 @@ public class MapEditor : EditorWindow
             workMode = "正常模式";
             GUILayout.Box(workMode, "GroupBox", GUILayout.Width(80));
         }
-        GUILayout.EndArea();
+        Handles.EndGUI();
         if (e.type == EventType.MouseDown && e.control)
         {
             var mousePos = GetWorldPosition(sceneView,map.transform);
