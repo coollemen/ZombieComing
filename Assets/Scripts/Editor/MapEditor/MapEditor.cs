@@ -10,6 +10,8 @@ public class MapEditor : EditorWindow
     public Color labelColor = Color.yellow;
     public GUISkin editorSkin;
     public GUIStyle layerStyle;
+    public GUIStyle titleStyle;
+    public GUIStyle titleActiveStyle;
     public GUIStyle gridStyle;
     public string groupName = "";
     public int leftViewWidth = 200;
@@ -22,11 +24,14 @@ public class MapEditor : EditorWindow
     public Texture2D prefabIcon;
     public Vector2 scrollPos = new Vector2();
     public string msg = "";
+    public string workMode = "正常模式";
     private void Awake()
     {
         editorSkin = AssetDatabase.LoadAssetAtPath<GUISkin>("Assets/Scripts/Application/Map/MapEditorSkin.guiskin");
         layerStyle = editorSkin.toggle;
         gridStyle = editorSkin.FindStyle("grid");
+        titleStyle= editorSkin.FindStyle("title");
+        titleActiveStyle = editorSkin.FindStyle("titleActive");
         prefabIcon = EditorGUIUtility.FindTexture("PrefabNormal Icon");
         this.LoadEditorConfig();
     }
@@ -278,26 +283,47 @@ public class MapEditor : EditorWindow
     private void OnDestroy()
     {
         this.SaveEditorConfig();
+        SceneView.onSceneGUIDelegate -= OnSceneGUI;
     }
     private void OnLostFocus()
     {
-        this.SaveEditorConfig();
+        //this.SaveEditorConfig();
     }
     private void OnFocus()
     {
         this.LoadEditorConfig();
+        SceneView.onSceneGUIDelegate -= OnSceneGUI;
+        SceneView.onSceneGUIDelegate += OnSceneGUI;
+        Repaint();
+
     }
     public void OnSceneGUI(SceneView sceneView)
     {
         var e = Event.current;
+        GUILayout.BeginArea(new Rect(6, 6, 300, 300));
+        Color oldColor = GUI.contentColor;
+        Color oldBgColor = GUI.backgroundColor;
+        if (e.control)
+        {
+            workMode = "绘制模式";
+            GUI.backgroundColor = Color.red;
+            GUI.contentColor = Color.white;
+            GUILayout.Box(workMode, "GroupBox", GUILayout.Width(80));
+            GUI.backgroundColor = oldBgColor;
+            GUI.contentColor =oldColor;
+        }
+        else
+        {
+            workMode = "正常模式";
+            GUILayout.Box(workMode, "GroupBox", GUILayout.Width(80));
+        }
+        GUILayout.EndArea();
         if (e.type == EventType.MouseDown && e.control)
         {
             var mousePos = GetWorldPosition(sceneView,map.transform);
             CreateMapObjectAtMousePosition(mousePos);
-            msg =e.mousePosition.ToString()+",WorldMousePosition"+mousePos;
             e.Use();
         }
-        Handles.Label(Vector3.zero,msg);   
     }
     private Vector3 GetWorldPosition(SceneView sceneView, Transform parent)
     {
@@ -318,6 +344,16 @@ public class MapEditor : EditorWindow
 //        mousepos = sceneView.camera.ScreenToWorldPoint(mousepos);
 //        mousepos.y =0;
         return mousepos;
+    }
+    /// <summary>
+    /// 创建地形底层，用于鼠标点击定位
+    /// </summary>
+    /// <returns></returns>
+    private GameObject CreateTerrainPanel()
+    {
+        GameObject terrain = GameObject.CreatePrimitive(PrimitiveType.Plane);
+        terrain.transform.localScale = new Vector3(map.mapLength / 10, 1, map.mapWidth / 10);
+        return terrain;
     }
     #region 初始化
     [MenuItem("GameDesign/Map Editor")]

@@ -13,7 +13,10 @@ public class GameDesignMenuItems  {
         {
             if (go.GetComponent<Map>() == null)
             {
-                go.AddComponent<Map>();
+               var map= go.AddComponent<Map>();
+                var terrain = CreateTerrainPanel(map.mapLength, map.mapWidth);
+                terrain.name = "TerrainPanel";
+                terrain.transform.parent = map.transform;
             }
             else
             {
@@ -23,9 +26,22 @@ public class GameDesignMenuItems  {
         else
         {
             go = new GameObject("Map");
-            go.AddComponent<Map>();
+            var map= go.AddComponent<Map>();
+            var terrain = CreateTerrainPanel(map.mapLength, map.mapWidth);
+            terrain.name = "TerrainPanel";
+            terrain.transform.parent = map.transform;
             go.tag = "GameMap";
         }
 
+    }
+    /// <summary>
+    /// 创建地形底层，用于鼠标点击定位
+    /// </summary>
+    /// <returns></returns>
+    private static  GameObject CreateTerrainPanel(float length,float width)
+    {
+        GameObject terrain = GameObject.CreatePrimitive(PrimitiveType.Plane);
+        terrain.transform.localScale = new Vector3(length / 10, 1, width / 10);
+        return terrain;
     }
 }
