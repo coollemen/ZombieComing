@@ -94,6 +94,7 @@ public class Map : MonoBehaviour
         Vector3 worldPos = Camera.main.ViewportToWorldPoint(viewPos);
         return worldPos;
     }
+    
     private void OnDrawGizmos()
     {
         this.CalculateSize();

@@ -301,6 +301,7 @@ public class MapEditor : EditorWindow
     {
         var e = Event.current;
         Handles.BeginGUI();
+//        GUILayout.BeginArea(new Rect(0,0,500,500));
         Color oldColor = GUI.contentColor;
         Color oldBgColor = GUI.backgroundColor;
         if (e.control)
@@ -318,6 +319,7 @@ public class MapEditor : EditorWindow
             GUILayout.Box(workMode, "GroupBox", GUILayout.Width(80));
         }
         Handles.EndGUI();
+//        GUILayout.EndArea();
         if (e.type == EventType.MouseDown && e.control)
         {
             var mousePos = GetWorldPosition(sceneView,map.transform);
