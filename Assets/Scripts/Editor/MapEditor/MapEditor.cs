@@ -25,12 +25,20 @@ public class MapEditor : EditorWindow
     public Vector2 scrollPos = new Vector2();
     public string msg = "";
     public string workMode = "正常模式";
+    public Vector3 selectedCellPosition = new Vector3();
+    public string selectedCellMsg = "";
+    public Vector3 rayOriginPos = new Vector3();
+    public Vector3 rayTargetPos = new Vector3();
+    public Vector3 mouseWorldPos = new Vector3();
+    public int repaintCount = 0;
+    public bool isDrawMode = false;
+
     private void Awake()
     {
         editorSkin = AssetDatabase.LoadAssetAtPath<GUISkin>("Assets/Scripts/Application/Map/MapEditorSkin.guiskin");
         layerStyle = editorSkin.toggle;
         gridStyle = editorSkin.FindStyle("grid");
-        titleStyle= editorSkin.FindStyle("title");
+        titleStyle = editorSkin.FindStyle("title");
         titleActiveStyle = editorSkin.FindStyle("titleActive");
         prefabIcon = EditorGUIUtility.FindTexture("PrefabNormal Icon");
         this.LoadEditorConfig();
@@ -87,8 +95,8 @@ public class MapEditor : EditorWindow
 
     private void DrawFooter()
     {
-        Rect footerRect= EditorGUILayout.BeginHorizontal();
-        if (activeGroup != null&&activeGroup.brushes.Count>0)
+        Rect footerRect = EditorGUILayout.BeginHorizontal();
+        if (activeGroup != null && activeGroup.brushes.Count > 0)
         {
             GUILayout.Space(20);
             var iconRect = GUILayoutUtility.GetLastRect();
@@ -148,11 +156,11 @@ public class MapEditor : EditorWindow
     {
         Rect rect = EditorGUILayout.BeginVertical();
         rect.width = this.position.width - leftViewWidth;
-        rect.height = this.position.height - 20*2;
+        rect.height = this.position.height - 20 * 2;
         //绘制背景
         EditorGUI.DrawRect(rect, new Color(0.2f, 0.2f, 0.2f));
         //绘制笔刷组
-        scrollPos= GUILayout.BeginScrollView(scrollPos);
+        scrollPos = GUILayout.BeginScrollView(scrollPos);
 //        GUILayout.Box("",GUILayout.Width(100),GUILayout.Height(100));
 //        if (myTex)
 //        {
@@ -167,9 +175,9 @@ public class MapEditor : EditorWindow
         {
             if (rect.Contains(e.mousePosition))
             {
-                var menu= new GenericMenu();
+                var menu = new GenericMenu();
 
-                menu.AddItem(new GUIContent("Delete Selected Brush"), false,this.DeleteSelectedBrush);
+                menu.AddItem(new GUIContent("Delete Selected Brush"), false, this.DeleteSelectedBrush);
                 menu.AddItem(new GUIContent("Delete All Brushes"), false, this.DeleteAllBrushes);
                 menu.ShowAsContext();
 
@@ -232,6 +240,7 @@ public class MapEditor : EditorWindow
     {
         this.activeGroup.brushes.Clear();
     }
+
     private void FindMap()
     {
         GameObject mapObj = GameObject.FindGameObjectWithTag("GameMap");
@@ -242,13 +251,12 @@ public class MapEditor : EditorWindow
         Debug.Log(map.name);
     }
 
-    private void CreateMapObjectAtMousePosition(Vector3 mousePos)
+    private void CreateMapObjectAtActiveCell()
     {
         var brush = this.activeGroup.brushes[selectBrushIndex];
         var prefab = AssetDatabase.LoadAssetAtPath<GameObject>(brush.prefabPath);
-        var go = Instantiate(prefab,mousePos,Quaternion.identity);
-        var mapRoot = GameObject.FindGameObjectWithTag("GameMap");
-        go.transform.parent = mapRoot.transform;
+        var go = Instantiate(prefab, Vector3.zero, Quaternion.identity);
+        map.AddGameObjectToActiveCell(go);
     }
 
     public void SaveEditorConfig()
@@ -269,7 +277,6 @@ public class MapEditor : EditorWindow
             settings.resPath = path;
             AssetDatabase.SaveAssets();
         }
-
     }
 
     public void LoadEditorConfig()
@@ -277,88 +284,148 @@ public class MapEditor : EditorWindow
         Debug.Log("load config");
         string path = "Assets/MapEditorSettings.asset";
         MapEditorSettings settings = AssetDatabase.LoadAssetAtPath<MapEditorSettings>(path);
-        if(settings!=null)
-        this.brushGroups = settings.brushGroups;
+        if (settings != null)
+            this.brushGroups = settings.brushGroups;
     }
+
     private void OnDestroy()
     {
         this.SaveEditorConfig();
-        SceneView.onSceneGUIDelegate -= OnSceneGUI;
     }
+
     private void OnLostFocus()
     {
         //this.SaveEditorConfig();
     }
+    void OnEnable()
+    {
+        SceneView.onSceneGUIDelegate += this.OnSceneGUI;
+    }
+
+    void OnDisable()
+    {
+        SceneView.onSceneGUIDelegate -= this.OnSceneGUI;
+    }
+
     private void OnFocus()
     {
         this.LoadEditorConfig();
-        SceneView.onSceneGUIDelegate -= OnSceneGUI;
-        SceneView.onSceneGUIDelegate += OnSceneGUI;
         Repaint();
-
     }
+
     public void OnSceneGUI(SceneView sceneView)
     {
         var e = Event.current;
         Handles.BeginGUI();
-//        GUILayout.BeginArea(new Rect(0,0,500,500));
+        if (e.type == EventType.KeyUp && e.keyCode == KeyCode.LeftControl)
+        {
+            isDrawMode = !isDrawMode;
+            if (isDrawMode == false)
+            {
+                map.activeCell = null;
+            }
+        }
         Color oldColor = GUI.contentColor;
         Color oldBgColor = GUI.backgroundColor;
-        if (e.control)
+        if (isDrawMode)
         {
-            workMode = "绘制模式";
+            workMode = "绘制模式[left ctrl切换]";
             GUI.backgroundColor = Color.red;
             GUI.contentColor = Color.white;
-            GUILayout.Box(workMode, "GroupBox", GUILayout.Width(80));
+            GUILayout.Box(workMode, "GroupBox", GUILayout.Width(140));
             GUI.backgroundColor = oldBgColor;
-            GUI.contentColor =oldColor;
+            GUI.contentColor = oldColor;
         }
         else
         {
-            workMode = "正常模式";
-            GUILayout.Box(workMode, "GroupBox", GUILayout.Width(80));
+            workMode = "正常模式[left ctrl切换]";
+            GUILayout.Box(workMode, "GroupBox", GUILayout.Width(140));
         }
         Handles.EndGUI();
-//        GUILayout.EndArea();
-        if (e.type == EventType.MouseDown && e.control)
+        if (isDrawMode)
         {
-            var mousePos = GetWorldPosition(sceneView,map.transform);
-            CreateMapObjectAtMousePosition(mousePos);
-            e.Use();
-        }
-    }
-    private Vector3 GetWorldPosition(SceneView sceneView, Transform parent)
-    {
-        Camera cam = sceneView.camera;
+            if (e.type == EventType.MouseDown)
+            {
+                mouseWorldPos = GetWorldPositionFromMousePosition(e.mousePosition, Vector3.up, new Vector3(1, 0, 1));
+                int row;
+                int col;
+                if (map.IsEnterCell(mouseWorldPos, out row, out col))
+                {
+                    if (e.button == 0)
+                    {
+                        CreateMapObjectAtActiveCell();
+                    }
+                    else if (e.button == 1)
+                    {
+                        map.RemoveGameObjectFromActiveCell();
+                    }
+                    e.Use();
+                }
+            }
+            else if (e.type == EventType.MouseDrag)
+            {
+                mouseWorldPos = GetWorldPositionFromMousePosition(e.mousePosition, Vector3.up, new Vector3(1, 0, 1));
+                int row;
+                int col;
+                if (map.IsEnterCell(mouseWorldPos, out row, out col))
+                {
+                    if (e.button == 0)
+                    {
+                        CreateMapObjectAtActiveCell();
+                    }
+                    else if (e.button == 1)
+                    {
+                        map.RemoveGameObjectFromActiveCell();
+                    }
+                    e.Use();
+                }
+            }
+            else if (e.type == EventType.MouseMove)
+            {
+                mouseWorldPos = GetWorldPositionFromMousePosition(e.mousePosition, Vector3.up, new Vector3(1, 0, 1));
+                int row;
+                int col;
+                if (map.IsEnterCell(mouseWorldPos, out row, out col))
+                {
 
-        Vector3 mousepos = Event.current.mousePosition;
-        float mult = EditorGUIUtility.pixelsPerPoint;
-        mousepos.y = sceneView.camera.pixelHeight - mousepos.y * mult;
-        mousepos.x *= mult;
-        RaycastHit hit;
-        Ray ray = sceneView.camera.ScreenPointToRay(mousepos);
-        if (Physics.Raycast(ray, out hit))
-        {
-            mousepos = hit.point;
+                }
+            }
         }
-        //        mousepos.z = cam.worldToCameraMatrix.MultiplyPoint(parent.position).z;
-//        mousepos.y = cam.pixelHeight - mousepos.y;
-//        mousepos = sceneView.camera.ScreenToWorldPoint(mousepos);
-//        mousepos.y =0;
-        return mousepos;
     }
+
     /// <summary>
-    /// 创建地形底层，用于鼠标点击定位
+    /// 获取鼠标点击的Map Grid的点的世界坐标
     /// </summary>
+    /// <param name="mousePosition">鼠标位置</param>
+    /// <param name="panelNormal">Map Grid Panel法线</param>
+    /// <param name="panelPoint">Map Grid Panel 上任意点</param>
     /// <returns></returns>
-    private GameObject CreateTerrainPanel()
+    private Vector3 GetWorldPositionFromMousePosition(Vector2 mousePosition, Vector3 panelNormal, Vector3 panelPoint)
     {
-        GameObject terrain = GameObject.CreatePrimitive(PrimitiveType.Plane);
-        terrain.transform.localScale = new Vector3(map.mapLength / 10, 1, map.mapWidth / 10);
-        return terrain;
+        //获取鼠标点击射线
+        Ray mouseRay = HandleUtility.GUIPointToWorldRay(mousePosition);
+        //计算射线与屏幕的交点
+        var intersectPoint = GetIntersectWithLineAndPlane(mouseRay.origin, mouseRay.direction, panelNormal, panelPoint);
+//        Debug.Log("交点" + intersectPoint.ToString());
+        return intersectPoint;
     }
+
+    /// <summary> 计算直线与平面的交点 </summary>  
+    /// <param name="point">直线上某一点</param>   
+    /// <param name="direct">直线的方向</param>   
+    /// <param name="planeNormal">垂直于平面的的向量</param>   
+    /// <param name="planePoint">平面上的任意一点</param>   
+    /// <returns></returns>  
+    private Vector3 GetIntersectWithLineAndPlane(Vector3 point, Vector3 direct, Vector3 planeNormal, Vector3 planePoint)
+    {
+        float d = Vector3.Dot(planePoint - point, planeNormal) / Vector3.Dot(direct.normalized, planeNormal);
+        return d * direct.normalized + point;
+    }
+
     #region 初始化
-    [MenuItem("GameDesign/Map Editor")]
+
+    [
+        MenuItem("GameDesign/Map Editor")]
     static void Init()
     {
         // Get existing open window or if none, make a new one:
@@ -369,9 +436,7 @@ public class MapEditor : EditorWindow
         {
             window.map = mapObj.GetComponent<Map>();
         }
-        SceneView.onSceneGUIDelegate += window.OnSceneGUI;
     }
-
 
     #endregion
 }

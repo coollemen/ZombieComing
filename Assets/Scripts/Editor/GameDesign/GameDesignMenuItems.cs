@@ -14,9 +14,6 @@ public class GameDesignMenuItems  {
             if (go.GetComponent<Map>() == null)
             {
                var map= go.AddComponent<Map>();
-                var terrain = CreateTerrainPanel(map.mapLength, map.mapWidth);
-                terrain.name = "TerrainPanel";
-                terrain.transform.parent = map.transform;
             }
             else
             {
@@ -27,9 +24,6 @@ public class GameDesignMenuItems  {
         {
             go = new GameObject("Map");
             var map= go.AddComponent<Map>();
-            var terrain = CreateTerrainPanel(map.mapLength, map.mapWidth);
-            terrain.name = "TerrainPanel";
-            terrain.transform.parent = map.transform;
             go.tag = "GameMap";
         }
 

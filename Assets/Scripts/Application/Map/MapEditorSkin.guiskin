@@ -1415,8 +1415,8 @@ MonoBehaviour:
     m_TextClipping: 0
     m_ImagePosition: 2
     m_ContentOffset: {x: 0, y: 0}
-    m_FixedWidth: 96
-    m_FixedHeight: 96
+    m_FixedWidth: 64
+    m_FixedHeight: 64
     m_StretchWidth: 1
     m_StretchHeight: 0
   - m_Name: title
