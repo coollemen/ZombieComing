@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
+using Newtonsoft.Json;
 public class MapDesignerWindow :EditorWindow {
     BlockMap map;
     public List<BlockBrush> brushes = new List<BlockBrush>();
@@ -20,6 +21,7 @@ public class MapDesignerWindow :EditorWindow {
 	}
     private void Awake()
     {
+        LoadConfig();
         editorSkin = AssetDatabase.LoadAssetAtPath<GUISkin>("Assets/Scripts/Application/Map/MapEditorSkin.guiskin");
         gridStyle = editorSkin.FindStyle("grid");
 
@@ -72,6 +74,11 @@ public class MapDesignerWindow :EditorWindow {
         }
         for (int i = 0; i < brushes.Count; i++)
         {
+            if (brushes[i].preview == null)
+            {
+                GameObject go = AssetDatabase.LoadAssetAtPath<GameObject>(brushes[i].prefab);
+                brushes[i].preview = AssetPreview.GetAssetPreview(go);
+            }
             contents.Add(new GUIContent(brushes[i].preview));
         }
         scrollPosition= GUILayout.BeginScrollView(scrollPosition);
@@ -96,6 +103,30 @@ public class MapDesignerWindow :EditorWindow {
     public void DeleteAllBrushes()
     {
         this.brushes.Clear();
+    }
+
+    public void SaveConfig()
+    {
+        string configtext =JsonConvert.SerializeObject(brushes);
+        Debug.Log(configtext);
+        EditorUserSettings.SetConfigValue("MapDesignerConfig",configtext);
+        Debug.Log("Save Config");
+    }
+
+    public void LoadConfig()
+    {
+        string configtext = EditorUserSettings.GetConfigValue("MapDesignerConfig");
+
+        this.brushes = JsonConvert.DeserializeObject<List<BlockBrush>>(configtext);
+        Debug.Log("Load Config");
+    }
+    private void OnDisable()
+    {
+        SaveConfig();
+    }
+    private void OnDestroy()
+    {
+        SaveConfig();
     }
     #region 初始化
 

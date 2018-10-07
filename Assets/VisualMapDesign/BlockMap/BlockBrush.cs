@@ -2,12 +2,13 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+[System.Serializable]
 public class BlockBrush
 {
-    public static BlockBrush activeBrush;
+    [System.NonSerialized] public static BlockBrush activeBrush;
     public string name;
     public string prefab;
-    public Texture2D preview;
+    [System.NonSerialized] public Texture2D preview;
     public int rotation = 0;
 
     public BlockBrush(string setName)
@@ -16,7 +17,7 @@ public class BlockBrush
     }
 
     public void Rotate()
-    {  
+    {
         rotation += 90;
         if (rotation >= 360)
         {
