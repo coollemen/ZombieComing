@@ -14,20 +14,24 @@ public class Charactor : MonoBehaviour
 
     public float mp;
 
-    public float attack;
-   
+    public float atk;
+    public AttackType atkType;
+    public float atkSpeed;
 
-    public float defence;
-
-    public float speed;
+    public float def;
+    public DefenseType defType;
+    public float moveSpeed;
 
 	// Use this for initialization
-	void Start () {
-		
+	void Start ()
+	{
+	    atkType = AttackType.Normal;
+	    defType = DefenseType.Light;
 	}
 	
 	// Update is called once per frame
 	void Update () {
 		
 	}
+    
 }
