@@ -17,4 +17,6 @@ public abstract class Singleton<T> : MonoBehaviour
     {
         m_instance = this as T;
     }
+    protected virtual void GameSetup() { }
+    protected virtual void GameDestroy() { }
 }
