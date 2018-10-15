@@ -1,5 +1,5 @@
 ﻿using UnityEngine;
-using PathologicalGames;
+using GameFramework;
 
 
 public class InstanceHandlerDelegateExample : MonoBehaviour 

@@ -4,4 +4,14 @@
 EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
-  m_Scenes: []
+  m_Scenes:
+  - enabled: 1
+    path: Assets/Mad Level Manager/Examples/Example 8 - Background Sprites/Example8Scene.unity
+    guid: a294185b5cd100a4484502d421f588c9
+  - enabled: 1
+    path: Assets/Mad Level Manager/Examples/Stuff/Scenes/LoadingScene.unity
+    guid: 52fabab80b8a7b843bd420f130abed5d
+  - enabled: 1
+    path: Assets/Mad Level Manager/Examples/Stuff/Scenes/MadLevelTester2.unity
+    guid: 04e2a91307f201f4d92ee4df7f059bba
+  m_configObjects: {}

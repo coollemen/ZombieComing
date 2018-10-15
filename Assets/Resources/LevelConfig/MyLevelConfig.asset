@@ -1,0 +1,32 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8ca0aa9835c2f8f4a9b2b5ff51784391, type: 3}
+  m_Name: MyLevelConfig
+  m_EditorClassIdentifier: 
+  creationDate: 1539613488
+  _active: 0
+  levels:
+  - _sceneObject: {fileID: 102900000, guid: 7446272e5d7816d4b9f6194eebee33c9, type: 3}
+    _scenePath: Assets/Scenes/VisualMapDesign.unity
+    _sceneName: VisualMapDesign
+    scene: 
+    parent: {fileID: 11400000}
+    order: 0
+    name: New Level
+    type: 1
+    arguments: 
+    groupId: 0
+    extensionGUID: 
+    lockedByDefault: 0
+  groups: []
+  extensions: []
+  version: 1
+  flag: 0
