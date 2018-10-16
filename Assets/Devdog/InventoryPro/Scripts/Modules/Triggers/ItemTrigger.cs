@@ -37,7 +37,7 @@ namespace Devdog.InventoryPro
             }
         }
 
-        public override bool CanUse(Player player)
+        public override bool CanUse(General.Player player)
         {
             var canUse = base.CanUse(player);
             if (canUse == false)
@@ -53,12 +53,12 @@ namespace Devdog.InventoryPro
             return InventoryManager.CanAddItem(_itemToAddToInventory);
         }
 
-        public override bool CanUnUse(Player player)
+        public override bool CanUnUse(General.Player player)
         {
             return false; // It's not possible to un-use an ItemTrigger
         }
 
-        public override bool Use(Player player)
+        public override bool Use(General.Player player)
         {
             SetItemToAddToInventory();
             if (CanUse(player) == false)
@@ -85,7 +85,7 @@ namespace Devdog.InventoryPro
             return true;
         }
 
-        public override bool UnUse(Player player)
+        public override bool UnUse(General.Player player)
         {
             return false; // Can't un-use an item
         }

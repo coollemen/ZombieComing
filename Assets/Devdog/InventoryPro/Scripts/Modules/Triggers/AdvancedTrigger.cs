@@ -35,8 +35,7 @@ namespace Devdog.InventoryPro
             _objectInfo = GetComponent<ISelectableObjectInfo>();
         }
 
-
-        public override bool CanUse(Player player)
+        public override bool CanUse(General.Player player)
         {
             var canUse = base.CanUse(player);
             if (canUse == false)
@@ -65,7 +64,7 @@ namespace Devdog.InventoryPro
             return true;
         }
 
-        public override bool CanUnUse(Player player)
+        public override bool CanUnUse(General.Player player)
         {
             return base.CanUnUse(player);
         }
