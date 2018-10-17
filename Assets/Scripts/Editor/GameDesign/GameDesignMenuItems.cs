@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class GameDesignMenuItems  {
 
-    [MenuItem("GameDesign/Add Map To Scene")]
+    [MenuItem("Game Designer/Add Map To Scene")]
     static void CreateMapObject()
     {
         GameObject go = GameObject.FindGameObjectWithTag("GameMap");

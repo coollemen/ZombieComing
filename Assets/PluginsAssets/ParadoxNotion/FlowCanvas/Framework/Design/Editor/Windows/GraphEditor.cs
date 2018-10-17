@@ -895,7 +895,7 @@ namespace NodeCanvas.Editor{
 		}
 
 		
-		///Canvas groups
+		///Canvas groupNames
 		static void DoCanvasGroups(){
 
 			if (currentGraph.canvasGroups == null){

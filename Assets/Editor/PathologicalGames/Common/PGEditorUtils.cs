@@ -564,7 +564,7 @@ public static class PGEditorUtils
         }
 
         EditorGUILayout.BeginHorizontal(GUILayout.MaxWidth(50));
-        // A little space between button groups
+        // A little space between button groupNames
         GUILayout.Space(buttonSpacer);
 
         // Main Add button
@@ -974,7 +974,7 @@ public static class PGEditorUtils
         bool downPressed = GUILayout.Button(new GUIContent(dnArrow, "Click to shift down"),
                                             EditorStyles.toolbarButton);
 
-        // A little space between button groups
+        // A little space between button groupNames
         GUILayout.Space(buttonSpacer);
 
         // Remove Button - Process presses later

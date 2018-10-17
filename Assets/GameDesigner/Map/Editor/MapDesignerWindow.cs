@@ -131,7 +131,7 @@ public class MapDesignerWindow :EditorWindow {
     #region 初始化
 
     [
-        MenuItem("GameDesign/Visual Map Editor")]
+        MenuItem("Game Designer/Visual Map Editor")]
     static void Init()
     {
         // Get existing open window or if none, make a new one:

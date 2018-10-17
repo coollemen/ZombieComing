@@ -51,7 +51,7 @@ namespace Devdog.InventoryPro
 
             var toReturn = new List<InventoryItemBase>(maxAmount);
 
-            // No groups, fall back to the the basic generator.
+            // No groupNames, fall back to the the basic generator.
             if (filterGroups.Length == 0)
             {
                 var basic = new BasicItemGenerator();

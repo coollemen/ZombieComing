@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 public class BuiltInResourcesWindow : EditorWindow
 {
-    [MenuItem("GameDesign/Built-in styles and icons")]
+    [MenuItem("Game Designer/Built-in styles and icons")]
     public static void ShowWindow()
     {
         BuiltInResourcesWindow w = (BuiltInResourcesWindow)EditorWindow.GetWindow<BuiltInResourcesWindow>();

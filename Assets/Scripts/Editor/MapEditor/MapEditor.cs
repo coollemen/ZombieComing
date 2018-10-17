@@ -425,7 +425,7 @@ public class MapEditor : EditorWindow
     #region 初始化
 
     [
-        MenuItem("GameDesign/Map Editor")]
+        MenuItem("Game Designer/Map Editor")]
     static void Init()
     {
         // Get existing open window or if none, make a new one:

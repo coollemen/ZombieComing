@@ -389,7 +389,7 @@ namespace NodeCanvas.Framework{
 			}
 		}
 
-		///The canvas groups of the graph (Editor purposes)
+		///The canvas groupNames of the graph (Editor purposes)
 		public List<CanvasGroup> canvasGroups{
 			get {return _canvasGroups;}
 			set {_canvasGroups = value;}
