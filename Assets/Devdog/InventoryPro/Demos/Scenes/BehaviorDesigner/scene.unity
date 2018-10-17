@@ -1099,7 +1099,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 22487160, guid: fe2d53ebc3b80bb488990a3e3ab59338, type: 2}
       propertyPath: m_AnchoredPosition.y
-      value: -0.000030517578
+      value: -0.000061035156
       objectReference: {fileID: 0}
     - target: {fileID: 22473924, guid: fe2d53ebc3b80bb488990a3e3ab59338, type: 2}
       propertyPath: m_AnchoredPosition.x
@@ -1689,11 +1689,11 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 22410128, guid: ed7d08339ae36af4ca13b1ab787f7528, type: 2}
       propertyPath: m_AnchoredPosition.y
-      value: 0.000030517578
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 22439212, guid: ed7d08339ae36af4ca13b1ab787f7528, type: 2}
       propertyPath: m_AnchoredPosition.y
-      value: 0.000030517578
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 22419380, guid: ed7d08339ae36af4ca13b1ab787f7528, type: 2}
       propertyPath: m_AnchorMin.y
@@ -2082,6 +2082,21 @@ MonoBehaviour:
     type: 2}
   m_PrefabInternal: {fileID: 1431826764}
   m_Script: {fileID: 11500000, guid: 5542aeba6eb13fa4b99a4c6673df9425, type: 3}
+--- !u!1 &624969633
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 795609562}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 795609563}
+  m_Layer: 0
+  m_Name: Missing Prefab (Dummy)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
 --- !u!1 &636986470
 GameObject:
   m_ObjectHideFlags: 0
@@ -2457,10 +2472,19 @@ Prefab:
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a614a2cd212fb064c95ba63de6c307aa, type: 2}
   m_IsPrefabAsset: 0
---- !u!4 &795609563 stripped
+--- !u!4 &795609563
 Transform:
+  m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 795609562}
+  m_GameObject: {fileID: 624969633}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 2106962213}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!224 &893760928 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 22465918, guid: f4879f629672bfb44840e1eedb9e82ca,
@@ -3522,7 +3546,7 @@ RectTransform:
   - {fileID: 1418321863}
   - {fileID: 1379370407}
   - {fileID: 2029573525}
-  - {fileID: 795609563}
+  - {fileID: 2106962213}
   m_Father: {fileID: 0}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -4853,7 +4877,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 22430452, guid: a606bc4516da9d541ab1be24bc3a2759, type: 2}
       propertyPath: m_AnchoredPosition.y
-      value: 0.000091552734
+      value: 0.000015258789
       objectReference: {fileID: 0}
     - target: {fileID: 22444926, guid: a606bc4516da9d541ab1be24bc3a2759, type: 2}
       propertyPath: m_AnchoredPosition.x
@@ -4907,63 +4931,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8d7b55c7ecdb49a4a89fa5e6f9022861, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  startWhenEnabled: 1
-  pauseWhenDisabled: 0
-  restartWhenComplete: 0
-  logTaskChanges: 0
-  group: 0
-  resetValuesOnRestart: 0
-  externalBehavior: {fileID: 0}
-  mBehaviorSource:
-    behaviorName: Behavior
-    behaviorDescription: 
-    mTaskData:
-      types:
-      - BehaviorDesigner.Runtime.Tasks.EntryTask
-      - BehaviorDesigner.Runtime.Tasks.InventorySystem.AddItemToCollection
-      parentIndex: ffffffff00000000
-      startIndex: 000000000a000000
-      variableStartIndex: 
-      JSONSerialization: 
-      fieldSerializationData:
-        typeName:
-        - Int32ID
-        - StringFriendlyName
-        - BooleanIsInstant
-        - Vector2NodeDataOffset
-        - StringNodeDataComment
-        - BooleanNodeDataIsBreakpoint
-        - BooleanNodeDataDisabled
-        - BooleanNodeDataCollapsed
-        - Int32NodeDataColorIndex
-        - List`1NodeDataWatchedFields
-        - Int32ID
-        - StringFriendlyName
-        - BooleanIsInstant
-        - Vector2NodeDataOffset
-        - StringNodeDataComment
-        - BooleanNodeDataIsBreakpoint
-        - BooleanNodeDataDisabled
-        - BooleanNodeDataCollapsed
-        - Int32NodeDataColorIndex
-        - List`1NodeDataWatchedFields
-        - InventoryItemBaseitem
-        - SharedIntamount
-        - StringSharedIntamountType
-        - StringSharedIntamountName
-        - BooleanSharedIntamountIsShared
-        - BooleanSharedIntamountIsGlobal
-        - Int32SharedIntamountmValue
-        - ItemCollectionBasecollection
-        fieldNameHash: 
-        startIndex: 000000000100000002000000030000000400000005000000060000000700000008000000090000000a0000000b0000000c0000000d0000000e0000000f00000010000000110000001200000013000000140000001500000015000000160000001700000018000000190000001a000000
-        dataPosition: 0000000004000000090000000a0000001200000012000000130000001400000015000000190000001d0000002100000037000000380000004000000040000000410000004200000043000000470000004b0000004f0000007100000071000000720000007300000077000000
-        unityObjects:
-        - {fileID: 0}
-        - {fileID: 893760932}
-        byteData: 00000000456e74727901000048430000a0c1000000000000000000000000000001416464204974656d20546f20436f6c6c656374696f6e01000090c0000025430000000000000000000000000000004265686176696f7244657369676e65722e52756e74696d652e536861726564496e7400000000000200000001
-        byteDataArray: 00000000456e74727901000048430000a0c1000000000000000000000001000000416464204974656d20546f20436f6c6c656374696f6e01000090c0000025430000000000000000000000000000004265686176696f7244657369676e65722e52756e74696d652e536861726564496e7400000200000001000000
-      Version: 
 --- !u!114 &1436749554
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6806,6 +6773,35 @@ Transform:
   - {fileID: 1410034548}
   m_Father: {fileID: 1966698901}
   m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &2106962212
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 795609562}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2106962213}
+  m_Layer: 0
+  m_Name: Missing Prefab
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2106962213
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 795609562}
+  m_GameObject: {fileID: 2106962212}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children:
+  - {fileID: 795609563}
+  m_Father: {fileID: 1206659362}
+  m_RootOrder: 9
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2107035102
 GameObject:

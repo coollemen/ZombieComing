@@ -5,6 +5,7 @@ using UnityEditor;
 /// <summary>
 /// 游戏事件配置数据
 /// </summary>
+[System.Serializable]
 public class GameEventsConfig : ScriptableObject {
     /// <summary>
     /// 事件代码保存位置
