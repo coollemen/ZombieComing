@@ -13,7 +13,7 @@ public class GameEventBuilder : EditorWindow
     /// <summary>
     /// 事件组，一个组就是一个事件枚举类
     /// </summary>
-    public string[] groupNames = new string[] {};
+    public string[] groupNames = new string[] { };
 
     /// <summary>
     /// 当前选择的组合索引
@@ -34,6 +34,7 @@ public class GameEventBuilder : EditorWindow
     public bool isEditMode = false;
     public string newGroupName = "";
     public bool isDirty = false;
+    public Color oldColor;
 
     void Start()
     {
@@ -70,6 +71,7 @@ public class GameEventBuilder : EditorWindow
                 this.InitNewConfig();
                 this.SaveConfig();
             }
+
             this.groupNames = GetGroupNames();
         }
     }
@@ -82,11 +84,13 @@ public class GameEventBuilder : EditorWindow
             AssetDatabase.CreateFolder("Assets", "GameEventBuilder");
             AssetDatabase.MoveAsset("Assets/GameEventBuilder", "Assets/Resources/GameEventBuilder");
         }
+
         string savePath = folderPath + "/EventBuilderConfig.asset";
         if (AssetDatabase.Contains(config) == false)
         {
             AssetDatabase.CreateAsset(config, savePath);
         }
+
         AssetDatabase.SaveAssets();
         AssetDatabase.Refresh();
     }
@@ -102,6 +106,7 @@ public class GameEventBuilder : EditorWindow
         {
             names[i] = config.groups[i].name;
         }
+
         return names;
     }
 
@@ -112,17 +117,44 @@ public class GameEventBuilder : EditorWindow
             this.groupNames = GetGroupNames();
             isDirty = false;
         }
-        var oldColor = GUI.backgroundColor;
+
+        oldColor = GUI.backgroundColor;
+        //绘制基础信息
+        this.DrawBasePanel();
+        //绘制组合编辑界面
+        this.DrawGroupPanel();
+        //绘制事件编辑界面
+        this.DrawEventPanel();
+        EditorGUILayout.Separator();
+        //绘制当前组事件信息
+        this.DrawEventList();
+        //绘制导出按键
+        EditorGUILayout.Separator();
+        GUI.backgroundColor =new Color(1f,0,1f);
+        if (GUILayout.Button("Export To Code"))
+        {
+            this.ExportToCode();
+        }
+        GUI.backgroundColor = oldColor;
+
+    }
+
+    private void DrawBasePanel()
+    {
+        //添加标题
         EditorGUILayout.LabelField(" Base Config", (GUIStyle) "flow navbar back");
         EditorGUI.indentLevel++;
         GUILayout.BeginHorizontal();
+        //绘制路径，并添加选择按钮
         config.path = EditorGUILayout.TextField("Save Path", config.path);
         this.currGroup = this.config.groups[selectedGroupIndex];
         if (GUILayout.Button("", "IN ObjectField", GUILayout.Width(18)))
         {
             config.path = EditorUtility.OpenFolderPanel("Save Event Codes", config.path, "GameEvents");
         }
+
         GUILayout.EndHorizontal();
+        //绘制命名空间字段
         config.hasNameSpace = EditorGUILayout.Toggle("Add NameSpace", config.hasNameSpace);
         if (config.hasNameSpace)
         {
@@ -130,46 +162,70 @@ public class GameEventBuilder : EditorWindow
             config.nameSpace = EditorGUILayout.TextField("NameSpace", config.nameSpace);
             EditorGUI.indentLevel--;
         }
+
         EditorGUILayout.Separator();
         EditorGUI.indentLevel--;
-        //绘制组合数据
+    }
+
+    private void DrawGroupPanel()
+    {
+        //绘制标题
         EditorGUILayout.LabelField(" Event Groups", (GUIStyle) "flow navbar back");
+        //如果不是编辑模式
         if (isEditMode == false)
         {
+            //开始缩进
             EditorGUI.indentLevel++;
+            //组合基本字段
             selectedGroupIndex = EditorGUILayout.Popup("Group", selectedGroupIndex, groupNames);
             currGroup.startNum = EditorGUILayout.IntField("Start Num", currGroup.startNum);
             currGroup.span = EditorGUILayout.IntField("Span", currGroup.span);
+            //开始水平组
             GUILayout.BeginHorizontal();
+            //将button居右
             GUILayout.FlexibleSpace();
-            GUI.backgroundColor = Color.blue;
-            if (GUILayout.Button("Edit Group", GUILayout.Width(100)))
+            //设置按键颜色
+            GUI.backgroundColor = new Color(0, 0.9f, 1); ;
+            if (GUILayout.Button("Edit Group", (GUIStyle)"minibutton", GUILayout.Width(100)))
             {
                 isEditMode = true;
             }
+
             GUI.backgroundColor = oldColor;
+            //结束水平组
             GUILayout.EndHorizontal();
+            //结束缩进
             EditorGUI.indentLevel--;
         }
         else
         {
+            //开始缩进
             EditorGUI.indentLevel++;
+            //开始垂直组
             GUILayout.BeginVertical();
-            GUI.contentColor = Color.gray;
+            //开始子水平组
             GUILayout.BeginHorizontal();
-            EditorGUILayout.LabelField("Group Name", GUILayout.Width(160));
-            EditorGUILayout.LabelField("Group Count");
+            //设置标题文字颜色
+            GUI.contentColor = Color.gray;
+            //绘制标题
+            EditorGUILayout.LabelField("Group Name", GUILayout.Width(120));
+            EditorGUILayout.LabelField("Count", GUILayout.Width(60));
+            //结束子水平组
             GUILayout.EndHorizontal();
+            //恢复默认颜色
             GUI.contentColor = oldColor;
+            //绘制组合列表
             for (int i = 0; i < config.groups.Count; i++)
             {
                 var g = config.groups[i];
                 GUILayout.BeginHorizontal();
-                EditorGUILayout.TextField(g.name, GUILayout.Width(160));
-                EditorGUILayout.LabelField(g.events.Count.ToString());
+                EditorGUILayout.TextField(g.name, GUILayout.Width(120));
+                EditorGUILayout.LabelField(g.events.Count.ToString(), GUILayout.Width(60));
                 GUI.backgroundColor = Color.red;
-                if (GUILayout.Button("Del", GUILayout.Width(30)))
+                GUILayout.FlexibleSpace();
+                if (GUILayout.Button("Del", (GUIStyle)"minibutton",GUILayout.Width(50)))
                 {
+                    //如果组合里存在事件，那么删除时显示确定对话框
                     if (config.groups[i].events.Count > 0)
                     {
                         if (EditorUtility.DisplayDialog("删除", "确定删除当前事件组？", "确定", "取消"))
@@ -178,31 +234,38 @@ public class GameEventBuilder : EditorWindow
                             isDirty = true;
                         }
                     }
-                    GUI.backgroundColor = oldColor;
-                    GUILayout.EndHorizontal();
                 }
-                GUILayout.EndVertical();
+
+                GUI.backgroundColor = oldColor;
+                GUILayout.EndHorizontal();
             }
+
+            GUILayout.EndVertical();
+            //开始水平组
             GUILayout.BeginHorizontal();
             newGroupName = EditorGUILayout.TextField("New Group Name", newGroupName);
             GUI.backgroundColor = Color.green;
-            if (GUILayout.Button("Add Group", GUILayout.Width(100)))
+            if (GUILayout.Button("Add Group", (GUIStyle)"minibuttonleft", GUILayout.MinWidth(60)))
             {
                 var newGroup = new GameEventGroup(newGroupName);
                 this.config.groups.Add(newGroup);
                 isDirty = true;
             }
+
             GUI.backgroundColor = Color.red;
-            if (GUILayout.Button("Exit Edit", GUILayout.Width(100)))
+            if (GUILayout.Button("Exit Edit", (GUIStyle)"minibuttonright", GUILayout.MinWidth(60)))
             {
                 isEditMode = false;
             }
+
             GUI.backgroundColor = oldColor;
             GUILayout.EndHorizontal();
             EditorGUI.indentLevel--;
         }
+    }
 
-        //绘制事件添加界面
+    private void DrawEventPanel()
+    {
         EditorGUI.indentLevel++;
         EditorGUILayout.Separator();
         EditorGUILayout.LabelField("Add New Event To [ " + groupNames[selectedGroupIndex] + " ] Group:");
@@ -219,18 +282,18 @@ public class GameEventBuilder : EditorWindow
         GUILayout.FlexibleSpace();
 
         GUI.backgroundColor = Color.green;
-        if (GUILayout.Button("New Event", GUILayout.Width(100)))
+        if (GUILayout.Button("New Event", (GUIStyle)"minibuttonleft", GUILayout.MinWidth(80)))
         {
             this.NewEventDef();
         }
-        GUI.backgroundColor = Color.blue;
-        if (GUILayout.Button("Add Event", GUILayout.Width(100)))
+        GUI.backgroundColor =new Color(0,0.9f,1);
+        if (GUILayout.Button("Add Event", (GUIStyle)"minibuttonmid", GUILayout.MinWidth(80)))
         {
             currGroup.events.Add(tempEventDef);
             this.NewEventDef();
         }
         GUI.backgroundColor = Color.red;
-        if (GUILayout.Button("Clear Events", GUILayout.Width(100)))
+        if (GUILayout.Button("Clear Events", (GUIStyle)"minibuttonright", GUILayout.MinWidth(80)))
         {
             if (EditorUtility.DisplayDialog("清空", "确定清空当前事件组？", "确定", "取消"))
             {
@@ -241,10 +304,12 @@ public class GameEventBuilder : EditorWindow
         GUI.backgroundColor = oldColor;
 
         GUILayout.EndHorizontal();
-        //绘制当前的事件组合里的事件列表
-        EditorGUILayout.Separator();
+    }
+
+    public void DrawEventList()
+    {
         EditorGUILayout.LabelField(" [ " + groupNames[selectedGroupIndex] + " ] Events",
-            (GUIStyle) "flow navbar back");
+            (GUIStyle)"flow navbar back");
         GUILayout.BeginVertical();
         //绘制标题列
         EditorGUI.indentLevel++;
@@ -263,7 +328,7 @@ public class GameEventBuilder : EditorWindow
             EditorGUILayout.TextField(e.name, GUILayout.Width(160));
             EditorGUILayout.TextField(e.description);
             GUI.backgroundColor = Color.red;
-            if (GUILayout.Button("Del", GUILayout.Width(30)))
+            if (GUILayout.Button("Del", (GUIStyle)"minibutton", GUILayout.Width(30)))
             {
                 currGroup.events.RemoveAt(i);
             }
@@ -272,10 +337,74 @@ public class GameEventBuilder : EditorWindow
         }
         GUILayout.EndVertical();
         EditorGUI.indentLevel--;
-        //绘制当前数组
+    }
+    /// <summary>
+    /// 导出为C#代码
+    /// </summary>
+    private void ExportToCode()
+    {
+        //判断是否有响应的文件夹在
+        string folderPath = config.path + "/Events/";
+        System.IO.DirectoryInfo dir = new System.IO.DirectoryInfo(folderPath);
+        if (dir.Exists == false)
+        {
+            dir.Create();
+        }
+
+        foreach (var g in config.groups)
+        {
+            var code = this.GroupToEnumCode(g);
+            var fileName = g.name + "Events.cs";
+            var filePath = folderPath + fileName;
+            try
+            {
+                System.IO.FileStream fs = new System.IO.FileStream(filePath, System.IO.FileMode.Truncate);
+                System.IO.StreamWriter writer = new System.IO.StreamWriter(fs);
+                writer.Write(code);
+                writer.Close();
+                fs.Close();
+            }
+            catch(System.Exception ex)
+            {
+                System.IO.FileStream fs = new System.IO.FileStream(filePath, System.IO.FileMode.Create);
+                System.IO.StreamWriter writer = new System.IO.StreamWriter(fs);
+                writer.Write(code);
+                writer.Close();
+                fs.Close();
+            }
+
+        }
+        AssetDatabase.Refresh();
+        EditorUtility.DisplayDialog("完成", "导出代码成功！", "确定");
     }
 
-
+    private string GroupToEnumCode(GameEventGroup g)
+    {
+        string code = "";
+        code += "using System.Collections;\r\n";
+        code += "using System.Collections.Generic;\r\n";
+        if (config.hasNameSpace)
+        {
+            code += string.Format("namespace {0}\r\n", config.nameSpace);
+            code += "{\r\n";
+        }
+        code += string.Format("public enum {0}\r\n", g.name + "Events");
+        code += "{\r\n";
+        if (g.events.Count > 0)
+        {
+            for (int i = 0; i < g.events.Count - 1; i++)
+            {
+                code += string.Format("{0}={1},\r\n", g.events[i].name, g.events[i].id);
+            }
+            code += string.Format("{0}={1}\r\n", g.events[g.events.Count - 1].name, g.events[g.events.Count - 1].id);
+        }
+        code += "}\r\n";
+        if (config.hasNameSpace)
+        {
+            code += "}\r\n";
+        }
+        return code;
+    }
     private void NewEventDef()
     {
         tempEventDef = new GameEventDef();
@@ -309,4 +438,9 @@ public class GameEventBuilder : EditorWindow
     }
 
     #endregion
+}
+
+public enum GameEvents
+{
+    Game_Start=0,
 }
