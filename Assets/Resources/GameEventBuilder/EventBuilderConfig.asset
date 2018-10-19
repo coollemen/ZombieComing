@@ -11,7 +11,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6bf7c5e7533d0234a8ac180680788eb9, type: 3}
   m_Name: EventBuilderConfig
   m_EditorClassIdentifier: 
-  path: Assets/Resources/
+  path: Assets/Resources/123
   selectedGroupIndex: 0
   hasNameSpace: 0
   nameSpace: GameFramework
@@ -19,9 +19,19 @@ MonoBehaviour:
   - name: Game
     startNum: 1
     span: 1
-    events: []
+    events:
+    - id: 1
+      name: Game_Start
+      description: 
   - name: UI
     startNum: 1
     span: 1
     events: []
-  temps: 
+  - name: Play
+    startNum: 1000
+    span: 1
+    events: []
+  - name: Test
+    startNum: 1
+    span: 1
+    events: []

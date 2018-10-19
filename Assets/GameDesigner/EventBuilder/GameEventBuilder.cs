@@ -43,6 +43,7 @@ public class GameEventBuilder : EditorWindow
 
     private void InitNewConfig()
     {
+        Debug.Log("Reset Event Builder Config!");
         this.config = ScriptableObject.CreateInstance<GameEventsConfig>();
         //添加几个默认事件组
         var gameGruop = new GameEventGroup("Game");
@@ -90,7 +91,7 @@ public class GameEventBuilder : EditorWindow
         {
             AssetDatabase.CreateAsset(config, savePath);
         }
-
+        EditorUtility.SetDirty(config);
         AssetDatabase.SaveAssets();
         AssetDatabase.Refresh();
     }
@@ -427,7 +428,10 @@ public class GameEventBuilder : EditorWindow
     {
         this.SaveConfig();
     }
-
+    private void OnDestroy()
+    {
+        this.SaveConfig();
+    }
     #region show window
 
     [MenuItem("Game Designer/Game Event Builder")]
