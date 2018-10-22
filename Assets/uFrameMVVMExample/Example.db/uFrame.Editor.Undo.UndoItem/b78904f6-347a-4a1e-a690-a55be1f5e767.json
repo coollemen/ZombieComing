@@ -1,8 +1,0 @@
-{
-	"Identifier":"b78904f6-347a-4a1e-a690-a55be1f5e767"	, 
-	"Time":"10/22/2018 14:59:32"	, 
-	"Group":145930	, 
-	"DataRecordId":"7a044bba-582f-41ec-bc64-a14412a18b08"	, 
-	"Type":1	, 
-	"RecordType":"uFrame.Editor.Compiling.CommonNodes.ImageNode, Assembly-CSharp-Editor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null"	, 
-	"Data":"{\r\n\t\"Comments\":\"Change this text to add description to the image\"\t, \r\n\t\"Size\":\t{\r\n\t\t\"x\":225\t\t, \r\n\t\t\"y\":72\t}\r\n\t, \r\n\t\"Name\":\"NewImageNode\"\t, \r\n\t\"Order\":0\t, \r\n\t\"GraphId\":\"467a797e-dc6c-4c14-b4ad-08fcf41b8d72\"\t, \r\n\t\"Identifier\":\"7a044bba-582f-41ec-bc64-a14412a18b08\"\t, \r\n\t\"Expanded\":false}\r\n"}
