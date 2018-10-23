@@ -4,8 +4,8 @@ using UnityEngine;
 
 namespace GameFramework
 {
-    public class Context
+    public class Context:MonoBehaviour
     {
-
+        public string name = "context";
     }
 }

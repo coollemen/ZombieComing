@@ -2,8 +2,13 @@
 using System.Collections.Generic;
 using UnityEngine;
 using Sirenix.OdinInspector;
+using UniRx;
+using UniRx.Triggers;
 namespace GameFramework
 {
+    /// <summary>
+    /// 视图
+    /// </summary>
     public  class View:MonoBehaviour
     {
         /// <summary>
@@ -11,22 +16,34 @@ namespace GameFramework
         /// </summary>
         public int id;
 
-        private readonly BindableProperty<Context> contextProperty = new BindableProperty<Context>();
+        private readonly ReactiveProperty<Context> contextProperty = new ReactiveProperty<Context>();
         [ShowInInspector]
         public Context Context
         {
             get { return contextProperty.Value; }
-            set { this.contextProperty.Value = value; }
+            set
+            {
+                this.contextProperty.Value = value;
+
+            }
         }
 
         public virtual void InitView()
         {
-            this.contextProperty.OnValueChanged += ContextProperty_OnValueChanged;
+            if (Context==null)
+            {
+                this.Context = GetComponent<Context>();
+            }
+            contextProperty.Subscribe(ContextProperty_OnValueChanged);
         }
-
-        private void ContextProperty_OnValueChanged()
+        public void Start()
         {
-            throw new System.NotImplementedException();
+
+            InitView();
+        }
+        private void ContextProperty_OnValueChanged(Context c)
+        {
+            Debug.Log("Context Changed:" + c.name);
         }
     }
 }
