@@ -40,7 +40,7 @@ namespace Devdog.InventoryPro
 
 
         /// <summary>
-        /// Name of the blueprint.
+        /// ViewName of the blueprint.
         /// </summary>
         public string name
         {

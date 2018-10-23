@@ -124,7 +124,7 @@ namespace TDTK {
 					daInstance=armorTypeList[selectID];
 				}
 			
-				GUI.Label(new Rect(startX, startY, 200, 17), "Name:");
+				GUI.Label(new Rect(startX, startY, 200, 17), "ViewName:");
 				daInstance.name=EditorGUI.TextField(new Rect(startX+80, startY, 150, 17), daInstance.name);
 				
 				//~ GUIStyle styleL=new GUIStyle(GUI.skin.textArea);

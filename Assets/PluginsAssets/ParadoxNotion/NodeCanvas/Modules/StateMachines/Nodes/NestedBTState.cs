@@ -227,7 +227,7 @@ namespace NodeCanvas.StateMachines
 
                 EditorUtils.TitledSeparator("Defined Nested BT Parameters");
                 GUI.color = Color.yellow;
-                EditorGUILayout.LabelField("Name", "Type");
+                EditorGUILayout.LabelField("ViewName", "Type");
                 GUI.color = Color.white;
                 var added = new List<string>();
                 foreach (var bbVar in defParams)

@@ -25,8 +25,8 @@ public class PreRuntimePoolItemInspector : Editor
         EditorGUI.indentLevel = 0;
         PGEditorUtils.LookLikeControls();
 
-        script.poolName = EditorGUILayout.TextField("Pool Name", script.poolName);
-        script.prefabName = EditorGUILayout.TextField("Prefab Name", script.prefabName);
+        script.poolName = EditorGUILayout.TextField("Pool ViewName", script.poolName);
+        script.prefabName = EditorGUILayout.TextField("Prefab ViewName", script.prefabName);
         script.despawnOnStart = EditorGUILayout.Toggle("Despawn On Start", script.despawnOnStart);
         script.doNotReparent = EditorGUILayout.Toggle("Do Not Reparent", script.doNotReparent);
 

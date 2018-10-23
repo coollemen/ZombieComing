@@ -159,7 +159,7 @@ namespace Devdog.General.Editors.ReflectionDrawers
 
             if (drawerType == null)
             {
-//                DevdogLogger.LogWarning("No drawer type found for " + fieldType.Name);
+//                DevdogLogger.LogWarning("No drawer type found for " + fieldType.ViewName);
                 return null;
             }
 

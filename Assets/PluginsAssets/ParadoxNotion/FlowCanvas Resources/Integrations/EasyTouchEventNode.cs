@@ -10,7 +10,7 @@
 
 //    #region TouchEvent
 
-//    [Name("EasyTouchEvent")]
+//    [ViewName("EasyTouchEvent")]
 //    [Category("Events/EasyTouch")]
 //    [Description(".")]
 //    public class EasyTouchEvent : EventNode
@@ -606,7 +606,7 @@
 //    #endregion
 
 //    #region Joystick
-//    [Name("Joystick")]
+//    [ViewName("Joystick")]
 //    [Category("Events/EasyTouch")]
 //    [Description(".")]
 //    public class EasyJoystick : EventNode<ETCJoystick>
@@ -838,7 +838,7 @@
 //    #endregion
 
 //    #region EasyTouchPad
-//    [Name("TouchPad")]
+//    [ViewName("TouchPad")]
 //    [Category("Events/EasyTouch")]
 //    [Description(".")]
 //    public class EasyTouchPad : EventNode<ETCTouchPad>
@@ -1070,7 +1070,7 @@
 //    #endregion
 
 //    #region ETCDPad
-//    [Name("DPad")]
+//    [ViewName("DPad")]
 //    [Category("Events/EasyTouch")]
 //    [Description(".")]
 //    public class EasyDPad : EventNode<ETCDPad>
@@ -1303,7 +1303,7 @@
 //    #endregion
 
 //    #region EasyButton
-//    [Name("EasyButton")]
+//    [ViewName("EasyButton")]
 //    [Category("Events/EasyTouch")]
 //    [Description(".")]
 //    public class EasyButton : EventNode<ETCButton>

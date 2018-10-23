@@ -153,7 +153,7 @@ namespace NodeCanvas.Framework{
 			}
 		}
 
-		///The friendly task name. This can be overriden with the [Name] attribute
+		///The friendly task name. This can be overriden with the [ViewName] attribute
 		public string name{
 			get
 			{

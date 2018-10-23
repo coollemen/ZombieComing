@@ -158,7 +158,7 @@ namespace NodeCanvas.BehaviourTrees
 
         protected override void OnNodeInspectorGUI()
         {
-            name = EditorGUILayout.TextField("SubTree Name", name);
+            name = EditorGUILayout.TextField("SubTree ViewName", name);
             NodeCanvas.Editor.BBParameterEditor.ParameterField("NestedGraphOwner", NestedGraphOwner);
             NodeCanvas.Editor.BBParameterEditor.ParameterField("Behaviour SubTree", _subTree);
 
@@ -176,7 +176,7 @@ namespace NodeCanvas.BehaviourTrees
                 {
                     EditorUtils.TitledSeparator("Defined SubTree Parameters");
                     GUI.color = Color.yellow;
-                    UnityEditor.EditorGUILayout.LabelField("Name", "Type");
+                    UnityEditor.EditorGUILayout.LabelField("ViewName", "Type");
                     GUI.color = Color.white;
                     var added = new List<string>();
                     foreach (var bbVar in defParams)

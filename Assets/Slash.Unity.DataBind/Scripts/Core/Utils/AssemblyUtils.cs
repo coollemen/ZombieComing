@@ -59,8 +59,8 @@ namespace Slash.Unity.DataBind.Core.Utils
                 {
                     try
                     {
-                        var filename = file.Name.Substring(0, file.Name.Length - file.FileType.Length);
-                        AssemblyName name = new AssemblyName { Name = filename };
+                        var filename = file.ViewName.Substring(0, file.ViewName.Length - file.FileType.Length);
+                        AssemblyName name = new AssemblyName { ViewName = filename };
                         Assembly asm = Assembly.Load(name);
                         loadedAssemblies.Add(asm);
                     }

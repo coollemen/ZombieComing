@@ -28,7 +28,7 @@ namespace NodeCanvas.Editor{
 
 		void OnGUI(){
 			type        = (TaskType)EditorGUILayout.EnumPopup("Task Type", type);
-			taskName    = EditorGUILayout.TextField("Task Name", taskName);
+			taskName    = EditorGUILayout.TextField("Task ViewName", taskName);
 			ns          = EditorGUILayout.TextField("Namespace", ns);
 			category    = EditorGUILayout.TextField("Category(?)", category);
 			description = EditorGUILayout.TextField("Description(?)", description);
@@ -37,7 +37,7 @@ namespace NodeCanvas.Editor{
 			if (GUILayout.Button("CREATE")){
 
 				if (string.IsNullOrEmpty(taskName)){
-					EditorUtility.DisplayDialog("Empty Task Name", "Please give the new task a name","OK");
+					EditorUtility.DisplayDialog("Empty Task ViewName", "Please give the new task a name","OK");
 					return;
 				}
 

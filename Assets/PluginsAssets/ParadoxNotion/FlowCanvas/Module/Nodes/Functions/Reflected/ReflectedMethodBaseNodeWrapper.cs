@@ -197,7 +197,7 @@ namespace FlowCanvas.Nodes
                         // var icon = UserTypePrefs.GetTypeIcon(parameter.ParameterType);
                         var color = UserTypePrefs.GetTypeColor(parameter.ParameterType);
                         var hexColor = EditorUtils.ColorToHex(color);
-                        var text = string.Format("<color={0}><b>{1}</b></color>\n {2}", hexColor, parameter.Name.SplitCamelCase(), doc);
+                        var text = string.Format("<color={0}><b>{1}</b></color>\n {2}", hexColor, parameter.ViewName.SplitCamelCase(), doc);
                         var content = new GUIContent(text);
                         GUILayout.Label(content);
                     }

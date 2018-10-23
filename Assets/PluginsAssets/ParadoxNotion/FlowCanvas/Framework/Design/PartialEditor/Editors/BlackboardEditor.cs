@@ -44,7 +44,7 @@ namespace NodeCanvas.Editor{
 			if (bb.variables.Keys.Count != 0){
 				GUILayout.BeginHorizontal();
 				GUI.color = Color.yellow;
-				GUILayout.Label("Name", layoutOptions);
+				GUILayout.Label("ViewName", layoutOptions);
 				GUILayout.Label("Value", layoutOptions);
 				GUI.color = Color.white;
 				GUILayout.EndHorizontal();
@@ -84,7 +84,7 @@ namespace NodeCanvas.Editor{
 				GUILayout.BeginHorizontal();
 
 				if (missingVariableType == null){
-					//Name of the variable GUI control
+					//ViewName of the variable GUI control
 					if (!Application.isPlaying){
 						if (picked && data.varType != typeof(VariableSeperator)){
 							pickedVariable = data;

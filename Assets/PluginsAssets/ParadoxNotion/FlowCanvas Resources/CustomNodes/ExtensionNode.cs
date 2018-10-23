@@ -448,7 +448,7 @@ namespace FlowCanvas.Nodes
     #endregion
 
 //    #region  FBBIK 
-//    [Name("setIKWeight")]
+//    [ViewName("setIKWeight")]
 //    [Category("UnityEngine/FBBIK")]
 //    [Description("控制FBBIK位置和旋转以及blendGoal的权重")]
 //    [ContextDefinedInputs(typeof(Flow), typeof(FullBodyBipedIK))]

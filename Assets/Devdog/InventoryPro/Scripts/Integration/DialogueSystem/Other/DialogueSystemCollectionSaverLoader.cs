@@ -19,7 +19,7 @@ namespace Devdog.InventoryPro.Integration.DialogueSystem
 			base.Awake();
 			if (string.IsNullOrEmpty(actorName)) 
 			{
-				if (Debug.isDebugBuild) Debug.LogWarning("Dialogue System: You must set the Actor Name for the SaverLoader on " + name, this);
+				if (Debug.isDebugBuild) Debug.LogWarning("Dialogue System: You must set the Actor ViewName for the SaverLoader on " + name, this);
 				enabled = false;
 			} 
 			if (string.IsNullOrEmpty(fieldName)) fieldName = name;

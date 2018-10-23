@@ -27,7 +27,7 @@ public class SpawnPoolInspector : Editor
         EditorGUI.indentLevel = 0;
         PGEditorUtils.LookLikeControls();
 
-        script.poolName = EditorGUILayout.TextField("Pool Name", script.poolName);
+        script.poolName = EditorGUILayout.TextField("Pool ViewName", script.poolName);
 
         script.matchPoolScale = EditorGUILayout.Toggle("Match Pool Scale", script.matchPoolScale);
         script.matchPoolLayer = EditorGUILayout.Toggle("Match Pool Layer", script.matchPoolLayer);

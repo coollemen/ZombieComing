@@ -16,9 +16,9 @@ namespace Slash.Unity.DataBind.Foundation.Setters
     public class AnimatorTriggerSetter : ComponentSingleSetter<Animator, bool>
     {
         /// <summary>
-        ///   Name of the animator parameter.
+        ///   ViewName of the animator parameter.
         /// </summary>
-        [Tooltip("Name of an animator parameter.")]
+        [Tooltip("ViewName of an animator parameter.")]
         public string AnimatorParameterName;
 
         /// <summary>

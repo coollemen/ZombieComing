@@ -40,7 +40,7 @@ public class MadLevelTesterController : MonoBehaviour {
     // ===========================================================
 
     void Start() {
-        levelNameText.text = "Level Name: '" + MadLevel.currentLevelName + "'";
+        levelNameText.text = "Level ViewName: '" + MadLevel.currentLevelName + "'";
         
         if (!string.IsNullOrEmpty(MadLevel.arguments)) {
             argumentsText.text = "Arguments: " + MadLevel.arguments;

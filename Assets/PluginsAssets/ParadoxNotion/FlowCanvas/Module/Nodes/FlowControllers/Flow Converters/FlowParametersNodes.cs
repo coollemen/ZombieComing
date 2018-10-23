@@ -11,7 +11,7 @@ namespace FlowCanvas.Nodes{
 		private T flowValue;
 		protected override void RegisterPorts(){
 			var o = AddFlowOutput("Out");
-			var pName = AddValueInput<string>("Name");
+			var pName = AddValueInput<string>("ViewName");
 			AddValueOutput<T>("Value", ()=>{ return flowValue; });
 			AddFlowInput("In", (f)=>
 			{
@@ -28,7 +28,7 @@ namespace FlowCanvas.Nodes{
 
 		protected override void RegisterPorts(){
 			var o = AddFlowOutput("Out");
-			var pName = AddValueInput<string>("Name");
+			var pName = AddValueInput<string>("ViewName");
 			var pValue = AddValueInput<T>("Value");
 			AddFlowInput("In", (f)=>
 			{

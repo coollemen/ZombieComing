@@ -74,17 +74,17 @@ namespace Devdog.InventoryPro
                 return -2;
             }
 
-            if (QuestLog.IsQuestActive(item.Name))
+            if (QuestLog.IsQuestActive(item.ViewName))
             {
-                DialogueManager.ShowAlert(string.Format(questAlreadyActiveMessage, item.Name));
+                DialogueManager.ShowAlert(string.Format(questAlreadyActiveMessage, item.ViewName));
                 return -2;
             }
 
-            if (QuestLog.IsQuestDone(item.Name) || QuestLog.IsQuestFailed(item.Name) || QuestLog.IsQuestAbandoned(item.Name))
+            if (QuestLog.IsQuestDone(item.ViewName) || QuestLog.IsQuestFailed(item.ViewName) || QuestLog.IsQuestAbandoned(item.ViewName))
             {
                 if (canUseAfterQuestAlreadyCompleted == false)
                 {
-                    DialogueManager.ShowAlert(string.Format(questAlreadyUsedMessage, item.Name));
+                    DialogueManager.ShowAlert(string.Format(questAlreadyUsedMessage, item.ViewName));
                     return -2;
                 }
             }
@@ -92,12 +92,12 @@ namespace Devdog.InventoryPro
 
             currentStackSize--; // Remove 1
 
-            QuestLog.StartQuest(item.Name);
-            QuestLog.AddQuestStateObserver(item.Name, LuaWatchFrequency.EveryDialogueEntry, QuestChangedHandler);
+            QuestLog.StartQuest(item.ViewName);
+            QuestLog.AddQuestStateObserver(item.ViewName, LuaWatchFrequency.EveryDialogueEntry, QuestChangedHandler);
 
             if (string.IsNullOrEmpty(acceptMessage) == false)
             {
-                DialogueManager.ShowAlert(string.Format(acceptMessage, item.Name));
+                DialogueManager.ShowAlert(string.Format(acceptMessage, item.ViewName));
             }
 
 

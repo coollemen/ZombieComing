@@ -34,7 +34,7 @@ namespace Slash.Unity.DataBind.Core.Utils
         public ContextMemberFilter Filter { get; set; }
 
         /// <summary>
-        ///   Name to show next to the selected path in the inspector.
+        ///   ViewName to show next to the selected path in the inspector.
         /// </summary>
         public string PathDisplayName { get; set; }
 

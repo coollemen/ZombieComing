@@ -94,7 +94,7 @@ namespace Devdog.InventoryPro.Editors
 
             EditorGUILayout.LabelField("The name of the rarity, is displayed in the tooltip in UI elements.", EditorStyles.infoStyle);
 
-            item.name = EditorGUILayout.DelayedTextField("Name", item.name);
+            item.name = EditorGUILayout.DelayedTextField("ViewName", item.name);
 
             EditorGUILayout.Space();
             EditorGUILayout.Space();

@@ -6,7 +6,7 @@
 
 //    #region EasyButton
 
-//    [Name("CameraAnimatorAction")]
+//    [ViewName("CameraAnimatorAction")]
 //    [Category("Functions/CameraPath")]
 //    [Description(".")]
 //    [ContextDefinedInputs(typeof(Flow))]
@@ -30,7 +30,7 @@
 //        }
 //    }
 
-//    [Name("CameraAnimatorParameter")]
+//    [ViewName("CameraAnimatorParameter")]
 //    [Category("Functions/CameraPath")]
 //    [Description(".")]
 //    public class CameraAnimatorParameter : FlowNode

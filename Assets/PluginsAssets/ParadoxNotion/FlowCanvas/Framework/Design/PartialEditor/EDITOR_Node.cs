@@ -654,7 +654,7 @@ namespace NodeCanvas.Framework{
 			GUILayout.BeginHorizontal();
 			if (!node.showIcon && node.allowAsPrime){
 				node.customName = EditorGUILayout.TextField(node.customName);
-				EditorUtils.TextFieldComment(node.customName, "Name...");
+				EditorUtils.TextFieldComment(node.customName, "ViewName...");
 			}
 
 			node.tag = EditorGUILayout.TextField(node.tag);

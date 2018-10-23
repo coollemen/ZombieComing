@@ -48,7 +48,7 @@ public class MadInitTool : EditorWindow {
         MadGUI.Info("This tool initialized your scene for GUI drawing. Please choose root object name and layer "
             + "on which GUI will be painted.");
     
-        rootObjectName = EditorGUILayout.TextField("Root Name", rootObjectName);
+        rootObjectName = EditorGUILayout.TextField("Root ViewName", rootObjectName);
         layer = EditorGUILayout.LayerField("Layer", layer);
         
         OnFormGUI();

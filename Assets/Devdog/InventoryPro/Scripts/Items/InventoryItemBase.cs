@@ -40,7 +40,7 @@ namespace Devdog.InventoryPro
         [SerializeField]
         private string _name = "";
         /// <summary>
-        /// Name of the object (does not have to be unique)
+        /// ViewName of the object (does not have to be unique)
         /// <example>
         /// Access as item.name
         /// </example>

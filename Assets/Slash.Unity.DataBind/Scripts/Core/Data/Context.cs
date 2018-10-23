@@ -389,7 +389,7 @@ namespace Slash.Unity.DataBind.Core.Data
             ///   Returns the data provider of the specified object and type with the specified name.
             /// </summary>
             /// <param name="obj">Concrete object to get data provider for.</param>
-            /// <param name="name">Name of data provider to get.</param>
+            /// <param name="name">ViewName of data provider to get.</param>
             /// <returns>Data provider for the specified object and name.</returns>
             private static IDataProvider GetDataProvider(object obj, string name)
             {
@@ -419,7 +419,7 @@ namespace Slash.Unity.DataBind.Core.Data
             /// </summary>
             /// <param name="type">Type to search.</param>
             /// <param name="obj">Concrete object to get data provider for.</param>
-            /// <param name="name">Name of data provider to get.</param>
+            /// <param name="name">ViewName of data provider to get.</param>
             /// <returns>Data provider for the specified object and name, using the specified type for reflection.</returns>
             private static IDataProvider GetDataProvider(Type type, object obj, string name)
             {

@@ -180,7 +180,7 @@ public class MadLevelAbstractLayoutInspector : Editor {
                         + "Activated MadLevelIcon will be passed as message argument.");
 
                     MadGUI.PropertyField(loadLevelMessageReceiver, "Receiver", MadGUI.ObjectIsSet);
-                    MadGUI.PropertyField(loadLevelMessageName, "Method Name", MadGUI.StringNotEmpty);
+                    MadGUI.PropertyField(loadLevelMessageName, "Method ViewName", MadGUI.StringNotEmpty);
                     MadGUI.PropertyField(loadLevelMessageIncludeChildren, "Include Children");
                 }
                 break;
@@ -231,7 +231,7 @@ public class MadLevelAbstractLayoutInspector : Editor {
         MadGUI.ConditionallyEnabled(message.boolValue, () => {
             MadGUI.Indent(() => {
                 MadGUI.PropertyField(messageReceiver, "Receiver", MadGUI.ObjectIsSet);
-                MadGUI.PropertyField(messageMethodName, "Method Name", MadGUI.StringNotEmpty);
+                MadGUI.PropertyField(messageMethodName, "Method ViewName", MadGUI.StringNotEmpty);
                 MadGUI.PropertyField(messageIncludeChildren, "Include Children");
                 
                 if (message.boolValue) {
@@ -287,7 +287,7 @@ public class MadLevelAbstractLayoutInspector : Editor {
             
             if (s.handleMobileBackButtonAction == MadLevelAbstractLayout.OnMobileBack.LoadSpecifiedLevel) {
                 MadGUI.Indent(() => {
-                    MadGUI.PropertyField(handleMobileBackButtonLevelName, "Level Name", MadGUI.StringNotEmpty);
+                    MadGUI.PropertyField(handleMobileBackButtonLevelName, "Level ViewName", MadGUI.StringNotEmpty);
                 });
             }
         });

@@ -13,7 +13,7 @@ namespace Slash.Unity.DataBind.Foundation.Setters
         public Material Material;
 
         /// <summary>
-        ///   Name of property to set.
+        ///   ViewName of property to set.
         /// </summary>
         public string PropertyName;
 

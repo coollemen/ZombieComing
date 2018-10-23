@@ -210,7 +210,7 @@ namespace NodeCanvas.StateMachines
 
 		    	EditorUtils.TitledSeparator("Defined Nested FlowScript Parameters");
 		    	GUI.color = Color.yellow;
-		    	UnityEditor.EditorGUILayout.LabelField("Name", "Type");
+		    	UnityEditor.EditorGUILayout.LabelField("ViewName", "Type");
 				GUI.color = Color.white;
 		    	var added = new List<string>();
 		    	foreach(var bbVar in defParams){

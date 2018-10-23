@@ -425,7 +425,7 @@ namespace Devdog.General.Editors
 
 
         /// <summary>
-        /// Name of the Editor
+        /// ViewName of the Editor
         /// </summary>
         /// <returns></returns>
         public override string ToString()

@@ -142,7 +142,7 @@ namespace TDTK {
 			int spaceX=120; int spaceY=18; int width=150; int height=16;
 			TDE.DrawSprite(new Rect(startX, startY, 60, 60), item.icon);	startX+=65;
 			
-			TDE.Label(startX, startY+=5, width, height, "Name:", "The item name to be displayed in game");
+			TDE.Label(startX, startY+=5, width, height, "ViewName:", "The item name to be displayed in game");
 			item.name=EditorGUI.TextField(new Rect(startX+spaceX-65, startY, width, height), item.name);
 			
 			TDE.Label(startX, startY+=spaceY, width, height, "Icon:", "The item icon to be displayed in game, must be a sprite");
@@ -157,7 +157,7 @@ namespace TDTK {
 			int spaceX=120; int spaceY=18; int width=150; int height=16;
 			TDE.DrawSprite(new Rect(startX, startY, 60, 60), unit.icon);	startX+=65;
 			
-			TDE.Label(startX, startY+=5, width, height, "Name:", "The item name to be displayed in game");
+			TDE.Label(startX, startY+=5, width, height, "ViewName:", "The item name to be displayed in game");
 			unit.unitName=EditorGUI.TextField(new Rect(startX+spaceX-65, startY, width, height), unit.unitName);
 			
 			TDE.Label(startX, startY+=spaceY, width, height, "Icon:", "The item icon to be displayed in game, must be a sprite");

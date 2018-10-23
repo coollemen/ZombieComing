@@ -81,7 +81,7 @@ namespace NodeCanvas.Editor{
             GUILayout.BeginHorizontal();
             GUILayout.BeginVertical(GUILayout.MaxWidth(100), GUILayout.ExpandWidth(true));
             GUI.color = Color.yellow;
-            GUILayout.Label("Name");
+            GUILayout.Label("ViewName");
             GUI.color = Color.white;
             foreach (var name in varInfo.Keys){
                 GUILayout.Label(name);

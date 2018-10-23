@@ -26,7 +26,7 @@ namespace Devdog.InventoryPro.Integration.PlayMaker
                 return;
             }
 
-            result.Value = item.GetType().Name;
+            result.Value = item.GetType().ViewName;
             Finish();
         }
     }

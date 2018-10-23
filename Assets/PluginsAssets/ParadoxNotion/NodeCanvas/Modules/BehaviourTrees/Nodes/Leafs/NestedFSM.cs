@@ -183,7 +183,7 @@ namespace NodeCanvas.BehaviourTrees
 
         protected override void OnNodeInspectorGUI()
         {
-            name = EditorGUILayout.TextField("FSM Name", name);
+            name = EditorGUILayout.TextField("FSM ViewName", name);
             NodeCanvas.Editor.BBParameterEditor.ParameterField("NestedGraphOwner", NestedGraphOwner);
             NodeCanvas.Editor.BBParameterEditor.ParameterField("Nested FSM", _nestedFSM);
             if (nestedFSM == null)
@@ -201,7 +201,7 @@ namespace NodeCanvas.BehaviourTrees
 
                 EditorUtils.TitledSeparator("Defined SubFSM Parameters");
                 GUI.color = Color.yellow;
-                UnityEditor.EditorGUILayout.LabelField("Name", "Type");
+                UnityEditor.EditorGUILayout.LabelField("ViewName", "Type");
                 GUI.color = Color.white;
                 var added = new List<string>();
 

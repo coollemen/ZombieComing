@@ -42,7 +42,7 @@ namespace FlowCanvas.Nodes
         }
     }
 
-    //[Name("")]
+    //[ViewName("")]
     [Description("只做N次,Only DO N Count")]
     public class DoN : FlowControlNode
     {

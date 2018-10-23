@@ -5,7 +5,7 @@ using ParadoxNotion.Design;
 namespace FlowCanvas.Nodes{
 
 	[Category("Functions/Utility")]
-    //[Name("Switch")]
+    //[ViewName("Switch")]
     [ContextDefinedInputs(typeof(int))]
     public class Switch<T> : FlowNode{
 

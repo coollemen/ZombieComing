@@ -62,7 +62,7 @@ namespace Devdog.InventoryPro.Integration.plyGame.DiaQ.Editors
 		/// <summary> Init the target type with this when the provider is selected </summary>
 		public override plyDataObject.TargetObjectType DefaultTargetType()
 		{
-			return plyDataObject.TargetObjectType.Name;
+			return plyDataObject.TargetObjectType.ViewName;
 		}
 
 		/// <summary> Init the target type data this when the provider is selected </summary>
@@ -79,7 +79,7 @@ namespace Devdog.InventoryPro.Integration.plyGame.DiaQ.Editors
 		public override string DefaultComponent()
 		{
 			// this will be the component who's DataProvider_Callback() is called
-            return typeof(InventoryProDiaQRewardHandler).Name;
+            return typeof(InventoryProDiaQRewardHandler).ViewName;
 		}
 
 		/// <summary> Init the the nfo[] field with this when the provider is selected </summary>

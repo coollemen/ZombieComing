@@ -218,7 +218,7 @@ namespace FlowCanvas.Nodes
         }
 
 		protected override void OnNodeInspectorGUI(){
-            name = EditorGUILayout.TextField("FSM Name", name);
+            name = EditorGUILayout.TextField("FSM ViewName", name);
             NodeCanvas.Editor.BBParameterEditor.ParameterField("FSM", _nestedFSM);
             if (nestedFSM == null){
 				return;
@@ -239,7 +239,7 @@ namespace FlowCanvas.Nodes
 
 		    	EditorUtils.TitledSeparator("Defined Nested BT Parameters");
 		    	GUI.color = Color.yellow;
-		    	UnityEditor.EditorGUILayout.LabelField("Name", "Type");
+		    	UnityEditor.EditorGUILayout.LabelField("ViewName", "Type");
 				GUI.color = Color.white;
 		    	var added = new List<string>();
 		    	foreach(var bbVar in defParams){

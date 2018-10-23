@@ -32,8 +32,8 @@ namespace ParadoxNotion{
 				        if (file.FileType == ".dll" || file.FileType == ".exe"){
 				            try
 				            {
-				                var filename = file.Name.Substring(0, file.Name.Length - file.FileType.Length);
-				                AssemblyName name = new AssemblyName { Name = filename };
+				                var filename = file.ViewName.Substring(0, file.ViewName.Length - file.FileType.Length);
+				                AssemblyName name = new AssemblyName { ViewName = filename };
 				                Assembly asm = Assembly.Load(name);
 				                resultAssemblies.Add(asm);
 				            }
@@ -140,7 +140,7 @@ namespace ParadoxNotion{
                 int argCount = Convert.ToInt32( typeFullName.Substring(quoteIndex + 1, 1) );
                 var content = typeFullName.Substring(quoteIndex + 2, typeFullName.Length - quoteIndex - 2);
                 string[] split = null;
-                if (content.StartsWith("[[")){ //this means that assembly qualified name is contained. Name was generated with FullName.
+                if (content.StartsWith("[[")){ //this means that assembly qualified name is contained. ViewName was generated with FullName.
                     var startIndex = typeFullName.IndexOf("[[") + 2;
                     var endIndex = typeFullName.LastIndexOf("]]");
                     content = typeFullName.Substring(startIndex, endIndex - startIndex);
@@ -592,7 +592,7 @@ namespace ParadoxNotion{
 
 		public static FieldInfo RTGetField(this Type type, string name){
 			#if NETFX_CORE
-			return type.GetRuntimeFields().FirstOrDefault(f => f.Name == name);
+			return type.GetRuntimeFields().FirstOrDefault(f => f.ViewName == name);
 			#else
 			return type.GetField(name, flagsEverything);
 			#endif
@@ -600,7 +600,7 @@ namespace ParadoxNotion{
 
 		public static PropertyInfo RTGetProperty(this Type type, string name){
 			#if NETFX_CORE
-			return type.GetRuntimeProperties().FirstOrDefault(p => p.Name == name);
+			return type.GetRuntimeProperties().FirstOrDefault(p => p.ViewName == name);
 			#else
 			return type.GetProperty(name, flagsEverything);
 			#endif
@@ -625,7 +625,7 @@ namespace ParadoxNotion{
 
         public static MethodInfo RTGetMethod(this Type type, string name){
 			#if NETFX_CORE
-			return type.GetRuntimeMethods().FirstOrDefault(m => m.Name == name);
+			return type.GetRuntimeMethods().FirstOrDefault(m => m.ViewName == name);
 			#else
 			return type.GetMethod(name, flagsEverything);
 			#endif
@@ -641,7 +641,7 @@ namespace ParadoxNotion{
 
 		public static EventInfo RTGetEvent(this Type type, string name){
 			#if NETFX_CORE
-			return type.GetRuntimeEvents().FirstOrDefault(e => e.Name == name);
+			return type.GetRuntimeEvents().FirstOrDefault(e => e.ViewName == name);
 			#else
 			return type.GetEvent(name, flagsEverything);
 			#endif			

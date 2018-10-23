@@ -115,7 +115,7 @@ namespace Devdog.InventoryPro.Editors
             EditorGUILayout.Space();
 
             statDef.category = EditorGUILayout.DelayedTextField("Category", statDef.category);
-            statDef.statName = EditorGUILayout.DelayedTextField("Name", statDef.statName);
+            statDef.statName = EditorGUILayout.DelayedTextField("ViewName", statDef.statName);
             EditorGUILayout.Space();
             EditorGUILayout.Space();
 

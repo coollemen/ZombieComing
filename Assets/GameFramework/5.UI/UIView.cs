@@ -4,15 +4,20 @@ using UnityEngine;
 
 namespace GameFramework
 {
-    public class UIView : MonoBehaviour
+    public class UIView : View
     {
-
-        // Use this for initialization
-        void Start()
+        public override string ViewName
         {
-
+            get { return "UIView"; }
         }
 
+        // Use this for initialization
+        public override void Start()
+        {
+            base.Start();
+            this.ContextName = "UIContext";
+
+        }
         // Update is called once per frame
         void Update()
         {
@@ -26,6 +31,7 @@ namespace GameFramework
         public virtual void HideView()
         {
         }
+
 
     }
 }

@@ -219,7 +219,7 @@ namespace FlowCanvas.Nodes{
         }
 
 		protected override void OnNodeInspectorGUI(){
-            name = EditorGUILayout.TextField("Behavior Name", name);
+            name = EditorGUILayout.TextField("Behavior ViewName", name);
             NodeCanvas.Editor.BBParameterEditor.ParameterField("BehaviourTree", _nestedBT);
             //nestedBT = (BehaviourTree)EditorGUILayout.ObjectField(nestedBT, typeof(BehaviourTree),true);
             if (nestedBT == null){
@@ -241,7 +241,7 @@ namespace FlowCanvas.Nodes{
 
 		    	EditorUtils.TitledSeparator("Defined Nested BT Parameters");
 		    	GUI.color = Color.yellow;
-		    	UnityEditor.EditorGUILayout.LabelField("Name", "Type");
+		    	UnityEditor.EditorGUILayout.LabelField("ViewName", "Type");
 				GUI.color = Color.white;
 		    	var added = new List<string>();
 		    	foreach(var bbVar in defParams){

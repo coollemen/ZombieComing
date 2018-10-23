@@ -23,7 +23,7 @@ namespace NodeCanvas.Editor{
 
 			UndoManager.CheckUndo(bb, "Global Blackboard");
 			GUI.backgroundColor = GlobalBlackboard.allGlobals.Find(b => b.name == bb.name && b != bb)? Color.red : Color.white;
-			bb.name = EditorGUILayout.TextField("Unique Name", bb.name);
+			bb.name = EditorGUILayout.TextField("Unique ViewName", bb.name);
 			GUI.backgroundColor = Color.white;
 
 			bb.dontDestroy = EditorGUILayout.Toggle("DontDestroyOnLoad", bb.dontDestroy);

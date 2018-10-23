@@ -13,7 +13,7 @@ namespace NodeCanvas.Framework{
 		///Flag to not destroy on load.
 		public bool dontDestroy = true;
 
-		///Name of the global blackboard
+		///ViewName of the global blackboard
 		new public string name{
 			get {return base.name;}
 			set

@@ -227,7 +227,7 @@ namespace FlowCanvas.Nodes
         }
         
         protected override void OnNodeInspectorGUI(){
-            name = EditorGUILayout.TextField("FlowScript Name", name);
+            name = EditorGUILayout.TextField("FlowScript ViewName", name);
             NodeCanvas.Editor.BBParameterEditor.ParameterField("FlowScript", _nestedFC);
             if (nestedFC == null){
 				return;
@@ -249,7 +249,7 @@ namespace FlowCanvas.Nodes
 
 		    	EditorUtils.TitledSeparator("Defined Nested Parameters");
 		    	GUI.color = Color.yellow;
-		    	UnityEditor.EditorGUILayout.LabelField("Name", "Type");
+		    	UnityEditor.EditorGUILayout.LabelField("ViewName", "Type");
 				GUI.color = Color.white;
 		    	var added = new List<string>();
 		    	foreach(var bbVar in defParams){
