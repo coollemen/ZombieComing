@@ -2,15 +2,18 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class GraphNode : MonoBehaviour {
-
-	// Use this for initialization
-	void Start () {
-		
-	}
-	
-	// Update is called once per frame
-	void Update () {
-		
-	}
+namespace GameDesigner
+{
+    public class GraphNode :IGraphNode
+    {
+        public virtual string ID {
+            get
+            {
+                return "GraphNode";
+            }
+                }
+        public string Title { get; set; }
+        public Vector2 Position { get; set; }
+        public Vector2 Size { get; set; }
+    }
 }
