@@ -1,11 +1,15 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using UnityEngine.UI;
 namespace GameFramework
 {
     public class UIView : View
     {
+        public InputField usernameInput;
+        public InputField passwordInput;
+        public Button loginButton;
+        public Button cancelButton;
         public override string ViewName
         {
             get { return "UIView"; }
