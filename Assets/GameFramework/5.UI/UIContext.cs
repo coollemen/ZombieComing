@@ -1,10 +1,10 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using GameDesigner;
 namespace GameFramework
 {
-    public class UIModel : MonoBehaviour
+    public class UIContext : Context
     {
 
         // Use this for initialization
@@ -17,6 +17,11 @@ namespace GameFramework
         void Update()
         {
 
+        }
+
+        public override string Name
+        {
+            get { return "UIContext"; }
         }
     }
 }

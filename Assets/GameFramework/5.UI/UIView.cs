@@ -30,10 +30,12 @@ namespace GameFramework
 
         public virtual void ShowView()
         {
+            Debug.Log("Show View!!!");
         }
 
         public virtual void HideView()
         {
+            Debug.Log("Hide View!!!");
         }
 
 
