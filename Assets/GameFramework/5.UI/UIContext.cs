@@ -7,7 +7,7 @@ namespace GameFramework
     /// <summary>
     /// UI视图模型
     /// </summary>
-    public class UIContext :MonoBehaviour, IContext
+    public abstract class UIContext :MonoBehaviour, IContext
     {
         public virtual string TypeID
         {

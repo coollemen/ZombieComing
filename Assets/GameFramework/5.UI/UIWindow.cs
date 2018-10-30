@@ -1,19 +1,24 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using UnityEngine.UI;
 namespace GameFramework
 {
     /// <summary>
-    /// UI控制器
+    /// 这里的窗口是狭义的窗口，
     /// </summary>
-    public abstract  class UIController : MonoBehaviour, IController
+    public class UIWindow : UIView
     {
-        public virtual string TypeID
-        {
-            get { return "UIController"; }
-        }
+        public Text titleLabel;
+        public Button closeButton;
 
+        public override string TypeID
+        {
+            get
+            {
+                return "UIWindow";
+            }
+        }
         // Use this for initialization
         void Start()
         {

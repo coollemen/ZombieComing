@@ -7,8 +7,10 @@ namespace GameFramework
     /// <summary>
     /// UI视图
     /// </summary>
-    public class UIView : MonoBehaviour, IView
+    public abstract class  UIView : MonoBehaviour, IView
     {
+        public UIViewType type = UIViewType.Normal;
+        public UIViewShowMode showMode = UIViewShowMode.Normal;
         public virtual string TypeID
         {
             get { return "UIView"; }
@@ -18,15 +20,26 @@ namespace GameFramework
         {
             get { return "UIContext"; }
         }
-
-        public virtual void ShowView()
+        /// <summary>
+        /// 显示状态
+        /// </summary>
+        public virtual void Show()
         {
-            Debug.Log("Show View!!!");
+            
         }
-
-        public virtual void HideView()
+        /// <summary>
+        /// 隐藏状态，窗口不显示时处于隐藏状态，而不是删除
+        /// </summary>
+        public virtual void Hide()
         {
-            Debug.Log("Hide View!!!");
+            
+        }
+        /// <summary>
+        /// 冻结状态，在模式窗口显示时，底下的窗口处于冻结状态
+        /// </summary>
+        public virtual void Freeze()
+        {
+            
         }
     }
 }
