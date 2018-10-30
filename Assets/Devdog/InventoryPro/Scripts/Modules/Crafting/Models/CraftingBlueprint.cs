@@ -21,7 +21,7 @@ namespace Devdog.InventoryPro
         public bool useItemResultNameAndDescription = true;
 
         /// <summary>
-        /// ViewName of the blueprint.
+        /// TypeID of the blueprint.
         /// </summary>
         public new string name
         {

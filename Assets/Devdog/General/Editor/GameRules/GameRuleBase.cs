@@ -62,7 +62,7 @@ namespace Devdog.General.Editors.GameRules
             Selection.activeObject = compTemp;
 
             // Throws an error in Unity 5.3.5f1
-            // Highlighter.Highlight("Inspector", ObjectNames.NicifyVariableName(fieldTemp.ViewName));
+            // Highlighter.Highlight("Inspector", ObjectNames.NicifyVariableName(fieldTemp.TypeID));
         }
 
         protected void CreateIssueIfMissingComponent<T>(GameObject obj, string message, MessageType type) where T : UnityEngine.Component

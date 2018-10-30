@@ -13,7 +13,7 @@ namespace Devdog.InventoryPro.UI
     public partial class StatCategoryUI : MonoBehaviour, IPoolable
     {
         /// <summary>
-        /// ViewName of the category
+        /// TypeID of the category
         /// </summary>
         [SerializeField]
         protected Text categoryName;

@@ -4,8 +4,15 @@ using UnityEngine;
 
 namespace GameFramework
 {
-    public class Controller : MonoBehaviour
+    /// <summary>
+    /// UI控制器
+    /// </summary>
+    public class UIController : MonoBehaviour, IController
     {
+        public virtual string TypeID
+        {
+            get { return "UIController"; }
+        }
 
         // Use this for initialization
         void Start()

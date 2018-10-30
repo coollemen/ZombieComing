@@ -11,9 +11,9 @@
     public abstract class AnimatorParameterSetter<T> : ComponentSingleSetter<Animator, T>
     {
         /// <summary>
-        ///   ViewName of the animator parameter.
+        ///   TypeID of the animator parameter.
         /// </summary>
-        [Tooltip("ViewName of an animator parameter.")]
+        [Tooltip("TypeID of an animator parameter.")]
         public string AnimatorParameterName;
 
         /// <summary>

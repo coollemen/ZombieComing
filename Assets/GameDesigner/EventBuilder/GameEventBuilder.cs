@@ -209,7 +209,7 @@ public class GameEventBuilder : EditorWindow
             //设置标题文字颜色
             GUI.contentColor = Color.gray;
             //绘制标题
-            EditorGUILayout.LabelField("Group ViewName", GUILayout.Width(120));
+            EditorGUILayout.LabelField("Group TypeID", GUILayout.Width(120));
             EditorGUILayout.LabelField("Count", GUILayout.Width(60));
             //结束子水平组
             GUILayout.EndHorizontal();
@@ -244,7 +244,7 @@ public class GameEventBuilder : EditorWindow
             GUILayout.EndVertical();
             //开始水平组
             GUILayout.BeginHorizontal();
-            newGroupName = EditorGUILayout.TextField("New Group ViewName", newGroupName);
+            newGroupName = EditorGUILayout.TextField("New Group TypeID", newGroupName);
             GUI.backgroundColor = Color.green;
             if (GUILayout.Button("Add Group", (GUIStyle)"minibuttonleft", GUILayout.MinWidth(60)))
             {
@@ -275,7 +275,7 @@ public class GameEventBuilder : EditorWindow
             tempEventDef = new GameEventDef();
         }
         tempEventDef.id = EditorGUILayout.IntField("ID:", tempEventDef.id);
-        tempEventDef.name = EditorGUILayout.TextField("ViewName:", tempEventDef.name);
+        tempEventDef.name = EditorGUILayout.TextField("TypeID:", tempEventDef.name);
         EditorGUILayout.LabelField("Description:");
         tempEventDef.description = EditorGUILayout.TextArea(tempEventDef.description);
         EditorGUI.indentLevel--;
@@ -317,7 +317,7 @@ public class GameEventBuilder : EditorWindow
         GUI.contentColor = Color.gray;
         GUILayout.BeginHorizontal();
         EditorGUILayout.LabelField("Event ID", GUILayout.Width(100));
-        EditorGUILayout.LabelField("Event ViewName", GUILayout.Width(160));
+        EditorGUILayout.LabelField("Event TypeID", GUILayout.Width(160));
         EditorGUILayout.LabelField("Event Description");
         GUILayout.EndHorizontal();
         GUI.contentColor = oldColor;

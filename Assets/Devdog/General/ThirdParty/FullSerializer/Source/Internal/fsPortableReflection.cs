@@ -27,7 +27,7 @@ namespace System {
         public static Type GetType(this Assembly assembly, string name, bool throwOnError) {
             var types = assembly.GetTypes();
             for (int i = 0; i < types.Length; ++i) {
-                if (types[i].ViewName == name) {
+                if (types[i].TypeID == name) {
                     return types[i];
                 }
             }

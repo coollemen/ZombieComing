@@ -65,7 +65,7 @@ public class MadLevelPropertyInspector : MadLevelManager.MadEditorBase {
         MadGUI.Indent(() => {
 
             EditorGUILayout.Space();
-            GUILayout.Label("Property ViewName: " + property.name);
+            GUILayout.Label("Property TypeID: " + property.name);
 
             EditorGUILayout.BeginHorizontal();
             GUILayout.Label("State");
@@ -102,7 +102,7 @@ public class MadLevelPropertyInspector : MadLevelManager.MadEditorBase {
 
                 MadGUI.PropertyField(textFromProperty, "Text From Property");
                 MadGUI.ConditionallyEnabled(textFromProperty.boolValue, () => {
-                    MadGUI.PropertyField(textPropertyName, "Text Property ViewName");
+                    MadGUI.PropertyField(textPropertyName, "Text Property TypeID");
                 });
             }
         });

@@ -4,28 +4,19 @@ using UnityEngine;
 using UnityEngine.UI;
 namespace GameFramework
 {
-    public class UIView : View
+    /// <summary>
+    /// UI视图
+    /// </summary>
+    public class UIView : MonoBehaviour, IView
     {
-        public InputField usernameInput;
-        public InputField passwordInput;
-        public Button loginButton;
-        public Button cancelButton;
-        public override string ViewName
+        public virtual string TypeID
         {
             get { return "UIView"; }
         }
 
-        // Use this for initialization
-        public override void Start()
+        public virtual string ContextID
         {
-            base.Start();
-            this.ContextName = "UIContext";
-
-        }
-        // Update is called once per frame
-        void Update()
-        {
-
+            get { return "UIContext"; }
         }
 
         public virtual void ShowView()
@@ -37,7 +28,5 @@ namespace GameFramework
         {
             Debug.Log("Hide View!!!");
         }
-
-
     }
 }

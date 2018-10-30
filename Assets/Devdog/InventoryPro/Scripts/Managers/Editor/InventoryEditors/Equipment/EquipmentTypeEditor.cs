@@ -121,7 +121,7 @@ namespace Devdog.InventoryPro.Editors
 
             using (new VerticalLayoutBlock(EditorStyles.boxStyle))
             {
-                item.name = EditorGUILayout.DelayedTextField("ViewName", item.name);
+                item.name = EditorGUILayout.DelayedTextField("TypeID", item.name);
                 EditorGUILayout.Space();
                 EditorGUILayout.Space();
 

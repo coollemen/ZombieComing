@@ -362,13 +362,13 @@ public class MadLevelConfigurationInspector : Editor {
                 using (MadGUI.EnabledIf(!multiSelection)) {
                     if (!multiSelection) {
                         EditorGUI.BeginChangeCheck();
-                        var value = EditorGUILayout.TextField("Level ViewName", item.level.name);
+                        var value = EditorGUILayout.TextField("Level TypeID", item.level.name);
                         if (EditorGUI.EndChangeCheck()) {
-                            MadUndo.RecordObject2(target, "Changed Level ViewName");
+                            MadUndo.RecordObject2(target, "Changed Level TypeID");
                             item.level.name = value;
                         }
                     } else {
-                        EditorGUILayout.TextField("Level ViewName", "-");
+                        EditorGUILayout.TextField("Level TypeID", "-");
                     }
                 }
             });
@@ -577,7 +577,7 @@ public class MadLevelConfigurationInspector : Editor {
     }
 
     private void RenameGroup(MadLevelConfiguration.Group currentGroup) {
-        var builder = new MadInputDialog.Builder("Enter Group ViewName", "Enter a new name for group \"" + currentGroup.name + "\".", (name) => {
+        var builder = new MadInputDialog.Builder("Enter Group TypeID", "Enter a new name for group \"" + currentGroup.name + "\".", (name) => {
             if (!string.IsNullOrEmpty(name)) {
                 currentGroup.name = name;
                 EditorUtility.SetDirty(configuration);

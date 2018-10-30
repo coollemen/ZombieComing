@@ -39,7 +39,7 @@ public class MadLevelBackgroundTool : EditorWindow {
         MadGUI.Message("Here you can create backgrounds for your level screens. Draggable is optional, "
             + "but necessary if you want to setup follow animations.", MessageType.None);
         panel = (MadPanel) EditorGUILayout.ObjectField("Panel", panel, typeof(MadPanel), true);
-        objectName = EditorGUILayout.TextField("Object ViewName", objectName);
+        objectName = EditorGUILayout.TextField("Object TypeID", objectName);
         draggable = (MadDraggable) EditorGUILayout.ObjectField("Draggable", draggable, typeof(MadDraggable), true);
         
         bool valid = panel != null && !string.IsNullOrEmpty(objectName);

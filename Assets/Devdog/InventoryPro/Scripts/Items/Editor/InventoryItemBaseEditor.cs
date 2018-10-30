@@ -16,7 +16,7 @@ namespace Devdog.InventoryPro.Editors
         //private InventoryItemBase item;
 
         protected SerializedProperty id;
-        protected SerializedProperty itemName; // Name is used by Editor.name...
+        protected SerializedProperty itemName; // TypeID is used by Editor.name...
         protected SerializedProperty description;
         protected SerializedProperty stats;
         protected SerializedProperty usageRequirements;

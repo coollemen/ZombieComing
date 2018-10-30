@@ -7,16 +7,72 @@ namespace GameFramework
     public class UIManager : MonoSingleton<UIManager>
     {
 
-        // Use this for initialization
-        void Start()
-        {
+        public Dictionary<string, UIContext> contexts = new Dictionary<string, UIContext>();
+        public Dictionary<string, UIView> views = new Dictionary<string, UIView>();
 
+        /// <summary>
+        /// 注册视图
+        /// </summary>
+        /// <param name="view">视图</param>
+        public void RegisterView(UIView view)
+        {
+            if (views.ContainsKey(view.TypeID))
+            {
+                views[view.TypeID] = view;
+            }
+            else
+            {
+                views.Add(view.TypeID, view);
+            }
         }
 
-        // Update is called once per frame
-        void Update()
+        /// <summary>
+        /// 注册视图模型
+        /// </summary>
+        /// <param name="context">视图模型</param>
+        public void RegisterContext(UIContext context)
         {
+            if (contexts.ContainsKey(context.TypeID))
+            {
+                contexts[context.TypeID] = context;
+            }
+            else
+            {
+                contexts.Add(context.TypeID, context);
+            }
+        }
 
+        public UIView GetView<T>() where T : UIView
+        {
+            foreach (var v in views.Values)
+            {
+                if (v is T)
+                {
+                    return v;
+                }
+            }
+            return null;
+        }
+
+        public UIView GetView(string viewID)
+        {
+            return views[viewID];
+        }
+        public UIContext GetContext<T>() where T : UIContext
+        {
+            foreach (var c in contexts.Values)
+            {
+                if (c is T)
+                {
+                    return c;
+                }
+            }
+            return null;
+        }
+
+        public UIContext GetContext(string contextID)
+        {
+            return contexts[contextID];
         }
     }
 }

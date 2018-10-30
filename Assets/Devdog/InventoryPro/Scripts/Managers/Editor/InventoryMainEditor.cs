@@ -73,7 +73,7 @@ namespace Devdog.InventoryPro.Editors
             //if (ItemManager.database == null)
             //    return;
 
-            //            _databasesInProject = AssetDatabase.FindAssets("t:" + typeof(InventoryItemDatabase).ViewName);
+            //            _databasesInProject = AssetDatabase.FindAssets("t:" + typeof(InventoryItemDatabase).TypeID);
 
             _gameRules = GameRulesWindow.GetAllActiveRules();
             GameRulesWindow.CheckForIssues();

@@ -127,7 +127,7 @@ public class MadLevelIconInspector : MadSpriteInspector {
                     var level = levelIcon.level;
                     if (level != null) {
                         MadGUI.Disabled(() => {
-                            EditorGUILayout.TextField("Level ViewName", level.name);
+                            EditorGUILayout.TextField("Level TypeID", level.name);
                             EditorGUILayout.TextField("Level Arguments", level.arguments);
                         });
                     } else {

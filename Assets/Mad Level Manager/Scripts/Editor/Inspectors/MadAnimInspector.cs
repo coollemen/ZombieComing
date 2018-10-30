@@ -71,7 +71,7 @@ public abstract class MadAnimInspector : Editor {
     public override void OnInspectorGUI() {
         serializedObject.UpdateIfDirtyOrScript();
 
-        MadGUI.PropertyField(animationName, "Animation ViewName");
+        MadGUI.PropertyField(animationName, "Animation TypeID");
         EditorGUILayout.Space();
 
         DrawInspector();
@@ -101,7 +101,7 @@ public abstract class MadAnimInspector : Editor {
         if (sendMessageOnFinish.boolValue) {
             using (MadGUI.Indent()) {
                 MadGUI.PropertyField(messageReceiver, "Receiver", MadGUI.ObjectIsSet);
-                MadGUI.PropertyField(messageName, "Method ViewName", MadGUI.StringNotEmpty);
+                MadGUI.PropertyField(messageName, "Method TypeID", MadGUI.StringNotEmpty);
             }
         }
 
@@ -109,7 +109,7 @@ public abstract class MadAnimInspector : Editor {
 
         if (playAnimationOnFinish.boolValue) {
             using (MadGUI.Indent()) {
-                MadGUI.PropertyField(playAnimationOnFinishName, "ViewName", MadGUI.StringNotEmpty);
+                MadGUI.PropertyField(playAnimationOnFinishName, "TypeID", MadGUI.StringNotEmpty);
                 MadGUI.PropertyField(playAnimationOnFinishFromTheBeginning, "From The Beginning");
             }
         }
@@ -121,7 +121,7 @@ public abstract class MadAnimInspector : Editor {
 
     private void PropertyFieldAnimationName(SerializedProperty animationName, string label) {
         //string nameBefore = animationName.stringValue;
-        MadGUI.PropertyField(animationName, "Animation ViewName");
+        MadGUI.PropertyField(animationName, "Animation TypeID");
         //string nameAfter = animationName.stringValue;
 
         //if (nameBefore != nameAfter) {

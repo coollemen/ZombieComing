@@ -99,7 +99,7 @@ namespace Devdog.InventoryPro.Editors
             EditorGUILayout.Space();
 
             EditorGUILayout.LabelField("The name of the category, is displayed in the tooltip in UI elements.", EditorStyles.labelStyle);
-            item.name = EditorGUILayout.DelayedTextField("ViewName", item.name);
+            item.name = EditorGUILayout.DelayedTextField("TypeID", item.name);
             ObjectPickerUtility.RenderObjectPickerForType("Icon", item.icon, typeof(Sprite), val =>
             {
                 item.icon = (Sprite)val;

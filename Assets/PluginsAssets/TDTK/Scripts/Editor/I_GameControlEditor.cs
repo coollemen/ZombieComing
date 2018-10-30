@@ -82,9 +82,9 @@ namespace TDTK{
 				
 			EditorGUILayout.Space();
 			
-				cont=new GUIContent("MainMenu ViewName:", "Scene's name of the main menu to be loaded when return to menu on UI is called");
+				cont=new GUIContent("MainMenu TypeID:", "Scene's name of the main menu to be loaded when return to menu on UI is called");
 				instance.mainMenuName=EditorGUILayout.TextField(cont, instance.mainMenuName);
-				cont=new GUIContent("NextScene ViewName:", "Scene's name to be loaded when this level is completed");
+				cont=new GUIContent("NextScene TypeID:", "Scene's name to be loaded when this level is completed");
 				instance.nextLevelName=EditorGUILayout.TextField(cont, instance.nextLevelName);
 			
 			EditorGUILayout.Space();

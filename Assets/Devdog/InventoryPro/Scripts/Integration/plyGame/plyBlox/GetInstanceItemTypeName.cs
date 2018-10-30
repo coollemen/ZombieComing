@@ -6,7 +6,7 @@ using UnityEngine;
 namespace Devdog.InventoryPro.Integration.plyGame.plyBlox
 {
     [plyBlock("Inventory Pro", "Items - Instance", "Get instance item type name", BlockType.Variable, Order = 4, ShowName = "Get instance item type name",
-        ReturnValueString = "Return - String (ViewName)", ReturnValueType = typeof(String_Value),
+        ReturnValueString = "Return - String (TypeID)", ReturnValueType = typeof(String_Value),
         CustomStyle = "plyBlox_VarYellowDark", Description = "Returns the given item's type name.")]
     public class GetInstanceItemTypeName : String_Value
     {
@@ -26,7 +26,7 @@ namespace Devdog.InventoryPro.Integration.plyGame.plyBlox
             var i = item.RunAndGetSystemObject() as InventoryItemBase;
             if (i != null)
             {
-                value = i.GetType().ViewName;
+                value = i.GetType().TypeID;
                 return BlockReturn.OK;
             }
 

@@ -30,7 +30,7 @@ namespace ProBuilder2.EditorCommon
 	/**
 	 * Changelog.txt file should follow this format:
 	 *
-	 *	| # Product ViewName 2.1.0
+	 *	| # Product TypeID 2.1.0
 	 *	|
 	 *	| ## Features
 	 *	|

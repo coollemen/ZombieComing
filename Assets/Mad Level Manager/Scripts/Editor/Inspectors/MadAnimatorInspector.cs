@@ -160,7 +160,7 @@ public class MadAnimatorInspector : Editor {
     protected void GUIAnimationRef(SerializedProperty animationRef, bool showFromTheBeginning) {
         var name = animationRef.FindPropertyRelative("name");
         GUIAnimationName(name);
-        //MadGUI.PropertyField(name, "ViewName");
+        //MadGUI.PropertyField(name, "TypeID");
 
         if (showFromTheBeginning) {
             using (MadGUI.Indent()) {
@@ -186,7 +186,7 @@ public class MadAnimatorInspector : Editor {
 
         EditorGUI.BeginChangeCheck();
 
-        animationNameNum = MadGUI.DynamicPopup(animationNameNum, "ViewName", animationNames.Count + 1 + (animationNameMissing ? 1 : 0), (index) => {
+        animationNameNum = MadGUI.DynamicPopup(animationNameNum, "TypeID", animationNames.Count + 1 + (animationNameMissing ? 1 : 0), (index) => {
             if (index == 0) {
                 return "(none)";
             } else if (index == MissingAnimationNameNum) {

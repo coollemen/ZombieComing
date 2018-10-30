@@ -36,7 +36,7 @@ namespace DuloGamesEditor.UI
 
                 if (style == UITooltipLines.LineStyle.Custom)
                 {
-                    EditorGUI.PropertyField(position, property.FindPropertyRelative("CustomLineStyle"), new GUIContent("Style Name"));
+                    EditorGUI.PropertyField(position, property.FindPropertyRelative("CustomLineStyle"), new GUIContent("Style TypeID"));
                     position = new Rect(position.x, position.y + EditorGUIUtility.singleLineHeight + Spacing, position.width, EditorGUIUtility.singleLineHeight);
                 }
 

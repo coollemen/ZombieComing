@@ -35,7 +35,7 @@ namespace Devdog.General.Editors.GameRules
                         }
                         else
                         {
-                            if (s.GetClass().ViewName != match.Groups[1].Value)
+                            if (s.GetClass().TypeID != match.Groups[1].Value)
                             {
                                 CreateIssue(scriptPath);
                             }

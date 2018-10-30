@@ -4,24 +4,27 @@ using UnityEngine;
 using GameDesigner;
 namespace GameFramework
 {
-    public class UIContext : Context
+    /// <summary>
+    /// UI视图模型
+    /// </summary>
+    public class UIContext :MonoBehaviour, IContext
     {
-
-        // Use this for initialization
-        void Start()
-        {
-
-        }
-
-        // Update is called once per frame
-        void Update()
-        {
-
-        }
-
-        public override string Name
+        public virtual string TypeID
         {
             get { return "UIContext"; }
         }
+
+
+        public virtual void GetData()
+        {
+            
+        }
+
+        public virtual void SetData()
+        {
+            
+        }
+
+
     }
 }

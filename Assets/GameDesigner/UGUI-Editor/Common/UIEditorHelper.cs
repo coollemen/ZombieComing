@@ -41,7 +41,7 @@ namespace U3DExtends
 
             //复制到系统全局的粘贴板上
             GUIUtility.systemCopyBuffer = result;
-            Debug.Log("Copy Nodes ViewName Succeed！");
+            Debug.Log("Copy Nodes TypeID Succeed！");
         }
 
         public static Transform GetRootLayout(Transform trans)

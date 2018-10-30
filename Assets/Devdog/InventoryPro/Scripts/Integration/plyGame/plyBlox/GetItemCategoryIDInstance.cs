@@ -6,7 +6,7 @@ using UnityEngine;
 namespace Devdog.InventoryPro.Integration.plyGame.plyBlox
 {
     [plyBlock("Inventory Pro", "Items - Instance", "Get item category ID instance", BlockType.Variable, Order = 4, ShowName = "Get item category ID",
-        ReturnValueString = "Return - String (ViewName)", ReturnValueType = typeof(Int_Value),
+        ReturnValueString = "Return - String (TypeID)", ReturnValueType = typeof(Int_Value),
         CustomStyle = "plyBlox_VarYellowDark", Description = "Returns the given item's category ID of an instance object.")]
     public class GetItemCategoryIDInstance : Int_Value
     {

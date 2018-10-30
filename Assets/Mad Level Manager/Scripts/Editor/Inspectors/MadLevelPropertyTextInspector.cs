@@ -28,7 +28,7 @@ public class MadLevelPropertyTextInspector : Editor {
     public override void OnInspectorGUI() {
 
         EditorGUILayout.Space();
-        EditorGUILayout.LabelField("Property ViewName: " + target.name);
+        EditorGUILayout.LabelField("Property TypeID: " + target.name);
         EditorGUILayout.Space();
 
         MadGUI.Info("Rename this object to match the property name that text value you want to display. "

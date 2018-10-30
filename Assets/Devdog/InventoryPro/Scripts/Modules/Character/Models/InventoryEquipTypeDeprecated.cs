@@ -15,7 +15,7 @@ namespace Devdog.InventoryPro
         public int ID;
 
         /// <summary>
-        /// ViewName of this equip type (example: 2 handed sword, bow, right wheel, saddle)
+        /// TypeID of this equip type (example: 2 handed sword, bow, right wheel, saddle)
         /// </summary>
         public string name;
 

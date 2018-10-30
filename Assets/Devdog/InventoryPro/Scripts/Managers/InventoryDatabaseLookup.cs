@@ -132,9 +132,9 @@ namespace Devdog.InventoryPro
         {
 #if UNITY_EDITOR
 
-//            if (AssetDatabase.FindAssets("t:" + typeof(T).ViewName).Length == 0)
+//            if (AssetDatabase.FindAssets("t:" + typeof(T).TypeID).Length == 0)
 //            {
-//                throw new FileNotFoundException("No " + typeof(T).ViewName + " in project folder, create one first.");
+//                throw new FileNotFoundException("No " + typeof(T).TypeID + " in project folder, create one first.");
 //            }
 
             var select = EditorUtility.DisplayDialog("Select an " + typeof(T).Name, "No " + typeof(T).Name + " could be found, please select one manually.", "Select database", "Create database");

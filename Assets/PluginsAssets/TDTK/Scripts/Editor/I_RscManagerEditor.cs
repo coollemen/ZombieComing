@@ -69,7 +69,7 @@ namespace TDTK{
 						
 						GUILayout.BeginVertical();
 							
-							item.name=EditorGUILayout.TextField("ViewName:", item.name, GUILayout.ExpandWidth(true));
+							item.name=EditorGUILayout.TextField("TypeID:", item.name, GUILayout.ExpandWidth(true));
 							instance.rscList[i]=EditorGUILayout.IntField("Value:", instance.rscList[i], GUILayout.ExpandWidth(true));
 							
 							GUILayout.BeginHorizontal();

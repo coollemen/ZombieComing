@@ -683,7 +683,7 @@ public class MadLevel  {
     /// <summary>
     /// Tells if there is at least one level set in current group.
     /// </summary>
-    /// <param name="groupName">ViewName of a group.</param>
+    /// <param name="groupName">TypeID of a group.</param>
     /// <returns>
     /// <c>true</c> if there is at least one level configured; otherwise, <c>false</c>.
     /// </returns>
@@ -694,7 +694,7 @@ public class MadLevel  {
     /// <summary>
     /// Tells if there is at least one level set in active level configuration group.
     /// </summary>
-    /// <param name="groupName">ViewName of a group.</param>
+    /// <param name="groupName">TypeID of a group.</param>
     /// <returns>
     /// <c>true</c> if there is at least one level configured; otherwise, <c>false</c>.
     /// </returns>
