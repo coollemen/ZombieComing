@@ -41,5 +41,12 @@ namespace GameFramework
         {
             
         }
+        /// <summary>
+        /// 关闭视图，调用Destroy函数
+        /// </summary>
+        public virtual void Close()
+        {
+            
+        }
     }
 }
