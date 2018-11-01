@@ -11,6 +11,7 @@ namespace GameFramework
     {
         public UIViewType type = UIViewType.Normal;
         public UIViewShowMode showMode = UIViewShowMode.Normal;
+        public int orderID=-1;
         public virtual string TypeID
         {
             get { return "UIView"; }
@@ -23,7 +24,10 @@ namespace GameFramework
 
         public virtual void Awake()
         {
+            //注册视图
             UIManager.Instance.RegisterView(this);
+            //绑定数据
+            this.DataBinding();
         }
         public virtual void Start()
         {
@@ -56,6 +60,12 @@ namespace GameFramework
         public virtual void Close()
         {
             
+        }
+        /// <summary>
+        /// 将数据绑定到视图
+        /// </summary>
+        public virtual void DataBinding()
+        {
         }
     }
 }

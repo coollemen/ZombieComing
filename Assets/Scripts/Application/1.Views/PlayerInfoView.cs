@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using GameFramework;
 using Sirenix.OdinInspector;
+using UniRx;
 public class PlayerInfoView : UIView {
     [ShowInInspector]
     public override string TypeID
@@ -26,20 +27,21 @@ public class PlayerInfoView : UIView {
     public Text playerNameLabel;
     public Image playerAvatarImage;
     // Use this for initialization
+    public override void Awake()
+    {
+        base.Awake();
+    }
     void Start () {
 		
 	}
 
-    public void BindingData()
+    public override void DataBinding()
     {
         var context = UIManager.Instance.GetContext<PlayerInfoContext>() as PlayerInfoContext;
-        context.playLvProperty.Subscribe(lv =>playerLvLabel.text=lv);
+        context.playLvProperty.SubscribeToText(playerLvLabel);
+        context.playNameProperty.SubscribeToText(playerNameLabel);
     }
 
-    public void OnLvChanged(string newLv)
-    {
-
-    }
 	// Update is called once per frame
 	void Update () {
 		

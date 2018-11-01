@@ -27,7 +27,10 @@ namespace GameFramework
 
         public virtual void Awake()
         {
+            //注册视图模型
             UIManager.Instance.RegisterContext(this);
+            //从模型获取数据
+            this.GetData();
         }
     }
 }

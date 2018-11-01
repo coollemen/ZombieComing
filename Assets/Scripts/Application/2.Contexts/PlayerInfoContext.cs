@@ -15,13 +15,13 @@ public class PlayerInfoContext : UIContext
             return "PlayerInfoContext";
         }
     }
-    public ReactiveProperty<string> playLvProperty = new ReactiveProperty<string>();
+    public ReactiveProperty<int> playLvProperty = new ReactiveProperty<int>();
 
     /// <summary>
     /// 玩家等级
     /// </summary>
     [ShowInInspector]
-    public string playerLv
+    public int playerLv
     {
         get { return this.playLvProperty.Value; }
         set { this.playLvProperty.Value = value; }
@@ -53,8 +53,17 @@ public class PlayerInfoContext : UIContext
         get { return playAvatarProperty.Value; }
         set { playAvatarProperty.Value = value; }
     }
-
-
+    public override void Awake()
+    {
+        base.Awake();
+        this.GetData();
+    }
+    public override void GetData()
+    {
+        base.GetData();
+        this.playerLv = 1;
+        this.playerName = "小喵喵";
+    }
     // Use this for initialization
     void Start()
     {
