@@ -25,6 +25,9 @@ namespace GameFramework
             
         }
 
-
+        public virtual void Awake()
+        {
+            UIManager.Instance.RegisterContext(this);
+        }
     }
 }

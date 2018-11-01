@@ -20,6 +20,15 @@ namespace GameFramework
         {
             get { return "UIContext"; }
         }
+
+        public virtual void Awake()
+        {
+            UIManager.Instance.RegisterView(this);
+        }
+        public virtual void Start()
+        {
+
+        }
         /// <summary>
         /// 显示状态
         /// </summary>
