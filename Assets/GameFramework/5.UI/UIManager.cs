@@ -9,7 +9,8 @@ namespace GameFramework
 
         public Dictionary<string, UIContext> contexts = new Dictionary<string, UIContext>();
         public Dictionary<string, UIView> views = new Dictionary<string, UIView>();
-
+        public List<UIView> normalViews = new List<UIView>();
+        public Stack<UIView> popupViews = new Stack<UIView>();
         /// <summary>
         /// 注册视图
         /// </summary>
@@ -73,6 +74,33 @@ namespace GameFramework
         public UIContext GetContext(string contextID)
         {
             return contexts[contextID];
+        }
+        public virtual void Awake()
+        {
+            this.LoadViews();
+        }
+        public virtual void Start()
+        {
+            
+        }
+
+        public virtual void LoadViews()
+        {
+
+        }
+        public virtual void ShowView(string viewID)
+        {
+
+        }
+
+        public virtual void HideView(string viewID)
+        {
+
+        }
+
+        public virtual void CloseView(string viewID)
+        {
+
         }
     }
 }

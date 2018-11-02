@@ -12,6 +12,7 @@ namespace GameFramework
         public UIViewType type = UIViewType.Normal;
         public UIViewShowMode showMode = UIViewShowMode.Normal;
         public int orderID=-1;
+        public Animator animater;
         public virtual string TypeID
         {
             get { return "UIView"; }
@@ -28,6 +29,8 @@ namespace GameFramework
             UIManager.Instance.RegisterView(this);
             //绑定数据
             this.DataBinding();
+            //获取动画组件
+            this.animater = GetComponent<Animator>();
         }
         public virtual void Start()
         {
@@ -38,14 +41,20 @@ namespace GameFramework
         /// </summary>
         public virtual void Show()
         {
-            
+            if (animater != null)
+            {
+                animater.SetTrigger("OnEnter");
+            }
         }
         /// <summary>
         /// 隐藏状态，窗口不显示时处于隐藏状态，而不是删除
         /// </summary>
         public virtual void Hide()
         {
-            
+            if (animater != null)
+            {
+                animater.SetTrigger("OnExit");
+            }
         }
         /// <summary>
         /// 冻结状态，在模式窗口显示时，底下的窗口处于冻结状态
@@ -59,7 +68,10 @@ namespace GameFramework
         /// </summary>
         public virtual void Close()
         {
-            
+            if (animater != null)
+            {
+                animater.SetTrigger("OnExit");
+            }
         }
         /// <summary>
         /// 将数据绑定到视图
