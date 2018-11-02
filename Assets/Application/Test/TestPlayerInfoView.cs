@@ -23,5 +23,13 @@ public class TestPlayerInfoView : MonoBehaviour {
             }
             context.playerLv ++;
         }
+        if (GUILayout.Button("Show Window"))
+        {
+            UIManager.Instance.ShowView("PlayerInfoView");
+        }
+        if (GUILayout.Button("Hide Window"))
+        {
+            UIManager.Instance.HideView("PlayerInfoView");
+        }
     }
 }

@@ -12,6 +12,6 @@ MonoBehaviour:
   m_Name: GameUIConfig
   m_EditorClassIdentifier: 
   paths:
-  - prefabPath: 
+  - prefabPath: Prefab/UI/playerInfo
     loadMode: 0
-    unloadMode: 0
+    unloadMode: 1

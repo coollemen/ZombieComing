@@ -31,9 +31,10 @@ public class PlayerInfoView : UIView {
     {
         base.Awake();
     }
-    void Start () {
-		
-	}
+    public override void Start()
+    {
+        base.Start();
+    }
 
     public override void DataBinding()
     {

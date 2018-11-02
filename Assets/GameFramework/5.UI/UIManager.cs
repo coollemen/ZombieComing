@@ -6,11 +6,13 @@ namespace GameFramework
 {
     public class UIManager : MonoSingleton<UIManager>
     {
-
+        public UIConfig config;
+        public Canvas canvas;
         public Dictionary<string, UIContext> contexts = new Dictionary<string, UIContext>();
         public Dictionary<string, UIView> views = new Dictionary<string, UIView>();
         public List<UIView> normalViews = new List<UIView>();
         public Stack<UIView> popupViews = new Stack<UIView>();
+      
         /// <summary>
         /// 注册视图
         /// </summary>
@@ -81,21 +83,44 @@ namespace GameFramework
         }
         public virtual void Start()
         {
-            
+            this.ShowViews();
         }
 
         public virtual void LoadViews()
         {
+            if (config == null)
+            {
+                Debug.LogError("UIManager 缺少配置文件！");
+            }
+            foreach (var p in config.paths)
+            {
+                var prefab = Resources.Load(p.prefabPath) as GameObject;
+                var go = Instantiate(prefab);
+                if (canvas != null)
+                {
+                    go.transform.SetParent(canvas.transform);
+                    go.transform.localPosition = Vector3.zero;
+                }
+            }
 
+        }
+
+        public virtual void ShowViews()
+        {
+            foreach (var v in views.Values)
+            {
+                v.Show();
+            }
         }
         public virtual void ShowView(string viewID)
         {
+            views[viewID].Show();
 
         }
 
         public virtual void HideView(string viewID)
         {
-
+            views[viewID].Hide();
         }
 
         public virtual void CloseView(string viewID)

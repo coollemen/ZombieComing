@@ -27,14 +27,14 @@ namespace GameFramework
         {
             //注册视图
             UIManager.Instance.RegisterView(this);
-            //绑定数据
-            this.DataBinding();
+ 
             //获取动画组件
             this.animater = GetComponent<Animator>();
         }
         public virtual void Start()
         {
-
+            //绑定数据
+            this.DataBinding();
         }
         /// <summary>
         /// 显示状态
@@ -43,7 +43,7 @@ namespace GameFramework
         {
             if (animater != null)
             {
-                animater.SetTrigger("OnEnter");
+                animater.SetBool("IsShow",true);
             }
         }
         /// <summary>
@@ -53,7 +53,7 @@ namespace GameFramework
         {
             if (animater != null)
             {
-                animater.SetTrigger("OnExit");
+                animater.SetBool("IsShow", false);
             }
         }
         /// <summary>
@@ -70,7 +70,7 @@ namespace GameFramework
         {
             if (animater != null)
             {
-                animater.SetTrigger("OnExit");
+                animater.SetBool("IsShow", false);
             }
         }
         /// <summary>
