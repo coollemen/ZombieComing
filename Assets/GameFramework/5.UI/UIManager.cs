@@ -8,9 +8,21 @@ namespace GameFramework
     {
         public UIConfig config;
         public Canvas canvas;
+        //普通视图锚点
+        public Transform normalViewAnchor;
+        //固定视图锚点
+        public Transform fixedViewAnchor;
+        //弹出视图锚点
+        public Transform popupViewAnchor;
+        //所有视图模型
         public Dictionary<string, UIContext> contexts = new Dictionary<string, UIContext>();
+        //所有视图
         public Dictionary<string, UIView> views = new Dictionary<string, UIView>();
+        //普通视图列表
         public List<UIView> normalViews = new List<UIView>();
+        //固定视图列表
+        public List<UIView> fixedViews = new List<UIView>();
+        //弹出视图列表
         public Stack<UIView> popupViews = new Stack<UIView>();
       
         /// <summary>
@@ -94,17 +106,44 @@ namespace GameFramework
             }
             foreach (var p in config.paths)
             {
-                var prefab = Resources.Load(p.prefabPath) as GameObject;
-                var go = Instantiate(prefab);
-                if (canvas != null)
-                {
-                    go.transform.SetParent(canvas.transform);
-                    go.transform.localPosition = Vector3.zero;
-                }
+                LoadViewPrefab(p.prefabPath);
             }
 
         }
+        /// <summary>
+        /// 读取View的预制体
+        /// </summary>
+        /// <param name="path"></param>
+        private void LoadViewPrefab(string path)
+        {
+            //读取
+            var prefab = Resources.Load(path) as GameObject;
+            //实例化
+            var go = Instantiate(prefab);
+            //设置父节点
+            if (canvas != null)
+            {
+                var view = go.GetComponent<UIView>();
+                if (view.type == UIViewType.Normal)
+                {
+                    go.transform.SetParent(normalViewAnchor);
+                    go.transform.localPosition = Vector3.zero;
+                }
+                else if (view.type == UIViewType.Fixed)
+                {
+                    go.transform.SetParent(fixedViewAnchor);
+                    go.transform.localPosition = Vector3.zero;
+                }
+                else if (view.type == UIViewType.Popup)
+                {
+                    go.transform.SetParent(popupViewAnchor);
+                    go.transform.localPosition = Vector3.zero;
+                    go.SetActive(false);
+                }
 
+
+            }
+        }
         public virtual void ShowViews()
         {
             foreach (var v in views.Values)

@@ -15,3 +15,6 @@ MonoBehaviour:
   - prefabPath: Prefab/UI/playerInfo
     loadMode: 0
     unloadMode: 1
+  - prefabPath: Prefab/UI/MainMenuView
+    loadMode: 0
+    unloadMode: 0
