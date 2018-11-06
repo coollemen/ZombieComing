@@ -2,12 +2,13 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using Sirenix.OdinInspector;
 namespace GameFramework
 {
     /// <summary>
     /// UI视图
     /// </summary>
-    public abstract class  UIView : MonoBehaviour, IView
+    public abstract class  UIView: MonoBehaviour ,IView
     {
         public UIViewType type = UIViewType.Normal;
         public UIViewShowMode showMode = UIViewShowMode.Normal;
@@ -18,23 +19,24 @@ namespace GameFramework
             get { return "UIView"; }
         }
 
-        public virtual string ContextID
-        {
-            get { return "UIContext"; }
-        }
-
+        public UIContext Context { get; set; }
         public virtual void Awake()
         {
-            //注册视图
-            UIManager.Instance.RegisterView(this);
- 
             //获取动画组件
             this.animater = GetComponent<Animator>();
+            //初始化
+            this.Init();
         }
         public virtual void Start()
         {
             //绑定数据
             this.DataBinding();
+        }
+        /// <summary>
+        /// 初始化
+        /// </summary>
+        public virtual void Init()
+        {
         }
         /// <summary>
         /// 显示状态
@@ -79,5 +81,7 @@ namespace GameFramework
         public virtual void DataBinding()
         {
         }
+
+
     }
 }

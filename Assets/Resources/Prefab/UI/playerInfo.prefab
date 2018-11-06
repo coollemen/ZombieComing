@@ -94,7 +94,6 @@ GameObject:
   m_Component:
   - component: {fileID: 4996335691889646}
   - component: {fileID: 114763651470956380}
-  - component: {fileID: 114567672031731654}
   - component: {fileID: 225758838825166464}
   - component: {fileID: 95283419830306008}
   m_Layer: 0
@@ -331,17 +330,6 @@ MonoBehaviour:
     m_VerticalOverflow: 0
     m_LineSpacing: 1
   m_Text: Lv
---- !u!114 &114567672031731654
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1477831740806702}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a9134c6e85f68874487e3b34b179a58e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &114680163512745736
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -399,9 +387,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0ddffcfa51dbad14bbe02286c4594687, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  type: 0
+  type: 1
   showMode: 0
-  orderID: -1
+  orderID: 10
   animater: {fileID: 95283419830306008}
   playerLvLabel: {fileID: 114701897630570710}
   playerNameLabel: {fileID: 114116152004220180}

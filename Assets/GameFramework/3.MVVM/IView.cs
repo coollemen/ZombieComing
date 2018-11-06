@@ -18,7 +18,11 @@ namespace GameFramework
         /// <summary>
         /// 绑定的Context的名称
         /// </summary>
-        string ContextID { get; }
+//        string ContextID { get; }
+        /// <summary>
+        /// 视图模型
+        /// </summary>
+        UIContext Context { get; set; }
         /// <summary>
         /// 数据绑定
         /// </summary>

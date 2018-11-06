@@ -18,3 +18,6 @@ MonoBehaviour:
   - prefabPath: Prefab/UI/MainMenuView
     loadMode: 0
     unloadMode: 0
+  - prefabPath: Prefab/UI/MessageView
+    loadMode: 0
+    unloadMode: 0

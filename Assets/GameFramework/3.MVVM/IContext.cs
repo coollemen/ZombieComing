@@ -12,7 +12,7 @@ namespace GameFramework
         /// <summary>
         /// 每个Context类型唯一的ID值
         /// </summary>
-        string TypeID { get; }
+//        string TypeID { get; }
 
         /// <summary>
         /// 从Model中获取数据，并提交给View

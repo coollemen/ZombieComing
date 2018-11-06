@@ -15,20 +15,19 @@ public class MainMenuView : UIView {
     {
         get { return "MainMenuView"; }
     }
-    public override string ContextID
+    public override void Init()
     {
-        get
-        {
-            return "MainMenuContext";
-        }
+        base.Init();
+        this.Context = new MainMenuContext();
+        this.Context.Init();
     }
     public override void DataBinding()
     {
         base.DataBinding();
-        var context = UIManager.Instance.GetContext<MainMenuContext>() as MainMenuContext;
-        newGameButton.OnClickAsObservable().Subscribe(_=>context.OnNewGame());
-        loadGameButton.OnClickAsObservable().Subscribe(_ => context.OnLoadGame());
-        gameConfigButton.OnClickAsObservable().Subscribe(_ => context.OnGameConfig());
-        exitGameButton.OnClickAsObservable().Subscribe(_ => context.OnExitGame());
+        var c = this.Context as MainMenuContext;
+        newGameButton.OnClickAsObservable().Subscribe(_=> c.OnNewGame());
+        loadGameButton.OnClickAsObservable().Subscribe(_ => c.OnLoadGame());
+        gameConfigButton.OnClickAsObservable().Subscribe(_ => c.OnGameConfig());
+        exitGameButton.OnClickAsObservable().Subscribe(_ => c.OnExitGame());
     }
 }

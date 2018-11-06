@@ -5,13 +5,13 @@ using GameFramework;
 
 public class MainMenuContext : UIContext {
 
-    public override string TypeID
-    {
-        get
-        {
-            return "MainMenuContext";
-        }
-    }
+//    public override string TypeID
+//    {
+//        get
+//        {
+//            return "MainMenuContext";
+//        }
+//    }
     public void OnNewGame()
     {
         Debug.Log("New Game");
