@@ -17,6 +17,6 @@ namespace GameFramework
     public class MapData : ScriptableObject
     {
         public string name;
-        public List<MapBlock> blockCaches = new List<MapBlock>();
+        public List<Block> blockCaches = new List<Block>();
     }
 }

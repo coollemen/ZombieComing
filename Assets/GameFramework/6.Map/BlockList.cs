@@ -10,18 +10,18 @@ namespace GameFramework
     /// </summary>
     public class BlockList : MonoBehaviour
     {
-        public static Dictionary<byte, MapBlock> blocks = new Dictionary<byte, MapBlock>();
+        public static Dictionary<byte, Block> blocks = new Dictionary<byte, Block>();
 
         void Awake()
         {
-            MapBlock dirt = new MapBlock(1, "Dirt", 2, 31);
+            Block dirt = new Block(1, "Dirt", 2, 31);
             blocks.Add(dirt.id, dirt);
 
-            MapBlock grass = new MapBlock(2, "Grass", 3, 31, 0, 31, 2, 31);
+            Block grass = new Block(2, "Grass", 3, 31, 0, 31, 2, 31);
             blocks.Add(grass.id, grass);
         }
 
-        public static MapBlock GetBlock(byte id)
+        public static Block GetBlock(byte id)
         {
             return blocks.ContainsKey(id) ? blocks[id] : null;
         }

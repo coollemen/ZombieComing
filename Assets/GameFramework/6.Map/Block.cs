@@ -18,7 +18,7 @@ namespace GameFramework
     /// <summary>
     /// 方块对象，存储方块的所有信息
     /// </summary>
-    public class MapBlock
+    public class Block
     {
         //方块的ID
         public byte id;
@@ -57,20 +57,20 @@ namespace GameFramework
         public byte textureBottomY;
 
         //都是A面的方块
-        public MapBlock(byte id, string name, byte textureX, byte textureY)
+        public Block(byte id, string name, byte textureX, byte textureY)
             : this(id, name, textureX, textureY, textureX, textureY, textureX, textureY, textureX, textureY)
         {
         }
 
         //上面是A，其他面是B的方块
-        public MapBlock(byte id, string name, byte textureX, byte textureY, byte textureTopX, byte textureTopY)
+        public Block(byte id, string name, byte textureX, byte textureY, byte textureTopX, byte textureTopY)
             : this(id, name, textureX, textureY, textureX, textureY, textureX, textureY, textureX, textureY,
                 textureTopX, textureTopY, textureX, textureY)
         {
         }
 
         //上面是A，下面是B，其他面是C的方块
-        public MapBlock(byte id, string name, byte textureX, byte textureY, byte textureTopX, byte textureTopY,
+        public Block(byte id, string name, byte textureX, byte textureY, byte textureTopX, byte textureTopY,
             byte textureBottomX, byte textureBottomY)
             : this(id, name, textureX, textureY, textureX, textureY, textureX, textureY, textureX, textureY,
                 textureTopX, textureTopY, textureBottomX, textureBottomY)
@@ -78,7 +78,7 @@ namespace GameFramework
         }
 
         //上面是A，下面是B，前面是C，其他面是D的方块
-        public MapBlock(byte id, string name, byte textureFrontX, byte textureFrontY, byte textureX, byte textureY,
+        public Block(byte id, string name, byte textureFrontX, byte textureFrontY, byte textureX, byte textureY,
             byte textureTopX, byte textureTopY, byte textureBottomX, byte textureBottomY)
             : this(id, name, textureFrontX, textureFrontY, textureX, textureY, textureX, textureY, textureX, textureY,
                 textureTopX, textureTopY, textureBottomX, textureBottomY)
@@ -86,7 +86,7 @@ namespace GameFramework
         }
 
         //上下左右前后面都不一样的方块
-        public MapBlock(byte id, string name, byte textureFrontX, byte textureFrontY, byte textureBackX, byte textureBackY,
+        public Block(byte id, string name, byte textureFrontX, byte textureFrontY, byte textureBackX, byte textureBackY,
             byte textureRightX, byte textureRightY,
             byte textureLeftX, byte textureLeftY, byte textureTopX, byte textureTopY, byte textureBottomX,
             byte textureBottomY)

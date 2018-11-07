@@ -1,13 +1,14 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using UniRx;
+using System.Linq;
 namespace GameFramework
 {
     [RequireComponent(typeof(MeshFilter))]
     [RequireComponent(typeof(MeshRenderer))]
     [RequireComponent(typeof(MeshCollider))]
-    public class MapChunk : MonoBehaviour
+    public class Chunk : MonoBehaviour
     {
         public static int width = 16;
         public static int height = 16;
@@ -16,7 +17,7 @@ namespace GameFramework
         public Vector3Int position;
 
         private Mesh mesh;
-
+        public Section[] sections = new Section[16];
         //面需要的点
         private List<Vector3> vertices = new List<Vector3>();
         //生成三边面时用到的vertices的index
@@ -46,6 +47,7 @@ namespace GameFramework
 //                this.name = "(" + position.x + "," + position.y + "," + position.z + ")";
 //                StartFunction();
 //            }
+            //StartFunction();
         }
 
 
@@ -65,13 +67,13 @@ namespace GameFramework
             }
             isWorking = true;
             blocks = new byte[width, height, width];
-            for (int x = 0; x < MapChunk.width; x++)
+            for (int x = 0; x < Chunk.width; x++)
             {
-                for (int y = 0; y < MapChunk.height; y++)
+                for (int y = 0; y < Chunk.height; y++)
                 {
-                    for (int z = 0; z < MapChunk.width; z++)
+                    for (int z = 0; z < Chunk.width; z++)
                     {
-                        if (y == MapChunk.height - 1)
+                        if (y == Chunk.height - 1)
                         {
                             if (Random.Range(1, 5) == 1)
                             {
@@ -95,14 +97,14 @@ namespace GameFramework
             triangles.Clear();
 
             //把所有面的点和面的索引添加进去
-            for (int x = 0; x < MapChunk.width; x++)
+            for (int x = 0; x < Chunk.width; x++)
             {
-                for (int y = 0; y < MapChunk.height; y++)
+                for (int y = 0; y < Chunk.height; y++)
                 {
-                    for (int z = 0; z < MapChunk.width; z++)
+                    for (int z = 0; z < Chunk.width; z++)
                     {
                         //获取当前坐标的Block对象
-                        MapBlock block = BlockList.GetBlock(this.blocks[x, y, z]);
+                        Block block = BlockList.GetBlock(this.blocks[x, y, z]);
                         if (block == null) continue;
 
                         if (IsBlockTransparent(x + 1, y, z))
@@ -168,7 +170,7 @@ namespace GameFramework
 
 
         //前面
-        void AddFrontFace(int x, int y, int z, MapBlock block)
+        void AddFrontFace(int x, int y, int z, Block block)
         {
             //第一个三角面
             triangles.Add(0 + vertices.Count);
@@ -195,7 +197,7 @@ namespace GameFramework
         }
 
         //背面
-        void AddBackFace(int x, int y, int z, MapBlock block)
+        void AddBackFace(int x, int y, int z, Block block)
         {
             //第一个三角面
             triangles.Add(0 + vertices.Count);
@@ -222,7 +224,7 @@ namespace GameFramework
         }
 
         //右面
-        void AddRightFace(int x, int y, int z, MapBlock block)
+        void AddRightFace(int x, int y, int z, Block block)
         {
             //第一个三角面
             triangles.Add(0 + vertices.Count);
@@ -249,7 +251,7 @@ namespace GameFramework
         }
 
         //左面
-        void AddLeftFace(int x, int y, int z, MapBlock block)
+        void AddLeftFace(int x, int y, int z, Block block)
         {
             //第一个三角面
             triangles.Add(0 + vertices.Count);
@@ -276,7 +278,7 @@ namespace GameFramework
         }
 
         //上面
-        void AddTopFace(int x, int y, int z, MapBlock block)
+        void AddTopFace(int x, int y, int z, Block block)
         {
             //第一个三角面
             triangles.Add(1 + vertices.Count);
@@ -303,7 +305,7 @@ namespace GameFramework
         }
 
         //下面
-        void AddBottomFace(int x, int y, int z, MapBlock block)
+        void AddBottomFace(int x, int y, int z, Block block)
         {
             //第一个三角面
             triangles.Add(1 + vertices.Count);

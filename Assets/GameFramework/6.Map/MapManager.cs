@@ -8,8 +8,9 @@ namespace GameFramework
      /// 地图管理类 
      /// </summary>
     public class MapManager : MonoSingleton<MapManager>
-    {
-
+     {
+         public List<Block> blockPool = new List<Block>();
+         public BlockConfig blockConfig;
         // Use this for initialization
         void Start()
         {
@@ -21,5 +22,10 @@ namespace GameFramework
         {
 
         }
+
+         public void CreateBlockPool()
+         {
+             
+         }
     }
 }
