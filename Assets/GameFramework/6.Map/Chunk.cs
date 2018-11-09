@@ -5,6 +5,9 @@ using UniRx;
 using System.Linq;
 namespace GameFramework
 {
+    /// <summary>
+    /// 地图簇，由16个Section组成，一个簇就是一个Mesh
+    /// </summary>
     [RequireComponent(typeof(MeshFilter))]
     [RequireComponent(typeof(MeshRenderer))]
     [RequireComponent(typeof(MeshCollider))]
@@ -61,6 +64,6 @@ namespace GameFramework
             GUILayout.Label("MeshVertexCount=" + mesh.vertexCount);
             GUILayout.Label("MeshTriCount=" + mesh.triangles.LongLength);
         }
-     
+        
     }
 }
