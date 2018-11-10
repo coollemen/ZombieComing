@@ -14,6 +14,7 @@ namespace GameFramework
         public Chunk[,] viewChunks;
         public GameObject chunkPrefab;
         public MapData data;
+
         // Use this for initialization
         void Start()
         {
@@ -49,7 +50,8 @@ namespace GameFramework
                     var go = Instantiate(chunkPrefab);
                     go.transform.SetParent(this.transform);
                     go.transform.position =
-                        new Vector3(transform.position.x+(i-1)*8, transform.position.y, transform.position.z+(j-1)*8);
+                        new Vector3(transform.position.x+(i-1)*16, transform.position.y, transform.position.z+(j-1)*16);
+                    go.name = string.Format("Chunk_{0}_{1}", i, j);
                     viewChunks[i, j] = go.GetComponent<Chunk>();                  
                 }
             }

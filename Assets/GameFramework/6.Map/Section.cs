@@ -12,8 +12,7 @@ namespace GameFramework
         public static int depth = 16;
         public int id;
         public byte[,,] blocks;
-        public Vector3Int position;
-
+        public Vector3Int activeBlock;
         public Mesh mesh;
         //面需要的点
         private List<Vector3> vertices = new List<Vector3>();
@@ -26,7 +25,7 @@ namespace GameFramework
         //让UV稍微缩小一点，避免出现它旁边的贴图
         public static float shrinkSize = 0.001f;
 
-
+        public bool isDirty = false;
         //当前Chunk是否正在生成中
         private bool isWorking = false;
 
@@ -38,13 +37,9 @@ namespace GameFramework
         {
             this.id = setId;
         }
-        public  IEnumerator CreateMesh()
+
+        public void CreateBlocks()
         {
-            while (isWorking)
-            {
-                yield return null;
-            }
-            isWorking = true;
             blocks = new byte[width, height, depth];
             for (int x = 0; x < Section.width; x++)
             {
@@ -52,7 +47,7 @@ namespace GameFramework
                 {
                     for (int z = 0; z < Section.depth; z++)
                     {
-                        if (y == Section.height - 1 && id==15)
+                        if (y == Section.height - 1 && id == 1)
                         {
                             if (Random.Range(1, 5) == 1)
                             {
@@ -66,6 +61,14 @@ namespace GameFramework
                     }
                 }
             }
+        }
+        public  IEnumerator CreateMesh()
+        {
+            while (isWorking)
+            {
+                yield return null;
+            }
+            isWorking = true;       
             //创建顶点、索引、uv
            //初始化列表
             mesh = new Mesh();
@@ -83,22 +86,21 @@ namespace GameFramework
                         //获取当前坐标的Block对象
                         Block block = BlockList.GetBlock(this.blocks[x, y, z]);
                         if (block == null) continue;
-
                         if (IsBlockTransparent(x + 1, y, z))
-                        {
-                            AddFrontFace(x, y, z, block);
-                        }
-                        if (IsBlockTransparent(x - 1, y, z))
-                        {
-                            AddBackFace(x, y, z, block);
-                        }
-                        if (IsBlockTransparent(x, y, z + 1))
                         {
                             AddRightFace(x, y, z, block);
                         }
-                        if (IsBlockTransparent(x, y, z - 1))
+                        if (IsBlockTransparent(x - 1, y, z))
                         {
                             AddLeftFace(x, y, z, block);
+                        }
+                        if (IsBlockTransparent(x, y, z + 1))
+                        {
+                            AddBackFace(x, y, z, block);
+                        }
+                        if (IsBlockTransparent(x, y, z - 1))
+                        {
+                            AddFrontFace(x, y, z, block);
                         }
                         if (IsBlockTransparent(x, y + 1, z))
                         {
@@ -115,7 +117,8 @@ namespace GameFramework
             mesh.vertices = vertices.ToArray();
             mesh.triangles = triangles.ToArray();
             mesh.uv = uv.ToArray();
-
+            mesh.RecalculateNormals();
+            mesh.RecalculateBounds();
             isWorking = false;
         }
 
@@ -133,11 +136,27 @@ namespace GameFramework
             }
         }
 
-
-
-        //前面
-        void AddFrontFace(int x, int y, int z, Block block)
+        public void SetBlockActive(Vector3 blockIdx)
         {
+            this.activeBlock = new Vector3Int((int) blockIdx.x, (int) blockIdx.y, (int) blockIdx.z);
+            this.isDirty = true;
+        }
+        public void CreateBlock(int x, int y, int z,byte blockID)
+        {
+            this.blocks[x, y, z] = blockID;
+            isDirty = true;
+        }
+        public void DeleteBlock(int x, int y, int z)
+        {
+            this.blocks[x, y, z] = 0;
+            isDirty = true;
+        }
+        #region 创建各个面
+
+        //左面
+        void AddLeftFace(int x, int y, int z, Block block)
+        {
+            var p = GetCubePivot(x, y, z);
             //第一个三角面
             triangles.Add(0 + vertices.Count);
             triangles.Add(3 + vertices.Count);
@@ -150,10 +169,53 @@ namespace GameFramework
 
 
             //添加4个点
-            vertices.Add(new Vector3(0 + x, 0 + y, 0 + z));
-            vertices.Add(new Vector3(0 + x, 0 + y, 1 + z));
-            vertices.Add(new Vector3(0 + x, 1 + y, 1 + z));
-            vertices.Add(new Vector3(0 + x, 1 + y, 0 + z));
+//            vertices.Add(new Vector3(-1 + x, 0 + y, 1 + z));
+//            vertices.Add(new Vector3(-1 + x, 0 + y, 0 + z));
+//            vertices.Add(new Vector3(-1 + x, 1 + y, 0 + z));
+//            vertices.Add(new Vector3(-1 + x, 1 + y, 1 + z));
+
+            vertices.Add(new Vector3(-0.5f + p.x, -0.5f + p.y, 0.5f + p.z));
+            vertices.Add(new Vector3(-0.5f + p.x, -0.5f + p.y, -0.5f + p.z));
+            vertices.Add(new Vector3(-0.5f + p.x, 0.5f + p.y, -0.5f + p.z));
+            vertices.Add(new Vector3(-0.5f + p.x, 0.5f + p.y, 0.5f + p.z));
+
+            //添加UV坐标点，跟上面4个点循环的顺序一致
+            uv.Add(new Vector2(block.textureBackX * textureOffset, block.textureBackY * textureOffset) +
+                   new Vector2(shrinkSize, shrinkSize));
+            uv.Add(new Vector2(block.textureBackX * textureOffset + textureOffset, block.textureBackY * textureOffset) +
+                   new Vector2(-shrinkSize, shrinkSize));
+            uv.Add(
+                new Vector2(block.textureBackX * textureOffset + textureOffset,
+                    block.textureBackY * textureOffset + textureOffset) + new Vector2(-shrinkSize, -shrinkSize));
+            uv.Add(new Vector2(block.textureBackX * textureOffset, block.textureBackY * textureOffset + textureOffset) +
+                   new Vector2(shrinkSize, -shrinkSize));
+        }
+
+        //右面
+        void AddRightFace(int x, int y, int z, Block block)
+        {
+            var p = GetCubePivot(x, y, z);
+            //第一个三角面
+            triangles.Add(0 + vertices.Count);
+            triangles.Add(3 + vertices.Count);
+            triangles.Add(2 + vertices.Count);
+
+            //第二个三角面
+            triangles.Add(2 + vertices.Count);
+            triangles.Add(1 + vertices.Count);
+            triangles.Add(0 + vertices.Count);
+
+
+            //添加4个点
+//            vertices.Add(new Vector3(0 + x, 0 + y, 0 + z));
+//            vertices.Add(new Vector3(0 + x, 0 + y, 1 + z));
+//            vertices.Add(new Vector3(0 + x, 1 + y, 1 + z));
+//            vertices.Add(new Vector3(0 + x, 1 + y, 0 + z));
+
+            vertices.Add(new Vector3(0.5f + p.x, -0.5f + p.y, -0.5f + p.z));
+            vertices.Add(new Vector3(0.5f + p.x, -0.5f + p.y, 0.5f + p.z));
+            vertices.Add(new Vector3(0.5f + p.x, 0.5f + p.y, 0.5f + p.z));
+            vertices.Add(new Vector3(0.5f + p.x, 0.5f + p.y, -0.5f + p.z));
 
             //添加UV坐标点，跟上面4个点循环的顺序一致
             uv.Add(new Vector2(block.textureFrontX * textureOffset, block.textureFrontY * textureOffset) + new Vector2(shrinkSize, shrinkSize));
@@ -162,9 +224,12 @@ namespace GameFramework
             uv.Add(new Vector2(block.textureFrontX * textureOffset, block.textureFrontY * textureOffset + textureOffset) + new Vector2(shrinkSize, -shrinkSize));
         }
 
-        //背面
+        
+
+        //后面
         void AddBackFace(int x, int y, int z, Block block)
         {
+            var p = GetCubePivot(x, y, z);
             //第一个三角面
             triangles.Add(0 + vertices.Count);
             triangles.Add(3 + vertices.Count);
@@ -177,38 +242,15 @@ namespace GameFramework
 
 
             //添加4个点
-            vertices.Add(new Vector3(-1 + x, 0 + y, 1 + z));
-            vertices.Add(new Vector3(-1 + x, 0 + y, 0 + z));
-            vertices.Add(new Vector3(-1 + x, 1 + y, 0 + z));
-            vertices.Add(new Vector3(-1 + x, 1 + y, 1 + z));
+//            vertices.Add(new Vector3(0 + x, 0 + y, 1 + z));
+//            vertices.Add(new Vector3(-1 + x, 0 + y, 1 + z));
+//            vertices.Add(new Vector3(-1 + x, 1 + y, 1 + z));
+//            vertices.Add(new Vector3(0 + x, 1 + y, 1 + z));
 
-            //添加UV坐标点，跟上面4个点循环的顺序一致
-            uv.Add(new Vector2(block.textureBackX * textureOffset, block.textureBackY * textureOffset) + new Vector2(shrinkSize, shrinkSize));
-            uv.Add(new Vector2(block.textureBackX * textureOffset + textureOffset, block.textureBackY * textureOffset) + new Vector2(-shrinkSize, shrinkSize));
-            uv.Add(new Vector2(block.textureBackX * textureOffset + textureOffset, block.textureBackY * textureOffset + textureOffset) + new Vector2(-shrinkSize, -shrinkSize));
-            uv.Add(new Vector2(block.textureBackX * textureOffset, block.textureBackY * textureOffset + textureOffset) + new Vector2(shrinkSize, -shrinkSize));
-        }
-
-        //右面
-        void AddRightFace(int x, int y, int z, Block block)
-        {
-            //第一个三角面
-            triangles.Add(0 + vertices.Count);
-            triangles.Add(3 + vertices.Count);
-            triangles.Add(2 + vertices.Count);
-
-            //第二个三角面
-            triangles.Add(2 + vertices.Count);
-            triangles.Add(1 + vertices.Count);
-            triangles.Add(0 + vertices.Count);
-
-
-            //添加4个点
-            vertices.Add(new Vector3(0 + x, 0 + y, 1 + z));
-            vertices.Add(new Vector3(-1 + x, 0 + y, 1 + z));
-            vertices.Add(new Vector3(-1 + x, 1 + y, 1 + z));
-            vertices.Add(new Vector3(0 + x, 1 + y, 1 + z));
-
+            vertices.Add(new Vector3(0.5f + p.x, -0.5f + p.y, 0.5f + p.z));
+            vertices.Add(new Vector3(-0.5f + p.x, -0.5f + p.y, 0.5f + p.z));
+            vertices.Add(new Vector3(-0.5f + p.x, 0.5f + p.y, 0.5f + p.z));
+            vertices.Add(new Vector3(0.5f + p.x, 0.5f + p.y, 0.5f + p.z));
             //添加UV坐标点，跟上面4个点循环的顺序一致
             uv.Add(new Vector2(block.textureRightX * textureOffset, block.textureRightY * textureOffset) + new Vector2(shrinkSize, shrinkSize));
             uv.Add(new Vector2(block.textureRightX * textureOffset + textureOffset, block.textureRightY * textureOffset) + new Vector2(-shrinkSize, shrinkSize));
@@ -216,9 +258,14 @@ namespace GameFramework
             uv.Add(new Vector2(block.textureRightX * textureOffset, block.textureRightY * textureOffset + textureOffset) + new Vector2(shrinkSize, -shrinkSize));
         }
 
-        //左面
-        void AddLeftFace(int x, int y, int z, Block block)
+        private Vector3 GetCubePivot(int x, int y, int z)
         {
+            return new Vector3(x - width/2 + 0.5f, y -height/2 + 0.5f, z - depth/2 + 0.5f);
+        }
+        //前面
+        void AddFrontFace(int x, int y, int z, Block block)
+        {
+            var p = GetCubePivot(x, y, z);
             //第一个三角面
             triangles.Add(0 + vertices.Count);
             triangles.Add(3 + vertices.Count);
@@ -231,10 +278,10 @@ namespace GameFramework
 
 
             //添加4个点
-            vertices.Add(new Vector3(-1 + x, 0 + y, 0 + z));
-            vertices.Add(new Vector3(0 + x, 0 + y, 0 + z));
-            vertices.Add(new Vector3(0 + x, 1 + y, 0 + z));
-            vertices.Add(new Vector3(-1 + x, 1 + y, 0 + z));
+            vertices.Add(new Vector3(-0.5f + p.x, -0.5f + p.y, -0.5f + p.z));
+            vertices.Add(new Vector3(0.5f + p.x, -0.5f + p.y, -0.5f + p.z));
+            vertices.Add(new Vector3(0.5f + p.x, 0.5f  + p.y, -0.5f + p.z));
+            vertices.Add(new Vector3(-0.5f + p.x, 0.5f + p.y, -0.5f + p.z));
 
             //添加UV坐标点，跟上面4个点循环的顺序一致
             uv.Add(new Vector2(block.textureLeftX * textureOffset, block.textureLeftY * textureOffset) + new Vector2(shrinkSize, shrinkSize));
@@ -246,6 +293,7 @@ namespace GameFramework
         //上面
         void AddTopFace(int x, int y, int z, Block block)
         {
+            var p = GetCubePivot(x, y, z);
             //第一个三角面
             triangles.Add(1 + vertices.Count);
             triangles.Add(0 + vertices.Count);
@@ -258,10 +306,15 @@ namespace GameFramework
 
 
             //添加4个点
-            vertices.Add(new Vector3(0 + x, 1 + y, 0 + z));
-            vertices.Add(new Vector3(0 + x, 1 + y, 1 + z));
-            vertices.Add(new Vector3(-1 + x, 1 + y, 1 + z));
-            vertices.Add(new Vector3(-1 + x, 1 + y, 0 + z));
+//            vertices.Add(new Vector3(-0.5f + x, 1 + y, -0.5f + z));
+//            vertices.Add(new Vector3(-0.5f + x, 1 + y, 1 + z));
+//            vertices.Add(new Vector3(-1 + x, 1 + y, 1 + z));
+//            vertices.Add(new Vector3(-1 + x, 1 + y, -0.5f + z));
+
+            vertices.Add(new Vector3(-0.5f + p.x, 0.5f + p.y, -0.5f + p.z));
+            vertices.Add(new Vector3(0.5f + p.x, 0.5f + p.y, -0.5f + p.z));
+            vertices.Add(new Vector3(0.5f + p.x, 0.5f + p.y, 0.5f + p.z));
+            vertices.Add(new Vector3(-0.5f + p.x, 0.5f + p.y, 0.5f + p.z));
 
             //添加UV坐标点，跟上面4个点循环的顺序一致
             uv.Add(new Vector2(block.textureTopX * textureOffset, block.textureTopY * textureOffset) + new Vector2(shrinkSize, shrinkSize));
@@ -273,6 +326,7 @@ namespace GameFramework
         //下面
         void AddBottomFace(int x, int y, int z, Block block)
         {
+            var p = GetCubePivot(x, y, z);
             //第一个三角面
             triangles.Add(1 + vertices.Count);
             triangles.Add(0 + vertices.Count);
@@ -285,10 +339,15 @@ namespace GameFramework
 
 
             //添加4个点
-            vertices.Add(new Vector3(-1 + x, 0 + y, 0 + z));
-            vertices.Add(new Vector3(-1 + x, 0 + y, 1 + z));
-            vertices.Add(new Vector3(0 + x, 0 + y, 1 + z));
-            vertices.Add(new Vector3(0 + x, 0 + y, 0 + z));
+//            vertices.Add(new Vector3(-1 + x, 0 + y, 0 + z));
+//            vertices.Add(new Vector3(-1 + x, 0 + y, 1 + z));
+//            vertices.Add(new Vector3(0 + x, 0 + y, 1 + z));
+//            vertices.Add(new Vector3(0 + x, 0 + y, 0 + z));
+
+            vertices.Add(new Vector3(-0.5f + p.x, -0.5f + p.y, -0.5f + p.z));
+            vertices.Add(new Vector3(0.5f + p.x, -0.5f + p.y, -0.5f + p.z));
+            vertices.Add(new Vector3(0.5f + p.x, -0.5f + p.y, 0.5f + p.z));
+            vertices.Add(new Vector3(-0.5f + p.x, -0.5f + p.y, 0.5f + p.z));
 
             //添加UV坐标点，跟上面4个点循环的顺序一致
             uv.Add(new Vector2(block.textureBottomX * textureOffset, block.textureBottomY * textureOffset) + new Vector2(shrinkSize, shrinkSize));
@@ -296,5 +355,7 @@ namespace GameFramework
             uv.Add(new Vector2(block.textureBottomX * textureOffset + textureOffset, block.textureBottomY * textureOffset + textureOffset) + new Vector2(-shrinkSize, -shrinkSize));
             uv.Add(new Vector2(block.textureBottomX * textureOffset, block.textureBottomY * textureOffset + textureOffset) + new Vector2(shrinkSize, -shrinkSize));
         }
+        #endregion
     }
+
 }
