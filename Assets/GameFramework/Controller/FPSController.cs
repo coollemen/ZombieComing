@@ -17,6 +17,7 @@ namespace GameFramework
         public GameObject activeCube;
         public Chunk activeChunk;
         public Vector3 activeBlock;
+        public bool isProcess = false;
         // Use this for initialization
         void Start()
         {
@@ -54,7 +55,7 @@ namespace GameFramework
             {
                 controller.SimpleMove(transform.up * speed);
             }
-            if (Input.GetMouseButton(1))
+            if (Input.GetMouseButtonUp(1))
             {
                 Debug.Log("Mosue Right Click!");
                 if (activeChunk != null && activeBlock!=new Vector3(-999, -999, -999))
@@ -62,6 +63,7 @@ namespace GameFramework
 
                     activeChunk.DeleteBlock(activeBlock);
                     activeCube.SetActive(false);
+                    
                 }
             }
             Ray ray = Camera.main.ViewportPointToRay(new Vector3(0.5f,0.5f,0.5f));

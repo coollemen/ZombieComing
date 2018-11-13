@@ -85,7 +85,7 @@ namespace GameFramework
             }
             isWorking = true;
 
-            mesh.Clear();
+            mesh = new Mesh();
             for (int i = 0; i < sections.Length; i++)
             {
                 if (sections[i].isDirty)
@@ -108,6 +108,8 @@ namespace GameFramework
             mesh.CombineMeshes(instances);
             mesh.RecalculateNormals();
             mesh.bounds = new Bounds(Vector3.zero, new Vector3(16, 256, 16));
+            this.GetComponent<MeshFilter>().mesh = mesh;
+            this.GetComponent<MeshCollider>().sharedMesh = mesh;
 
             isWorking = false;
             isDirty = false;
