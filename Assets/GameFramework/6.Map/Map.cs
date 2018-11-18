@@ -47,14 +47,60 @@ namespace GameFramework
             {
                 for (int j = 0; j < viewDepth; j++)
                 {
+                    //地图原点在左下角
                     var go = Instantiate(chunkPrefab);
                     go.transform.SetParent(this.transform);
                     go.transform.position =
-                        new Vector3(transform.position.x+(i-1)*16, transform.position.y, transform.position.z+(j-1)*16);
+                        new Vector3(transform.position.x+i*16+8, transform.position.y, transform.position.z+j*16+8);
                     go.name = string.Format("Chunk_{0}_{1}", i, j);
                     viewChunks[i, j] = go.GetComponent<Chunk>();                  
                 }
             }
+        }
+        /// <summary>
+        /// 在地图指定位置设置地图块（Block）
+        /// </summary>
+        /// <param name="x">X坐标</param>
+        /// <param name="y">Y坐标</param>
+        /// <param name="z">Z坐标</param>
+        /// <param name="block">地图块</param>
+        public void SetBlockByMapPoint(int x, int y, int z, byte block)
+        {
+            int mapX = Mathf.FloorToInt(x / 16);
+            int mapZ = Mathf.FloorToInt(z / 16);
+            var chunk = chunks[mapX, mapZ];
+            //判断Chunk是否正确
+            if (chunk == null)
+            {
+                Debug.LogError("未找到指定Chunk，查找的坐标有误！");
+            }
+            int chunkX = x % 16;
+            int chunkY = y % 16;
+            int chunkZ = z % 16;
+             chunk.SetBlockByChunkPoint(chunkX, chunkY, chunkZ,block);
+        }
+        /// <summary>
+        /// 获取地图指定位置地图块（Block）
+        /// </summary>
+        /// <param name="x">X坐标</param>
+        /// <param name="y">Y坐标</param>
+        /// <param name="z">Z坐标</param>
+        /// <returns>地图块</returns>
+        public int GetBlockByMapPoint(int x, int y, int z)
+        {
+            int mapX = Mathf.FloorToInt(x / 16);
+            int mapZ = Mathf.FloorToInt(z / 16);
+            var chunk = chunks[mapX, mapZ];
+            //判断Chunk是否正确
+            if (chunk == null)
+            {
+                Debug.LogError("未找到指定Chunk，查找的坐标有误！");
+                return -1;
+            }
+            int chunkX = x % 16;
+            int chunkY = y % 16;
+            int chunkZ = z % 16;
+            return chunk.GetBlockByChunkPoint(chunkX, chunkY, chunkZ);
         }
         private void OnGUI()
         {

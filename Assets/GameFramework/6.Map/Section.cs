@@ -14,9 +14,9 @@ namespace GameFramework
         public byte[,,] blocks;
         public Vector3Int activeBlock;
         public Mesh mesh;
-        //面需要的点
+        //顶点列表
         private List<Vector3> vertices = new List<Vector3>();
-        //生成三边面时用到的vertices的index
+        //三角形面顶点索引列表
         private List<int> triangles = new List<int>();
         //所有的uv信息
         private List<Vector2> uv = new List<Vector2>();
@@ -24,7 +24,7 @@ namespace GameFramework
         public static float textureOffset = 1 / 32f;
         //让UV稍微缩小一点，避免出现它旁边的贴图
         public static float shrinkSize = 0.001f;
-
+        //是否需要更新Mesh
         public bool isDirty = false;
         //当前Chunk是否正在生成中
         private bool isWorking = false;
@@ -37,7 +37,9 @@ namespace GameFramework
         {
             this.id = setId;
         }
-
+        /// <summary>
+        /// 创建地图块
+        /// </summary>
         public void CreateBlocks()
         {
             blocks = new byte[width, height, depth];
@@ -62,6 +64,10 @@ namespace GameFramework
                 }
             }
         }
+        /// <summary>
+        /// 创建Mesh
+        /// </summary>
+        /// <returns></returns>
         public  IEnumerator CreateMesh()
         {
             while (isWorking)
@@ -135,17 +141,33 @@ namespace GameFramework
                 return this.blocks[x, y, z] == 0;
             }
         }
-
+        /// <summary>
+        /// 设置某个地图块为选中地图块，并显示选中的样式，例如出现边框，高亮
+        /// </summary>
+        /// <param name="blockIdx"></param>
         public void SetBlockActive(Vector3 blockIdx)
         {
             this.activeBlock = new Vector3Int((int) blockIdx.x, (int) blockIdx.y, (int) blockIdx.z);
             this.isDirty = true;
         }
+        /// <summary>
+        /// 在指定位置创建指定类型的地图块
+        /// </summary>
+        /// <param name="x">x位置</param>
+        /// <param name="y">y位置</param>
+        /// <param name="z">z位置</param>
+        /// <param name="blockID">地图类型ID</param>
         public void CreateBlock(int x, int y, int z,byte blockID)
         {
             this.blocks[x, y, z] = blockID;
             isDirty = true;
         }
+        /// <summary>
+        /// 删除指定位置的地图块
+        /// </summary>
+        /// <param name="x">x位置</param>
+        /// <param name="y">y位置</param>
+        /// <param name="z">z位置</param>
         public void DeleteBlock(int x, int y, int z)
         {
             this.blocks[x, y, z] = 0;

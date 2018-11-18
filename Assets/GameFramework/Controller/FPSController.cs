@@ -13,7 +13,6 @@ namespace GameFramework
         public Rigidbody rigidbody;
         public float speed = 1;
         public string targetChunk;
-        public GameObject sphere;
         public GameObject activeCube;
         public Chunk activeChunk;
         public Vector3 activeBlock;
@@ -72,7 +71,6 @@ namespace GameFramework
             if (Physics.Raycast(ray, out hitInfo))
             {
                 targetChunk = hitInfo.collider.gameObject.name;
-                sphere.transform.position = hitInfo.point;
                 this.FindBlockFromWorldPoint(hitInfo.collider.gameObject, hitInfo.point);
             }
             else
@@ -101,7 +99,7 @@ namespace GameFramework
                 activeBlock = blockPoint;
                 if (blockPoint != new Vector3(-999, -999, -999))
                 {
-                    var cubePos = blockPoint + new Vector3(0.5f - 8, 0.5f - chunk.sectionCount / 2 * 16, 0.5f - 8f);
+                    var cubePos = blockPoint + new Vector3(0.5f - 8, 0.5f - chunk.sectionCount / 2 * 16, 0.5f - 8f)+go.transform.position;
                     this.activeCube.transform.position = cubePos;
                     this.activeCube.SetActive(true);
                 }

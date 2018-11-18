@@ -20,6 +20,7 @@ namespace GameFramework
 
         //当前Chunk是否正在生成中
         private bool isWorking = false;
+        //是否需要更新
         public bool isDirty = false;
         void Start()
         {
@@ -138,6 +139,32 @@ namespace GameFramework
             sections[idx].DeleteBlock((int)localBlockPoint.x, (int)localBlockPoint.y,(int) localBlockPoint.z);
             isDirty = true;
         }
+        /// <summary>
+        /// 获取Chuck指定位置地图块（Block）
+        /// </summary>
+        /// <param name="x">X坐标</param>
+        /// <param name="y">Y坐标</param>
+        /// <param name="z">Z坐标</param>
+        /// <returns>地图块</returns>
+        public int GetBlockByChunkPoint(int x, int y, int z)
+        {
+            int sectionIndex = Mathf.FloorToInt(y / 16);
+            int sectionY = y % 16;
+            return sections[sectionIndex].blocks[x, sectionY, z];
+        }
+        /// <summary>
+        /// 在Chuck指定位置设置地图块（Block）
+        /// </summary>
+        /// <param name="x">X坐标</param>
+        /// <param name="y">Y坐标</param>
+        /// <param name="z">Z坐标</param>
+        /// <param name="block">地图块</param>
+        public void SetBlockByChunkPoint(int x, int y, int z,byte block)
+        {
+            int sectionIndex = Mathf.FloorToInt(y / 16);
+            int sectionY = y % 16;
+            sections[sectionIndex].blocks[x, sectionY, z]=block;
+        }
         public Vector3 GetBlockFromWorldPoint(Vector3 worldPoint)
         {
             Vector3 localPoint= this.transform.InverseTransformPoint(worldPoint);
@@ -205,6 +232,63 @@ namespace GameFramework
             Debug.Log(worldPoint+"=>"+blockPoint);
             return blockPoint;
         }
-        
+        #region 地形变化函数
+        /// <summary>
+        /// 在地图指定位置向外扩张
+        /// </summary>
+        /// <param name="x"></param>
+        /// <param name="y"></param>
+        /// <param name="z"></param>
+        /// <param name="power"></param>
+        public void Expand(int x, int y, int z, int power)
+        {
+            
+        }
+        /// <summary>
+        /// 在地图指定位置向内塌陷收缩
+        /// </summary>
+        /// <param name="x">X坐标</param>
+        /// <param name="y">Y坐标</param>
+        /// <param name="z">Z坐标</param>
+        /// <param name="power">强度</param>
+        public void Collapse(int x, int y, int z, int power)
+        {
+            
+        }
+        /// <summary>
+        /// 切开指定地图块
+        /// </summary>
+        /// <param name="x">X坐标</param>
+        /// <param name="y">Y坐标</param>
+        /// <param name="z">Z坐标</param>
+        /// <param name="power">强度</param>
+        public void Cut(int x, int y, int z, int power)
+        {
+            
+        }
+        /// <summary>
+        /// 升高指定地图块
+        /// </summary>
+        /// <param name="x">X坐标</param>
+        /// <param name="y">Y坐标</param>
+        /// <param name="z">Z坐标</param>
+        /// <param name="power">强度</param>
+        public void Raise(int x, int y, int z, int power)
+        {
+            
+        }
+        /// <summary>
+        /// 下降指定地图块
+        /// </summary>
+        /// <param name="x">X坐标</param>
+        /// <param name="y">Y坐标</param>
+        /// <param name="z">Z坐标</param>
+        /// <param name="power">强度</param>
+        public void Lower(int x, int y, int z, int power)
+        {
+            
+        }
+
+        #endregion
     }
 }
