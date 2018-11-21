@@ -28,7 +28,10 @@ namespace GameFramework
         {
 
         }
+        public void CreateMap()
+        {
 
+        }
         public void LoadMap()
         {
 
@@ -38,6 +41,8 @@ namespace GameFramework
         {
 
         }
+
+
         /// <summary>
         /// 创建随机地图
         /// </summary>
