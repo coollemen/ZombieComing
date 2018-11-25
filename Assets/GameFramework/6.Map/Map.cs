@@ -107,6 +107,30 @@ namespace GameFramework
             int chunkZ = z % 16;
             return chunk.GetBlockByChunkPoint(chunkX, chunkY, chunkZ);
         }
+        public void InitViewChunks()
+        {
+
+        }
+
+        public void ViewMoveUp()
+        {
+
+        }
+
+        public void ViewMoveDown()
+        {
+
+        }
+
+        public void ViewMoveLeft()
+        {
+
+        }
+
+        public void ViewMoveRight()
+        {
+
+        }
         private void OnGUI()
         {
             if (GUILayout.Button("Left Chunk"))

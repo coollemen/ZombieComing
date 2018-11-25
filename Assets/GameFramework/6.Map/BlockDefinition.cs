@@ -27,85 +27,55 @@ namespace GameFramework
         public string iconName;
         //方向（指的是前面所面朝的方向）
         public BlockDirection direction = BlockDirection.Front;
-        
-        //前面贴图的坐标
-        public byte textureFrontX;
-        public byte textureFrontY;
 
-        //后面贴图的坐标
-        public byte textureBackX;
-        public byte textureBackY;
+        public Sprite front;
+        public Sprite back;
+        public Sprite top;
+        public Sprite bottom;
+        public Sprite left;
+        public Sprite right;
 
-        //右面贴图的坐标
-        public byte textureRightX;
-        public byte textureRightY;
-
-        //左面贴图的坐标
-        public byte textureLeftX;
-        public byte textureLeftY;
-
-        //上面贴图的坐标
-        public byte textureTopX;
-        public byte textureTopY;
-
-        //下面贴图的坐标
-        public byte textureBottomX;
-        public byte textureBottomY;
+        public BlockDefinition()
+        {
+            this.id = 0;
+            this.name = "block";
+        }
         //都是A面的方块
-        public BlockDefinition(byte id, string name, byte textureX, byte textureY)
-            : this(id, name, textureX, textureY, textureX, textureY, textureX, textureY, textureX, textureY)
+        public BlockDefinition(byte id, string name, Sprite face):this(id,name,face,face,face,face,face,face)
         {
         }
 
         //上面是A，其他面是B的方块
-        public BlockDefinition(byte id, string name, byte textureX, byte textureY, byte textureTopX, byte textureTopY)
-            : this(id, name, textureX, textureY, textureX, textureY, textureX, textureY, textureX, textureY,
-                textureTopX, textureTopY, textureX, textureY)
+        public BlockDefinition(byte id, string name,Sprite setTop,Sprite setOther)
+            : this(id, name, setTop,setOther,setOther,setOther,setOther,setOther)
         {
         }
 
         //上面是A，下面是B，其他面是C的方块
-        public BlockDefinition(byte id, string name, byte textureX, byte textureY, byte textureTopX, byte textureTopY,
-            byte textureBottomX, byte textureBottomY)
-            : this(id, name, textureX, textureY, textureX, textureY, textureX, textureY, textureX, textureY,
-                textureTopX, textureTopY, textureBottomX, textureBottomY)
+        public BlockDefinition(byte id, string name, Sprite setTop,Sprite setBottom, Sprite setOther)
+            : this(id, name, setTop, setBottom, setOther, setOther, setOther, setOther)
         {
         }
 
         //上面是A，下面是B，前面是C，其他面是D的方块
-        public BlockDefinition(byte id, string name, byte textureFrontX, byte textureFrontY, byte textureX, byte textureY,
-            byte textureTopX, byte textureTopY, byte textureBottomX, byte textureBottomY)
-            : this(id, name, textureFrontX, textureFrontY, textureX, textureY, textureX, textureY, textureX, textureY,
-                textureTopX, textureTopY, textureBottomX, textureBottomY)
-        {
-        }
+//        public BlockDefinition(byte id, string name, byte textureFrontX, byte textureFrontY, byte textureX, byte textureY,
+//            byte textureTopX, byte textureTopY, byte textureBottomX, byte textureBottomY)
+//            : this(id, name, textureFrontX, textureFrontY, textureX, textureY, textureX, textureY, textureX, textureY,
+//                textureTopX, textureTopY, textureBottomX, textureBottomY)
+//        {
+//        }
 
         //上下左右前后面都不一样的方块
-        public BlockDefinition(byte id, string name, byte textureFrontX, byte textureFrontY, byte textureBackX, byte textureBackY,
-            byte textureRightX, byte textureRightY,
-            byte textureLeftX, byte textureLeftY, byte textureTopX, byte textureTopY, byte textureBottomX,
-            byte textureBottomY)
+        public BlockDefinition(byte id, string name,Sprite setTop,Sprite setBottom,Sprite setFront,Sprite setBack,Sprite setLeft,Sprite setRight)
         {
             this.id = id;
             this.name = name;
-
-            this.textureFrontX = textureFrontX;
-            this.textureFrontY = textureFrontY;
-
-            this.textureBackX = textureBackX;
-            this.textureBackY = textureBackY;
-
-            this.textureRightX = textureRightX;
-            this.textureRightY = textureRightY;
-
-            this.textureLeftX = textureLeftX;
-            this.textureLeftY = textureLeftY;
-
-            this.textureTopX = textureTopX;
-            this.textureTopY = textureTopY;
-
-            this.textureBottomX = textureBottomX;
-            this.textureBottomY = textureBottomY;
+            top = setTop;
+            bottom = setBottom;
+            front = setFront;
+            back = setBack;
+            left = setLeft;
+            right = setRight;
         }
     }
 }

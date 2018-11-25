@@ -385,7 +385,7 @@ MonoBehaviour:
   viewDepth: 3
   chunkPrefab: {fileID: 1209121833632952, guid: fa855c8b54decae409163affccbd2ecc,
     type: 2}
-  data: {fileID: 0}
+  data: {fileID: 11400000, guid: ac77a60e34d994c4bad1d2251945c543, type: 2}
 --- !u!4 &1001049962
 Transform:
   m_ObjectHideFlags: 0
