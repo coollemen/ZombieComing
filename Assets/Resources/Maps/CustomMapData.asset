@@ -27,7 +27,7 @@ MonoBehaviour:
     left: {fileID: 21300004, guid: 3d4899b08e630f24092c3839507b162d, type: 3}
     right: {fileID: 21300004, guid: 3d4899b08e630f24092c3839507b162d, type: 3}
   - id: 1
-    name: block
+    name: grass
     iconName: 
     direction: 0
     front: {fileID: 21300006, guid: 3d4899b08e630f24092c3839507b162d, type: 3}
@@ -36,4 +36,26 @@ MonoBehaviour:
     bottom: {fileID: 21300004, guid: 3d4899b08e630f24092c3839507b162d, type: 3}
     left: {fileID: 21300006, guid: 3d4899b08e630f24092c3839507b162d, type: 3}
     right: {fileID: 21300006, guid: 3d4899b08e630f24092c3839507b162d, type: 3}
-  layers: []
+  - id: 2
+    name: wall
+    iconName: 
+    direction: 0
+    front: {fileID: 0}
+    back: {fileID: 0}
+    top: {fileID: 0}
+    bottom: {fileID: 0}
+    left: {fileID: 0}
+    right: {fileID: 0}
+  layers:
+  - start: 0
+    end: 255
+    items:
+    - blockId: 0
+      weight: 0.4
+    - blockId: 1
+      weight: 0.6
+    - blockId: 2
+      weight: 0
+  - start: 0
+    end: 255
+    items: []
