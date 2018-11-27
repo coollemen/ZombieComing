@@ -61,7 +61,11 @@ namespace GameFramework
 //            depthProp.intValue = EditorGUILayout.IntField("Depth", depthProp.intValue);
 //            GUILayout.EndHorizontal();
             selectPanelIndex = GUILayout.Toolbar(selectPanelIndex, panelNames);
-            if (panelNames[selectPanelIndex] == "Blocks")
+            if (panelNames[selectPanelIndex] == "Brushes")
+            {
+                this.DrawBurshesPanel(data);
+            }
+            else if (panelNames[selectPanelIndex] == "Blocks")
             {
                 this.DrawBlocksPanel(data);
             }
@@ -72,6 +76,14 @@ namespace GameFramework
             else if (panelNames[selectPanelIndex] == "Config")
             {
             }
+        }
+        /// <summary>
+        /// 绘制笔刷页面
+        /// </summary>
+        /// <param name="data"></param>
+        public void DrawBurshesPanel(MapData data)
+        {
+            
         }
         /// <summary>
         /// 绘制Layers页面
