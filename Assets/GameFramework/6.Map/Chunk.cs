@@ -24,10 +24,14 @@ namespace GameFramework
         public bool isDirty = false;
         void Start()
         {
+            this.Init();
+        }
+
+        public void Init()
+        {
             sections = new Section[sectionCount];
             StartCoroutine(CreateChunkMesh());
         }
-
         IEnumerator CreateChunkMesh()
         {
             while (isWorking)

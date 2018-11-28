@@ -42,12 +42,31 @@ namespace GameFramework
 
         }
 
-
+        public void CreateMapByEditor()
+        {
+            viewChunks = new Chunk[viewWidth, viewDepth];
+            for (int i = 0; i < viewWidth; i++)
+            {
+                for (int j = 0; j < viewDepth; j++)
+                {
+                    //地图原点在左下角
+                    var go = Instantiate(chunkPrefab);
+                    go.transform.SetParent(this.transform);
+                    go.transform.position =
+                        new Vector3(transform.position.x + i * 16 + 8, transform.position.y, transform.position.z + j * 16 + 8);
+                    go.name = string.Format("Chunk_{0}_{1}", i, j);
+                    viewChunks[i, j] = go.GetComponent<Chunk>();
+                    viewChunks[i, j].Init();
+                    
+                }
+            }
+        }
         /// <summary>
         /// 创建随机地图
         /// </summary>
         public void CreateRandomMap()
         {
+            viewChunks = new Chunk[viewWidth, viewDepth];
             for (int i = 0; i < viewWidth; i++)
             {
                 for (int j = 0; j < viewDepth; j++)
