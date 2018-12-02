@@ -23,6 +23,10 @@ namespace GameFramework
         public Vector2 blockScrollViewPos = Vector2.zero;
         public int selectBlockIndex = 0;
         public int selectLayerIndex = 0;
+        private List<Bounds> chunkBounds;
+        private bool isDirty = false;
+        private int selectedChunkIndex = -1;
+        private bool isMouseIn = false;
         private void OnEnable()
         {
             this.widthProp = serializedObject.FindProperty("width");
@@ -46,7 +50,217 @@ namespace GameFramework
             var data = map.data;
             EditorUtility.SetDirty(data);
         }
+        /// <summary>
+        /// 场景视图GUI绘制
+        /// </summary>
+        public void OnSceneGUI()
+        {
+            Map map = (Map)target;
+            //如果map为null 不绘制
+            if (map == null) return;
+            if (isDirty || this.chunkBounds==null)
+            {
+                this.CreateChunkBounds(map);
+                isDirty = false;
+            }
+//            this.DrawMapCube(map);
+//            this.DrawMapRectangle(map);
+            this.DrawChunkRactangle(map);
+//            this.DrawChunkBounds(map);
+            List<int> hitBlockBounds = new List<int>();
+            Ray mouseRay = HandleUtility.GUIPointToWorldRay(Event.current.mousePosition);
+            for (int i = 0; i < chunkBounds.Count; i++)
+            {
+                if (chunkBounds[i].IntersectRay(mouseRay))
+                {
+                    hitBlockBounds.Add(i);
+                }
+            }
+            if (hitBlockBounds.Count > 0)
+            {
+//                Debug.Log("hit chunk!");
+                float distance = 10000000;
+                int activeID = -1;
+                for (int i = 0; i < hitBlockBounds.Count; i++)
+                {
+                    var index = hitBlockBounds[i];
+                    float tempDistance = (mouseRay.origin -chunkBounds[index].center).magnitude;
+                    if (tempDistance < distance)
+                    {
+                        distance = tempDistance;
+                        activeID = index;
+                    }
 
+                }
+                this.selectedChunkIndex = activeID;
+            }
+            this.DrawActiveChunk(map);
+            //绘制地图碰撞盒
+            var mapBounds = this.GetMapBounds(map);
+            //判读鼠标是不是在地图内
+            if (mapBounds.IntersectRay(mouseRay))
+            {
+                this.DrawMapBounds(mapBounds);
+                isMouseIn = true;
+            }
+            else
+            {
+                isMouseIn = false;
+            }
+
+            if (Event.current.type == EventType.MouseDown)
+            {
+                if (Event.current.button == 0 && isMouseIn)
+                {
+                    Debug.Log("Mouse Left Button Click!");
+                    if (this.selectedChunkIndex != -1 )
+                    {
+                        var go= map.transform.GetChild(0).gameObject;
+                        EditorGUIUtility.PingObject(go);
+                        Selection.activeGameObject = go;
+                        Event.current.Use();
+                    }
+
+                }
+            }
+        }
+
+        private void DrawActiveChunk(Map map)
+        {
+            if (this.selectedChunkIndex == -1) return;
+//            Debug.Log("Select Chunk Index=" + this.selectedChunkIndex);
+            var b = this.chunkBounds[this.selectedChunkIndex];
+            var c = Handles.color;
+            Handles.color = Color.green;
+            Handles.DrawWireCube(b.center, b.size);
+            Handles.color = c;
+        }
+
+        private void DrawMapBounds(Bounds b)
+        {
+            var c = Handles.color;
+            Handles.color = Color.yellow;
+            Handles.DrawWireCube(b.center, b.size);
+            Handles.color = c;
+        }
+        private Bounds GetMapBounds(Map map)
+        {
+            var pos = map.gameObject.transform.position;
+
+            var center = new Vector3(pos.x + map.width / 2 * 16,0.5f, pos.z + map.depth / 2 * 16);
+            var size = new Vector3(map.width * 16, 1, map.depth * 16);
+            Bounds b = new Bounds(center,size);
+            return b;
+        }
+        private void CreateChunkBounds(Map map)
+        {
+            this.chunkBounds = new List<Bounds>();
+            var pos = map.gameObject.transform.position;
+            for (int j = 0; j < map.depth; j++)
+            {
+                for (int i = 0; i < map.width; i++)
+                {
+
+                    Bounds b = new Bounds();
+                    b.center = new Vector3(pos.x + i * 16 + 8,
+                        pos.y + 0.5f,
+                        pos.z + j * 16 + 8);
+                    //一层的高度，一个chunk的宽度和深度
+                    b.size = new Vector3(16, 1, 16);
+                    chunkBounds.Add(b);
+                }
+            }
+        }
+
+        private void DrawChunkBounds(Map map)
+        {
+            for (int i = 0; i < chunkBounds.Count; i++)
+            {
+                var b = chunkBounds[i];
+                var c = Handles.color;
+                Handles.color = Color.green;
+                Handles.DrawWireCube(b.center, b.size);
+                Handles.color = c;
+            }
+        }
+        private void CheckChunkBounds()
+        {
+            
+        }
+
+        private void DrawChunkRactangle(Map map)
+        {
+            var pos = map.gameObject.transform.position;
+            for (int j = 0; j < map.depth; j++)
+            {
+                for (int i = 0; i < map.width; i++)
+                {
+                    Vector3[] verts = new Vector3[]
+                    {
+                        new Vector3(pos.x + i * 16, pos.y, pos.z + j * 16),
+                        new Vector3(pos.x + (i + 1) * 16, pos.y, pos.z + j * 16),
+                        new Vector3(pos.x + (i + 1) * 16, pos.y, pos.z + (j + 1) * 16),
+                        new Vector3(pos.x + i * 16, pos.y, pos.z + (j + 1) * 16),
+                    };
+                    if ((i % 2 == 0 && j % 2 != 0) || (i % 2 != 0 && j % 2 == 0))
+                    {
+                        Handles.DrawSolidRectangleWithOutline(verts, new Color(1f, 1f, 1f, 0.1f),
+                            new Color(1f, 1f, 1f, 0.2f));
+                    }
+                    else
+                    {
+                        Handles.DrawSolidRectangleWithOutline(verts, new Color(1f, 1f, 1f, 0.01f),
+                            new Color(1f, 1f, 1f, 0.2f));
+                    }
+//                        Handles.DrawSolidRectangleWithOutline(verts, new Color(1f, 1f, 1f, 0.1f), new Color(0f, 1f, 0f, 1f));
+                }
+            }
+        }
+
+        private void DrawMapRectangle(Map map)
+        {
+            var pos = map.gameObject.transform.position;
+            Vector3[] verts = new Vector3[]
+            {
+                new Vector3(pos.x, pos.y, pos.z),
+                new Vector3(pos.x+map.width*16, pos.y, pos.z),
+                new Vector3(pos.x+map.width*16, pos.y, pos.z+map.depth*16),
+                new Vector3(pos.x, pos.y, pos.z+map.depth*16),
+
+            };
+            Handles.DrawSolidRectangleWithOutline(verts,new Color(1f,1f,1f,0.1f), new Color(0f, 1f, 0f, 1f));
+        }
+
+        private void DrawMapCube(Map map)
+        {
+
+            var pos = map.gameObject.transform.position;
+            var center = new Vector3();
+            center.x = pos.x + map.width / 2 * 16;
+            center.y = pos.y;
+            center.z = pos.z + map.depth / 2 * 16;
+            Handles.DrawWireCube(center, new Vector3(map.width * 16, 1, map.depth * 16));
+        }
+
+        /// <summary>
+        /// 为每个chunk绘制一个白色的线框
+        /// </summary>
+        /// <param name="map"></param>
+        private void DrawChunkCube(Map map)
+        {
+            var pos = map.gameObject.transform.position;
+            for (int i = 0; i < map.width; i++)
+            {
+                for (int j = 0; j < map.depth; j++)
+                {
+                    var center = new Vector3();
+                    center.x = pos.x + i * 16 + 8;
+                    center.y = pos.y;
+                    center.z = pos.z + j * 16 + 8;
+                    Handles.DrawWireCube(center, new Vector3(16, 16, 16));
+                }
+            }
+        }
         public override void OnInspectorGUI()
         {
             base.OnInspectorGUI();
@@ -60,6 +274,15 @@ namespace GameFramework
 //            widthProp.intValue= EditorGUILayout.IntField("Width",widthProp.intValue);
 //            depthProp.intValue = EditorGUILayout.IntField("Depth", depthProp.intValue);
 //            GUILayout.EndHorizontal();
+            if (GUILayout.Button("Create Map"))
+            {
+               //创建map的chunks
+                for (int i = 0; i < map.transform.childCount; i++)
+                {
+                    DestroyImmediate(map.transform.GetChild(i).gameObject); 
+                }
+                map.CreateMapByEditor();
+            }
             if (GUILayout.Button("Create Mesh"))
             {
                 map.CreateRandomMap();
