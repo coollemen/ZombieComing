@@ -7,19 +7,64 @@ namespace GameFramework
     [System.Serializable]
     public class ChunkData
     {
-        public int id;
         public List<SectionData> sectionData;
-        public ChunkData(int setID)
-        {
-            this.id = setID;
-            sectionData = new List<SectionData>();
+        public ChunkData(int sectionCount)
+        {         
+            this.InitData(sectionCount);
         }
 
+        public void InitData(int sectionCount)
+        {
+            sectionData = new List<SectionData>();
+            for (int i = 0; i < sectionCount; i++)
+            {
+                var sd = new SectionData();
+                this.sectionData.Add(sd);
+            }
+        }
+
+        public byte this[int x, int y, int z]
+        {
+            get
+            {
+                int sectionIndex =Mathf.FloorToInt( y / 16);
+                int sectionY = y % 16;
+
+                return sectionData[sectionIndex][x,sectionY,z];
+            }
+            set
+            {
+                int sectionIndex = Mathf.FloorToInt(y / 16);
+                int sectionY = y % 16;
+                sectionData[sectionIndex][x, sectionY, z]=value;
+            }
+        }
+        
     }
     [System.Serializable]
     public class SectionData
     {
         public byte[,,] blocks = new byte[16, 16, 16];
+
+        public SectionData()
+        {
+            for (int k = 0; k < 16; k++)
+            {
+                for (int j = 0; j < 16; j++)
+                {
+                    for (int i = 0; i < 16; i++)
+                    {
+                        //block数值为0代表该Block为空，没有数据
+                        blocks[i, j, k] = 0;
+                    }
+                }
+            }
+        }
+        public byte this[int x, int y, int z]
+        {
+            get { return blocks[x,y,z]; }
+            set { blocks[x, y, z] = value; }
+        }
     }
     [CreateAssetMenu(fileName = "CustomMapData.asset", menuName = "GameFramework/Map Data Asset")]
     /// <summary>
@@ -56,13 +101,17 @@ namespace GameFramework
         /// </summary>
         public int width;
         /// <summary>
-        /// 地图的高度，对应z轴chunk的个数
+        /// 地图的高度，对应y轴section的个数
         /// </summary>
         public int height;
         /// <summary>
+        /// 地图的深度，对应z轴chunk的个数
+        /// </summary>
+        public int depth;
+        /// <summary>
         /// chunk数据
         /// </summary>
-        public List<ChunkData> chunkDatas = new List<ChunkData>();
+        public List<List<ChunkData>> chunkDatas = new List<List<ChunkData>>();
         /// <summary>
         /// block数据
         /// </summary>
@@ -85,9 +134,27 @@ namespace GameFramework
         public void CreateDefaultData()
         {
             name = "Map Data";
-            width = 64;
-            height = 64;
+            width = 16;
+            height = 16;
+            depth = 16;
+            this.InitChunksData();
         }
 
+        /// <summary>
+        /// 对地图chunk的数据进行初始化
+        /// </summary>
+        public void InitChunksData()
+        {
+            for (int i = 0; i < width; i++)
+            {
+                var col = new List<ChunkData>();
+                for (int j = 0; j < depth; j++)
+                {
+                    var cd = new ChunkData(height);
+                    col.Add(cd);
+                }
+                chunkDatas.Add(col);
+            }
+        }
     }
 }

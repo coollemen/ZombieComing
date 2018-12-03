@@ -27,6 +27,8 @@ namespace GameFramework
         private bool isDirty = false;
         private int selectedChunkIndex = -1;
         private bool isMouseIn = false;
+        private Map map;
+        private MapData data;
         private void OnEnable()
         {
             this.widthProp = serializedObject.FindProperty("width");
@@ -35,19 +37,17 @@ namespace GameFramework
             this.viewDepthProp = serializedObject.FindProperty("viewDepth");
             this.chunkPrefabProp = serializedObject.FindProperty("chunkPrefab");
             this.dataProp = serializedObject.FindProperty("data");
+            map = (Map)target;
+            data = map.data;
         }
 
         private void OnDisable()
         {
-            Map map = (Map) target;
-            var data = map.data;
             EditorUtility.SetDirty(data);
         }
 
         private void OnDestroy()
         {
-            Map map = (Map) target;
-            var data = map.data;
             EditorUtility.SetDirty(data);
         }
         /// <summary>
@@ -55,7 +55,6 @@ namespace GameFramework
         /// </summary>
         public void OnSceneGUI()
         {
-            Map map = (Map)target;
             //如果map为null 不绘制
             if (map == null) return;
             if (isDirty || this.chunkBounds==null)
@@ -124,7 +123,21 @@ namespace GameFramework
                 }
             }
         }
+        #region SenceView相关函数
+        private void CreateBlockBounds()
+        {
+            
+        }
 
+        private void CheckHitBlock()
+        {
+            
+        }
+
+        private void DrawActiveBlocks()
+        {
+            
+        }
         private void DrawActiveChunk(Map map)
         {
             if (this.selectedChunkIndex == -1) return;
@@ -261,6 +274,48 @@ namespace GameFramework
                 }
             }
         }
+        #endregion
+# region MapData操作函数
+
+        public byte GetBlockFromData(int x, int y, int z)
+        {
+            Vector2Int chunkIndex = GetChunkIndexFromMapPoint(x, z);
+            Vector3Int chunkPoint = GetChunkPointFromMapPoint(x, y, z);
+            return data.chunkDatas[chunkIndex.x][chunkIndex.y][chunkPoint.x,chunkPoint.y,chunkPoint.z];
+        }
+
+        public void SetBlockToData(int x, int y, int z, byte blockData)
+        {
+            Vector2Int chunkIndex = GetChunkIndexFromMapPoint(x, z);
+            Vector3Int chunkPoint = GetChunkPointFromMapPoint(x, y, z);
+            data.chunkDatas[chunkIndex.x][chunkIndex.y][chunkPoint.x, chunkPoint.y, chunkPoint.z] = blockData;
+        }
+        /// <summary>
+        /// 将地图坐标转换为Chunk的数组索引
+        /// </summary>
+        /// <param name="mapX">地图X</param>
+        /// <param name="mapZ">地图Z</param>
+        /// <returns></returns>
+        private Vector2Int GetChunkIndexFromMapPoint(int mapX, int mapZ)
+        {
+            int x = Mathf.FloorToInt(mapX / data.width);
+            int z = Mathf.FloorToInt(mapZ/ data.depth);
+            return new Vector2Int(x, z);
+        }
+        /// <summary>
+        /// 将地图坐标转换为在Chunk中的局部坐标
+        /// </summary>
+        /// <param name="mapX">地图X</param>
+        /// <param name="mapY">地图Y</param>
+        /// <param name="mapZ">地图Z</param>
+        /// <returns></returns>
+        private Vector3Int GetChunkPointFromMapPoint(int mapX, int mapY, int mapZ)
+        {
+            int x = mapX % data.width;
+            int z = mapZ % data.depth;
+            return new Vector3Int(x, mapY, z);
+        }
+#endregion
         public override void OnInspectorGUI()
         {
             base.OnInspectorGUI();
@@ -304,6 +359,7 @@ namespace GameFramework
             {
             }
         }
+        #region OnInspectorGUI相关函数
         /// <summary>
         /// 绘制笔刷页面
         /// </summary>
@@ -504,5 +560,6 @@ namespace GameFramework
                 }
             }
         }
+        #endregion
     }//end class
 }

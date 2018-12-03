@@ -14,7 +14,7 @@ MonoBehaviour:
   name: Map Data
   width: 64
   height: 64
-  chunkDatas: []
+  depth: 0
   blockDefinitions:
   - id: 0
     name: "\u6CE5\u5730"
