@@ -10,7 +10,7 @@ namespace GameFramework
     {
 
         public string[] panelNames = new string[] {"Brushes", "Blocks", "Layers", "Config"};
-        public int selectPanelIndex = 2;
+        public int selectPanelIndex =0;
         public string[] blockCreateModes = new string[] {"One Tex", "Two Tex", "Tree Tex", "Six Tex"};
         public int blockCreateModeIndex = 0;
         public BlockDefinition activeBlockDef;
@@ -18,6 +18,10 @@ namespace GameFramework
         public Vector2 blockScrollViewPos = Vector2.zero;
         public int selectBlockIndex = 0;
         public int selectLayerIndex = 0;
+        //画笔
+        public string[] brushNames = new string[] {"笔","油漆桶"};
+        public int activeBrushIndex = 0;
+        //*****************************
 //        private List<Bounds> chunkBounds;
 //        private List<Bounds> activeBlocksBounds;
         private bool isDirty = false;
@@ -416,7 +420,11 @@ namespace GameFramework
         /// <param name="data"></param>
         public void DrawBrushesPanel(MapData data)
         {
-
+            GUILayout.BeginHorizontal();
+            GUILayout.FlexibleSpace();
+            activeBrushIndex= GUILayout.Toolbar(activeBrushIndex, brushNames);
+            GUILayout.FlexibleSpace();
+            GUILayout.EndHorizontal();
         }
 
         /// <summary>
