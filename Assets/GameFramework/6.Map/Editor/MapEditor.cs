@@ -370,17 +370,16 @@ namespace GameFramework
 
         public override void OnInspectorGUI()
         {
-            base.OnInspectorGUI();
+//            base.OnInspectorGUI();
             Map map = (Map) target;
             var data = map.data;
-//            serializedObject.Update();
-//           var size= EditorGUILayout.Vector2IntField("Size", new Vector2Int(widthProp.intValue, depthProp.intValue));
-//            widthProp.intValue = size.x;
-//            depthProp.intValue = size.y;
-//            GUILayout.BeginHorizontal();
-//            widthProp.intValue= EditorGUILayout.IntField("Width",widthProp.intValue);
-//            depthProp.intValue = EditorGUILayout.IntField("Depth", depthProp.intValue);
-//            GUILayout.EndHorizontal();
+            data = EditorGUILayout.ObjectField("Data", data, data.GetType()) as MapData;
+            data.name = EditorGUILayout.TextField("Name", data.name);
+            EditorGUILayout.TextField("Version", data.version);
+            data.width = EditorGUILayout.IntField("Wdith(X)", data.width);
+            data.height = EditorGUILayout.IntField("Height(Y)", data.height);
+            data.depth = EditorGUILayout.IntField("Depth(Z)", data.depth);
+
             if (GUILayout.Button("Create Map"))
             {
                 //创建map的chunks
