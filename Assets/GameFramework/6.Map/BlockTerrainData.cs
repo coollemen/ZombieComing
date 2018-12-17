@@ -66,11 +66,11 @@ namespace GameFramework
             set { blocks[x, y, z] = value; }
         }
     }
-    [CreateAssetMenu(fileName = "CustomMapData.asset", menuName = "GameFramework/Map Data Asset")]
+    [CreateAssetMenu(fileName = "CustomMapData.asset", menuName = "GameFramework/BlockTerrain Data Asset")]
     /// <summary>
     /// 地图数据
     /// </summary>
-    public class MapData : ScriptableObject
+    public class BlockTerrainData : ScriptableObject
     {
         /// <summary>
         /// 地图的名称
@@ -117,7 +117,7 @@ namespace GameFramework
         /// </summary>
         public List<BlockDefinition> blockDefinitions = new List<BlockDefinition>();
 
-        public List<MapLayer> layers = new List<MapLayer>();
+        public List<BlockTerrainLayer> layers = new List<BlockTerrainLayer>();
         private void Awake()
         {
 
@@ -133,7 +133,7 @@ namespace GameFramework
         }
         public void CreateDefaultData()
         {
-            name = "Map Data";
+            name = "BlockTerrain Data";
             width = 16;
             height = 16;
             depth = 16;

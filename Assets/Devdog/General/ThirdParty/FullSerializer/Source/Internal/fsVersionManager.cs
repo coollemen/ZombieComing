@@ -45,7 +45,7 @@ namespace Devdog.General.ThirdParty.FullSerializer.Internal {
                             throw new Exception("fsObject attribute on " + type + " contains a PreviousModels specifier - it must also include a VersionString modifier");
                         }
 
-                        // Map the ancestor types into versioned types
+                        // BlockTerrain the ancestor types into versioned types
                         fsVersionedType[] ancestors = new fsVersionedType[attr.PreviousModels != null ? attr.PreviousModels.Length : 0];
                         for (int i = 0; i < ancestors.Length; ++i) {
                             fsOption<fsVersionedType> ancestorType = GetVersionedType(attr.PreviousModels[i]);

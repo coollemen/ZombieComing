@@ -35,7 +35,7 @@ public class MapEditor : EditorWindow
 
     private void Awake()
     {
-        editorSkin = AssetDatabase.LoadAssetAtPath<GUISkin>("Assets/Scripts/Application/Map/MapEditorSkin.guiskin");
+        editorSkin = AssetDatabase.LoadAssetAtPath<GUISkin>("Assets/Scripts/Application/BlockTerrain/MapEditorSkin.guiskin");
         layerStyle = editorSkin.toggle;
         gridStyle = editorSkin.FindStyle("grid");
         titleStyle = editorSkin.FindStyle("title");
@@ -52,7 +52,7 @@ public class MapEditor : EditorWindow
     {
         if (map == null)
         {
-            GUILayout.Label("Not Fount Map Component!");
+            GUILayout.Label("Not Fount BlockTerrain Component!");
             return;
         }
         EditorGUILayout.BeginVertical();
@@ -71,7 +71,7 @@ public class MapEditor : EditorWindow
         Rect toolbarRect = EditorGUILayout.BeginHorizontal();
         this.defaultColor = GUI.contentColor;
         GUI.contentColor = labelColor;
-        GUILayout.Label("Current Map:[ " + map.name + " ]", EditorStyles.miniLabel, GUILayout.MinWidth(50));
+        GUILayout.Label("Current BlockTerrain:[ " + map.name + " ]", EditorStyles.miniLabel, GUILayout.MinWidth(50));
         GUI.contentColor = defaultColor;
         GUILayout.FlexibleSpace();
         if (GUILayout.Button("Laod", EditorStyles.toolbarButton, GUILayout.Width(buttonWidth)))
@@ -397,8 +397,8 @@ public class MapEditor : EditorWindow
     /// 获取鼠标点击的Map Grid的点的世界坐标
     /// </summary>
     /// <param name="mousePosition">鼠标位置</param>
-    /// <param name="panelNormal">Map Grid Panel法线</param>
-    /// <param name="panelPoint">Map Grid Panel 上任意点</param>
+    /// <param name="panelNormal">BlockTerrain Grid Panel法线</param>
+    /// <param name="panelPoint">BlockTerrain Grid Panel 上任意点</param>
     /// <returns></returns>
     private Vector3 GetWorldPositionFromMousePosition(Vector2 mousePosition, Vector3 panelNormal, Vector3 panelPoint)
     {
@@ -425,7 +425,7 @@ public class MapEditor : EditorWindow
     #region 初始化
 
     [
-        MenuItem("Game Designer/Map Editor")]
+        MenuItem("Game Designer/BlockTerrain Editor")]
     static void Init()
     {
         // Get existing open window or if none, make a new one:

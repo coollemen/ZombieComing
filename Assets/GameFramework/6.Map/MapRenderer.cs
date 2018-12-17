@@ -9,7 +9,7 @@ namespace GameFramework
     /// </summary>
     public class MapRenderer : MonoSingleton<MapRenderer>
     {
-        public MapData data;
+        public BlockTerrainData data;
         /// <summary>
         /// 视图中心位置点
         /// </summary>

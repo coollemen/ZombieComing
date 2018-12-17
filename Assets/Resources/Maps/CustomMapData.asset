@@ -57,3 +57,6 @@ MonoBehaviour:
       weight: 0.25
     - blockId: 2
       weight: 0.25
+  - start: 0
+    end: 255
+    items: []

@@ -18,9 +18,9 @@ public class BlockMapDesignerWindow : EditorWindow {
 	}
     private void OnGUI()
     {
-        GUILayout.Label("Block Map Editor");
+        GUILayout.Label("Block BlockTerrain Editor");
     }
-    [MenuItem("Game Framework/Block Map Editor")]
+    [MenuItem("Game Framework/Block BlockTerrain Editor")]
     static void ShowWindow()
     {
         var win = EditorWindow.GetWindow<BlockMapDesignerWindow>();

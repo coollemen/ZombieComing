@@ -11,7 +11,7 @@ public class Map : MonoBehaviour
     [Title("Grid Size")] public int gridWidth = 20;
     public int gridHeight = 20;
     [Title("Cell")] public float cellSize = 1;
-    [Title("Map Size")] public float mapWidth;
+    [Title("BlockTerrain Size")] public float mapWidth;
     public float mapHeight;
     public MapLayer activeLayer;
     public Dictionary<string, MapLayer> layers = new Dictionary<string, MapLayer>();
@@ -236,18 +236,18 @@ public class Map : MonoBehaviour
     }
 
 # if UNITY_EDITOR
-    [Button("Open Map Editor")]
+    [Button("Open BlockTerrain Editor")]
     private void OpenEditorWindow()
     {
-        EditorApplication.ExecuteMenuItem("GameDesign/Map Editor");
+        EditorApplication.ExecuteMenuItem("GameDesign/BlockTerrain Editor");
     }
 
-    [Button("Create Map Grid")]
+    [Button("Create BlockTerrain Grid")]
     private void CreateMapGrid()
     {
         this.CreateCells();
     }
-    [Button("Clear Map Data")]
+    [Button("Clear BlockTerrain Data")]
     private void ClearMapData()
     {
         for (int i = 0; i < this.cells.Count; i++)

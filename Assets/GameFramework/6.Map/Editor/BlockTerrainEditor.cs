@@ -5,8 +5,8 @@ using UnityEditor;
 
 namespace GameFramework
 {
-    [CustomEditor(typeof(Map))]
-    public class MapEditor : Editor
+    [CustomEditor(typeof(BlockTerrain))]
+    public class BlockTerrainEditor : Editor
     {
 
         public string[] panelNames = new string[] {"Brushes", "Blocks", "Layers", "Config"};
@@ -28,13 +28,13 @@ namespace GameFramework
 //        private int selectedChunkIndex = -1;
 //        private int selectedBlockIndex = -1;
         private bool isMouseIn = false;
-        private Map map;
-        private MapData data;
+        private BlockTerrain _blockTerrain;
+        private BlockTerrainData data;
 
         private void OnEnable()
         {
-            map = (Map) target;
-            data = map.data;
+            _blockTerrain = (BlockTerrain) target;
+            data = _blockTerrain.data;
         }
 
         private void OnDisable()
@@ -53,11 +53,11 @@ namespace GameFramework
         public void OnSceneGUI()
         {
             //如果map为null 不绘制
-            if (map == null) return;
-//            this.DrawMapCube(map);
-//            this.DrawMapRectangle(map);
-            this.DrawChunkRactangle(map);
-//            this.DrawChunkBounds(map);
+            if (_blockTerrain == null) return;
+//            this.DrawMapCube(blockTerrain);
+//            this.DrawMapRectangle(blockTerrain);
+            this.DrawChunkRactangle(_blockTerrain);
+//            this.DrawChunkBounds(blockTerrain);
             List<int> hitBlockBounds = new List<int>();
             Ray mouseRay = HandleUtility.GUIPointToWorldRay(Event.current.mousePosition);
             var blockPoint = GetHitBlockMapPoint(mouseRay);
@@ -65,7 +65,7 @@ namespace GameFramework
             GUI.Label(new Rect(Event.current.mousePosition, new Vector2(100, 30)), blockPoint.ToString());
             Handles.EndGUI();
             //绘制地图碰撞盒
-            var mapBounds = this.GetMapBounds(map);
+            var mapBounds = this.GetMapBounds(_blockTerrain);
             //判读鼠标是不是在地图内
             if (mapBounds.IntersectRay(mouseRay))
             {
@@ -98,7 +98,7 @@ namespace GameFramework
         {
             var point = new Vector3Int();
             //1、创建chunk的bounds，判断鼠标在哪个chunk
-            List<ChunkBounds> chunkBounds = this.CreateChunkBounds(map);
+            List<ChunkBounds> chunkBounds = this.CreateChunkBounds(_blockTerrain);
             List<int> hitChunkBounds = new List<int>();
             for (int i = 0; i < chunkBounds.Count; i++)
             {
@@ -201,24 +201,24 @@ namespace GameFramework
             Handles.color = c;
         }
 
-        private Bounds GetMapBounds(Map map)
+        private Bounds GetMapBounds(BlockTerrain blockTerrain)
         {
-            var pos = map.gameObject.transform.position;
+            var pos = blockTerrain.gameObject.transform.position;
 
-            var center = new Vector3(pos.x + map.width / 2 * 16, 0.5f, pos.z + map.depth / 2 * 16);
-            var size = new Vector3(map.width * 16, 1, map.depth * 16);
+            var center = new Vector3(pos.x + blockTerrain.width / 2 * 16, 0.5f, pos.z + blockTerrain.depth / 2 * 16);
+            var size = new Vector3(blockTerrain.width * 16, 1, blockTerrain.depth * 16);
             Bounds b = new Bounds(center, size);
             return b;
         }
 
-        private List<ChunkBounds> CreateChunkBounds(Map map)
+        private List<ChunkBounds> CreateChunkBounds(BlockTerrain blockTerrain)
         {
             var chunksBounds = new List<ChunkBounds>();
-            var pos = map.gameObject.transform.position;
+            var pos = blockTerrain.gameObject.transform.position;
 
-            for (int j = 0; j < map.depth; j++)
+            for (int j = 0; j < blockTerrain.depth; j++)
             {
-                for (int i = 0; i < map.width; i++)
+                for (int i = 0; i < blockTerrain.width; i++)
                 {
                     Bounds b = new Bounds();
                     b.center = new Vector3(pos.x + i * 16 + 8,
@@ -233,12 +233,12 @@ namespace GameFramework
             return chunksBounds;
         }
 
-        private void DrawChunkRactangle(Map map)
+        private void DrawChunkRactangle(BlockTerrain blockTerrain)
         {
-            var pos = map.gameObject.transform.position;
-            for (int j = 0; j < map.depth; j++)
+            var pos = blockTerrain.gameObject.transform.position;
+            for (int j = 0; j < blockTerrain.depth; j++)
             {
-                for (int i = 0; i < map.width; i++)
+                for (int i = 0; i < blockTerrain.width; i++)
                 {
                     Vector3[] verts = new Vector3[]
                     {
@@ -262,41 +262,41 @@ namespace GameFramework
             }
         }
 
-        private void DrawMapRectangle(Map map)
+        private void DrawMapRectangle(BlockTerrain blockTerrain)
         {
-            var pos = map.gameObject.transform.position;
+            var pos = blockTerrain.gameObject.transform.position;
             Vector3[] verts = new Vector3[]
             {
                 new Vector3(pos.x, pos.y, pos.z),
-                new Vector3(pos.x + map.width * 16, pos.y, pos.z),
-                new Vector3(pos.x + map.width * 16, pos.y, pos.z + map.depth * 16),
-                new Vector3(pos.x, pos.y, pos.z + map.depth * 16),
+                new Vector3(pos.x + blockTerrain.width * 16, pos.y, pos.z),
+                new Vector3(pos.x + blockTerrain.width * 16, pos.y, pos.z + blockTerrain.depth * 16),
+                new Vector3(pos.x, pos.y, pos.z + blockTerrain.depth * 16),
 
             };
             Handles.DrawSolidRectangleWithOutline(verts, new Color(1f, 1f, 1f, 0.1f), new Color(0f, 1f, 0f, 1f));
         }
 
-        private void DrawMapCube(Map map)
+        private void DrawMapCube(BlockTerrain blockTerrain)
         {
 
-            var pos = map.gameObject.transform.position;
+            var pos = blockTerrain.gameObject.transform.position;
             var center = new Vector3();
-            center.x = pos.x + map.width / 2 * 16;
+            center.x = pos.x + blockTerrain.width / 2 * 16;
             center.y = pos.y;
-            center.z = pos.z + map.depth / 2 * 16;
-            Handles.DrawWireCube(center, new Vector3(map.width * 16, 1, map.depth * 16));
+            center.z = pos.z + blockTerrain.depth / 2 * 16;
+            Handles.DrawWireCube(center, new Vector3(blockTerrain.width * 16, 1, blockTerrain.depth * 16));
         }
 
         /// <summary>
         /// 为每个chunk绘制一个白色的线框
         /// </summary>
-        /// <param name="map"></param>
-        private void DrawChunkCube(Map map)
+        /// <param name="blockTerrain"></param>
+        private void DrawChunkCube(BlockTerrain blockTerrain)
         {
-            var pos = map.gameObject.transform.position;
-            for (int i = 0; i < map.width; i++)
+            var pos = blockTerrain.gameObject.transform.position;
+            for (int i = 0; i < blockTerrain.width; i++)
             {
-                for (int j = 0; j < map.depth; j++)
+                for (int j = 0; j < blockTerrain.depth; j++)
                 {
                     var center = new Vector3();
                     center.x = pos.x + i * 16 + 8;
@@ -371,27 +371,27 @@ namespace GameFramework
         public override void OnInspectorGUI()
         {
 //            base.OnInspectorGUI();
-            Map map = (Map) target;
-            var data = map.data;
-            data = EditorGUILayout.ObjectField("Data", data, data.GetType()) as MapData;
+            BlockTerrain blockTerrain = (BlockTerrain) target;
+            var data = blockTerrain.data;
+            data = EditorGUILayout.ObjectField("Data", data, data.GetType()) as BlockTerrainData;
             data.name = EditorGUILayout.TextField("Name", data.name);
             EditorGUILayout.TextField("Version", data.version);
             data.width = EditorGUILayout.IntField("Wdith(X)", data.width);
             data.height = EditorGUILayout.IntField("Height(Y)", data.height);
             data.depth = EditorGUILayout.IntField("Depth(Z)", data.depth);
 
-            if (GUILayout.Button("Create Map"))
+            if (GUILayout.Button("Create BlockTerrain"))
             {
                 //创建map的chunks
-                for (int i = 0; i < map.transform.childCount; i++)
+                for (int i = 0; i < blockTerrain.transform.childCount; i++)
                 {
-                    DestroyImmediate(map.transform.GetChild(i).gameObject);
+                    DestroyImmediate(blockTerrain.transform.GetChild(i).gameObject);
                 }
-                map.CreateMapByEditor();
+                blockTerrain.CreateMapByEditor();
             }
             if (GUILayout.Button("Create Mesh"))
             {
-                map.CreateRandomMap();
+                blockTerrain.CreateRandomMap();
             }
             selectPanelIndex = GUILayout.Toolbar(selectPanelIndex, panelNames);
             if (panelNames[selectPanelIndex] == "Brushes")
@@ -417,7 +417,7 @@ namespace GameFramework
         /// 绘制笔刷页面
         /// </summary>
         /// <param name="data"></param>
-        public void DrawBrushesPanel(MapData data)
+        public void DrawBrushesPanel(BlockTerrainData data)
         {
             GUILayout.BeginHorizontal();
             GUILayout.FlexibleSpace();
@@ -430,14 +430,14 @@ namespace GameFramework
         /// 绘制Layers页面
         /// </summary>
         /// <param name="data"></param>
-        public void DrawLayersPanel(MapData data)
+        public void DrawLayersPanel(BlockTerrainData data)
         {
             EditorGUILayout.BeginHorizontal();
             GUILayout.FlexibleSpace();
             MyGUITools.SetBackgroundColor(Color.green);
             if (GUILayout.Button("Add New Layer"))
             {
-                MapLayer layer = new MapLayer(0, 255);
+                BlockTerrainLayer layer = new BlockTerrainLayer(0, 255);
                 data.layers.Add(layer);
 
             }
@@ -449,9 +449,9 @@ namespace GameFramework
                 if (i == selectLayerIndex)
                 {
                     EditorGUILayout.Space();
-                    EditorGUILayout.BeginVertical((GUIStyle) "SelectionRect");
+                    EditorGUILayout.BeginVertical((GUIStyle)"MeTransitionSelect",GUILayout.Height(100));
                     GUILayout.Toggle(false, string.Format("{0}:Start:{1}-End:{2}", i, layer.start, layer.end),
-                        (GUIStyle) "TL SelectionBarPreview", GUILayout.ExpandWidth(true));
+                        (GUIStyle)"MeTransitionSelectHead", GUILayout.Height(30));
                     GUILayout.BeginHorizontal();
                     GUILayout.Label("Start");
                     layer.start = EditorGUILayout.IntField(layer.start);
@@ -463,7 +463,7 @@ namespace GameFramework
                     MyGUITools.SetBackgroundColor(Color.green);
                     if (GUILayout.Button("Add New Item"))
                     {
-                        MapLayerItem newItem = new MapLayerItem();
+                        BlockTerrainLayerItem newItem = new BlockTerrainLayerItem();
                         layer.items.Add(newItem);
                     }
                     MyGUITools.RestoreBackgroundColor();
@@ -499,7 +499,7 @@ namespace GameFramework
             }
         }
 
-        public int[] GetBlockIDs(MapData data)
+        public int[] GetBlockIDs(BlockTerrainData data)
         {
             List<int> ids = new List<int>();
             foreach (var d in data.blockDefinitions)
@@ -509,7 +509,7 @@ namespace GameFramework
             return ids.ToArray();
         }
 
-        public string[] GetBlockNames(MapData data)
+        public string[] GetBlockNames(BlockTerrainData data)
         {
             List<string> names = new List<string>();
             foreach (var d in data.blockDefinitions)
@@ -523,7 +523,7 @@ namespace GameFramework
         /// 绘制Blocks页面
         /// </summary>
         /// <param name="data"></param>
-        public void DrawBlocksPanel(MapData data)
+        public void DrawBlocksPanel(BlockTerrainData data)
         {
             GUILayout.BeginHorizontal();
             GUILayout.FlexibleSpace();
@@ -546,9 +546,9 @@ namespace GameFramework
                 if (i == selectBlockIndex)
                 {
                     EditorGUILayout.Space();
-                    EditorGUILayout.BeginVertical((GUIStyle) "SelectionRect");
+                    EditorGUILayout.BeginVertical((GUIStyle)"MeTransitionSelect", GUILayout.Height(200));
                     GUILayout.Toggle(true, string.Format("ID:{0},Name:{1}", def.id, def.name),
-                        (GUIStyle) "TL SelectionBarPreview", GUILayout.ExpandWidth(true));
+                        (GUIStyle)"MeTransitionSelectHead",GUILayout.Height(30));
                     def = data.blockDefinitions[i];
                     def.id = EditorGUILayout.IntField("ID", def.id);
                     def.name = EditorGUILayout.TextField("Name", def.name);

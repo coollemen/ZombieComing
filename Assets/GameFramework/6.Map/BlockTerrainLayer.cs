@@ -5,7 +5,7 @@ using UnityEngine;
 namespace GameFramework
 {
     [System.Serializable]
-    public class MapLayerItem
+    public class BlockTerrainLayerItem
     {
         /// <summary>
         /// 地图块索引
@@ -22,7 +22,7 @@ namespace GameFramework
     /// 地图地层,表示地图256层中指定层中block的类型分布
     /// </summary>
     [System.Serializable]
-    public class MapLayer
+    public class BlockTerrainLayer
     {
         public string Name
         {
@@ -39,14 +39,14 @@ namespace GameFramework
         /// <summary>
         /// 不同类型Block的比例定义
         /// </summary>
-        public List<MapLayerItem> items = new List<MapLayerItem>();
+        public List<BlockTerrainLayerItem> items = new List<BlockTerrainLayerItem>();
 
-        public MapLayer()
+        public BlockTerrainLayer()
         {
             
         }
 
-        public MapLayer(int setStart, int setEnd)
+        public BlockTerrainLayer(int setStart, int setEnd)
         {
             this.start = setStart;
             this.end = setEnd;

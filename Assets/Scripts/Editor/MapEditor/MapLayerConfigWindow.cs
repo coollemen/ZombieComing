@@ -9,7 +9,7 @@ public class MapLayerConfigWindow : EditorWindow {
     public GUIStyle layerStyle;
     private void Awake()
     {
-        editorSkin = AssetDatabase.LoadAssetAtPath<GUISkin>("Assets/Scripts/Application/Map/MapEditorSkin.guiskin");
+        editorSkin = AssetDatabase.LoadAssetAtPath<GUISkin>("Assets/Scripts/Application/BlockTerrain/MapEditorSkin.guiskin");
         layerStyle = editorSkin.toggle;
     }
     private void OnGUI()

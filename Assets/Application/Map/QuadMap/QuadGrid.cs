@@ -37,7 +37,7 @@ public class QuadGrid : MonoBehaviour
 //        Gizmos.color = Color.yellow;
 //        Gizmos.DrawSphere(transform.position, 1);
     }
-    [Button("Create Map Grid")]
+    [Button("Create BlockTerrain Grid")]
     private void CreateMapGrid()
     {
         ClearMapGrid();
@@ -68,7 +68,7 @@ public class QuadGrid : MonoBehaviour
             }
         }
     }
-    [Button("Clear Map Grid")]
+    [Button("Clear BlockTerrain Grid")]
     private void ClearMapGrid()
     {
         for (int i = 0; i < cells.Count; i++)

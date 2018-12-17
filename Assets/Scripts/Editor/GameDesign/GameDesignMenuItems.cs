@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class GameDesignMenuItems  {
 
-    [MenuItem("Game Designer/Add Map To Scene")]
+    [MenuItem("Game Designer/Add BlockTerrain To Scene")]
     static void CreateMapObject()
     {
         GameObject go = GameObject.FindGameObjectWithTag("GameMap");
@@ -22,7 +22,7 @@ public class GameDesignMenuItems  {
         }
         else
         {
-            go = new GameObject("Map");
+            go = new GameObject("BlockTerrain");
             var map= go.AddComponent<Map>();
             go.tag = "GameMap";
         }

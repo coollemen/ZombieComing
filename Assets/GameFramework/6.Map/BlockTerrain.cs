@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace GameFramework
 {
-    public class Map : MonoSingleton<Map>
+    public class BlockTerrain : MonoSingleton<BlockTerrain>
     {
         public int width = 64;
         public int depth = 64;
@@ -13,7 +13,7 @@ namespace GameFramework
         public Chunk[,] chunks;
         public Chunk[,] viewChunks;
         public GameObject chunkPrefab;
-        public MapData data;
+        public BlockTerrainData data;
 
         // Use this for initialization
         void Start()

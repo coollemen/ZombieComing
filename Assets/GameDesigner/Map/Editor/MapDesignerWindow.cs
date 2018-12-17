@@ -29,7 +29,7 @@ namespace GameDesigner
         private void Awake()
         {
             LoadConfig();
-            editorSkin = AssetDatabase.LoadAssetAtPath<GUISkin>("Assets/Scripts/Application/Map/MapEditorSkin.guiskin");
+            editorSkin = AssetDatabase.LoadAssetAtPath<GUISkin>("Assets/Scripts/Application/BlockTerrain/MapEditorSkin.guiskin");
             gridStyle = editorSkin.FindStyle("grid");
 
         }
@@ -142,12 +142,12 @@ namespace GameDesigner
         #region 初始化
 
         [
-            MenuItem("Game Designer/Visual Map Editor")]
+            MenuItem("Game Designer/Visual BlockTerrain Editor")]
         static void Init()
         {
             // Get existing open window or if none, make a new one:
             MapDesignerWindow window =
-                (MapDesignerWindow) EditorWindow.GetWindow(typeof(MapDesignerWindow), false, "Map Designer");
+                (MapDesignerWindow) EditorWindow.GetWindow(typeof(MapDesignerWindow), false, "BlockTerrain Designer");
             window.Show();
             GameObject mapObj = GameObject.FindGameObjectWithTag("GameMap");
             if (mapObj != null && mapObj.GetComponent<BlockMap>() != null)
