@@ -1,7 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using Sirenix.OdinInspector;
 using UnityEditor;
 
 namespace GameDesigner
@@ -70,7 +69,6 @@ namespace GameDesigner
             }
         }
 
-        [Button("Create Chunks")]
         public void CreateChunks()
         {
             for (int z = 0; z < height; z++)
@@ -88,7 +86,6 @@ namespace GameDesigner
             }
         }
 
-        [Button("Clear Chunks")]
         public void ClearChunks()
         {
             for (int i = 0; i < chunks.Count; i++)

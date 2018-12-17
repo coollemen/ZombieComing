@@ -1,21 +1,19 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using Sirenix.OdinInspector;
 using UnityEditor;
 
 public class Map : MonoBehaviour
 {
     public string name;
     public int version = 1;
-    [Title("Grid Size")] public int gridWidth = 20;
+     public int gridWidth = 20;
     public int gridHeight = 20;
-    [Title("Cell")] public float cellSize = 1;
-    [Title("BlockTerrain Size")] public float mapWidth;
+    public float cellSize = 1;
+    public float mapWidth;
     public float mapHeight;
     public MapLayer activeLayer;
     public Dictionary<string, MapLayer> layers = new Dictionary<string, MapLayer>();
-    [Title("Grid Gizmos Style")]
     public Color gridActiveColor = new Color(0, 1f, 0, 0.35f);
     public Color gridColor1 = new Color(0.5f, 0.5f, 0.5f, 0.8f);
     public Color gridColor2 = new Color(0.6f, 0.6f, 0.6f, 0.8f);
@@ -236,18 +234,15 @@ public class Map : MonoBehaviour
     }
 
 # if UNITY_EDITOR
-    [Button("Open BlockTerrain Editor")]
     private void OpenEditorWindow()
     {
         EditorApplication.ExecuteMenuItem("GameDesign/BlockTerrain Editor");
     }
 
-    [Button("Create BlockTerrain Grid")]
     private void CreateMapGrid()
     {
         this.CreateCells();
     }
-    [Button("Clear BlockTerrain Data")]
     private void ClearMapData()
     {
         for (int i = 0; i < this.cells.Count; i++)

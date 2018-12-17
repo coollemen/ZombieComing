@@ -9,18 +9,21 @@ namespace GameFramework
     public class BlockTerrainEditor : Editor
     {
 
-        public string[] panelNames = new string[] {"Brushes", "Blocks", "Layers", "Config"};
+        public string[] panelNames = new string[] {"笔刷", "图块", "图层", "设置"};
         public int selectPanelIndex =0;
         public string[] blockCreateModes = new string[] {"One Tex", "Two Tex", "Tree Tex", "Six Tex"};
         public int blockCreateModeIndex = 0;
         public BlockDefinition activeBlockDef;
         public Sprite top, bottom, left, right, front, back;
         public Vector2 blockScrollViewPos = Vector2.zero;
-        public int selectBlockIndex = 0;
-        public int selectLayerIndex = 0;
+        public int selectBlockDefIndex = 0;
+        public int selectLayerDefIndex = 0;
         //画笔
         public string[] brushNames = new string[] {"笔","油漆桶"};
         public int activeBrushIndex = 0;
+        //笔刷使用的图块类型
+        public List<GUIContent> blockTypes = new List<GUIContent>();
+        public int selectBlockTypeIndex = 0;
         //*****************************
 //        private List<Bounds> chunkBounds;
 //        private List<Bounds> activeBlocksBounds;
@@ -28,23 +31,26 @@ namespace GameFramework
 //        private int selectedChunkIndex = -1;
 //        private int selectedBlockIndex = -1;
         private bool isMouseIn = false;
-        private BlockTerrain _blockTerrain;
-        private BlockTerrainData data;
+        private BlockTerrain _terrain;
+        private BlockTerrainData _terrainData;
 
         private void OnEnable()
         {
-            _blockTerrain = (BlockTerrain) target;
-            data = _blockTerrain.data;
+            _terrain = (BlockTerrain) target;
+            if (_terrain != null)
+            {
+                _terrainData = _terrain.data;
+            }
         }
 
         private void OnDisable()
         {
-            EditorUtility.SetDirty(data);
+            EditorUtility.SetDirty(_terrainData);
         }
 
         private void OnDestroy()
         {
-            EditorUtility.SetDirty(data);
+            EditorUtility.SetDirty(_terrainData);
         }
 
         /// <summary>
@@ -53,19 +59,20 @@ namespace GameFramework
         public void OnSceneGUI()
         {
             //如果map为null 不绘制
-            if (_blockTerrain == null) return;
-//            this.DrawMapCube(blockTerrain);
-//            this.DrawMapRectangle(blockTerrain);
-            this.DrawChunkRactangle(_blockTerrain);
-//            this.DrawChunkBounds(blockTerrain);
+            if (_terrain == null) return;
+            //绘制地形chunk的位置图
+            this.DrawChunkRectangle(_terrain);
+
             List<int> hitBlockBounds = new List<int>();
             Ray mouseRay = HandleUtility.GUIPointToWorldRay(Event.current.mousePosition);
             var blockPoint = GetHitBlockMapPoint(mouseRay);
+            //绘制鼠标所指的Block
             Handles.BeginGUI();
             GUI.Label(new Rect(Event.current.mousePosition, new Vector2(100, 30)), blockPoint.ToString());
             Handles.EndGUI();
+
             //绘制地图碰撞盒
-            var mapBounds = this.GetMapBounds(_blockTerrain);
+            var mapBounds = this.GetMapBounds(_terrain);
             //判读鼠标是不是在地图内
             if (mapBounds.IntersectRay(mouseRay))
             {
@@ -98,7 +105,7 @@ namespace GameFramework
         {
             var point = new Vector3Int();
             //1、创建chunk的bounds，判断鼠标在哪个chunk
-            List<ChunkBounds> chunkBounds = this.CreateChunkBounds(_blockTerrain);
+            List<ChunkBounds> chunkBounds = this.CreateChunkBounds(_terrain);
             List<int> hitChunkBounds = new List<int>();
             for (int i = 0; i < chunkBounds.Count; i++)
             {
@@ -233,7 +240,7 @@ namespace GameFramework
             return chunksBounds;
         }
 
-        private void DrawChunkRactangle(BlockTerrain blockTerrain)
+        private void DrawChunkRectangle(BlockTerrain blockTerrain)
         {
             var pos = blockTerrain.gameObject.transform.position;
             for (int j = 0; j < blockTerrain.depth; j++)
@@ -322,7 +329,7 @@ namespace GameFramework
         {
             Vector2Int chunkIndex = GetChunkIndexFromMapPoint(x, z);
             Vector3Int chunkPoint = GetChunkPointFromMapPoint(x, y, z);
-            return data.chunkDatas[chunkIndex.x][chunkIndex.y][chunkPoint.x, chunkPoint.y, chunkPoint.z];
+            return _terrainData.chunkDatas[chunkIndex.x][chunkIndex.y][chunkPoint.x, chunkPoint.y, chunkPoint.z];
         }
 
         /// <summary>
@@ -336,7 +343,7 @@ namespace GameFramework
         {
             Vector2Int chunkIndex = GetChunkIndexFromMapPoint(x, z);
             Vector3Int chunkPoint = GetChunkPointFromMapPoint(x, y, z);
-            data.chunkDatas[chunkIndex.x][chunkIndex.y][chunkPoint.x, chunkPoint.y, chunkPoint.z] = blockData;
+            _terrainData.chunkDatas[chunkIndex.x][chunkIndex.y][chunkPoint.x, chunkPoint.y, chunkPoint.z] = blockData;
         }
 
         /// <summary>
@@ -347,8 +354,8 @@ namespace GameFramework
         /// <returns></returns>
         private Vector2Int GetChunkIndexFromMapPoint(int mapX, int mapZ)
         {
-            int x = Mathf.FloorToInt(mapX / data.width);
-            int z = Mathf.FloorToInt(mapZ / data.depth);
+            int x = Mathf.FloorToInt(mapX / _terrainData.width);
+            int z = Mathf.FloorToInt(mapZ / _terrainData.depth);
             return new Vector2Int(x, z);
         }
 
@@ -361,8 +368,8 @@ namespace GameFramework
         /// <returns></returns>
         private Vector3Int GetChunkPointFromMapPoint(int mapX, int mapY, int mapZ)
         {
-            int x = mapX % data.width;
-            int z = mapZ % data.depth;
+            int x = mapX % _terrainData.width;
+            int z = mapZ % _terrainData.depth;
             return new Vector3Int(x, mapY, z);
         }
 
@@ -380,33 +387,30 @@ namespace GameFramework
             data.height = EditorGUILayout.IntField("Height(Y)", data.height);
             data.depth = EditorGUILayout.IntField("Depth(Z)", data.depth);
 
-            if (GUILayout.Button("Create BlockTerrain"))
+            if (GUILayout.Button("创建地形"))
             {
                 //创建map的chunks
-                for (int i = 0; i < blockTerrain.transform.childCount; i++)
-                {
-                    DestroyImmediate(blockTerrain.transform.GetChild(i).gameObject);
-                }
+                MyTools.DeleteAllChildren(blockTerrain.transform);
                 blockTerrain.CreateMapByEditor();
             }
-            if (GUILayout.Button("Create Mesh"))
+            if (GUILayout.Button("更新Mesh"))
             {
-                blockTerrain.CreateRandomMap();
+                //blockTerrain.CreateRandomMap();
             }
             selectPanelIndex = GUILayout.Toolbar(selectPanelIndex, panelNames);
-            if (panelNames[selectPanelIndex] == "Brushes")
+            if (panelNames[selectPanelIndex] == "笔刷")
             {
                 this.DrawBrushesPanel(data);
             }
-            else if (panelNames[selectPanelIndex] == "Blocks")
+            else if (panelNames[selectPanelIndex] == "图块")
             {
                 this.DrawBlocksPanel(data);
             }
-            else if (panelNames[selectPanelIndex] == "Layers")
+            else if (panelNames[selectPanelIndex] == "图层")
             {
                 this.DrawLayersPanel(data);
             }
-            else if (panelNames[selectPanelIndex] == "Config")
+            else if (panelNames[selectPanelIndex] == "设置")
             {
             }
         }
@@ -424,6 +428,13 @@ namespace GameFramework
             activeBrushIndex= GUILayout.Toolbar(activeBrushIndex, brushNames);
             GUILayout.FlexibleSpace();
             GUILayout.EndHorizontal();
+            //根据block定义，刷新block类型
+            this.blockTypes.Clear();
+            for (int i = 0; i < data.blockDefinitions.Count; i++)
+            {
+                this.blockTypes.Add(new GUIContent(data.blockDefinitions[i].name));
+            }
+            selectBlockTypeIndex = GUILayout.SelectionGrid(selectBlockTypeIndex, blockTypes.ToArray(), 5);
         }
 
         /// <summary>
@@ -446,7 +457,7 @@ namespace GameFramework
             for (int i = 0; i < data.layers.Count; i++)
             {
                 var layer = data.layers[i];
-                if (i == selectLayerIndex)
+                if (i == selectLayerDefIndex)
                 {
                     EditorGUILayout.Space();
                     EditorGUILayout.BeginVertical((GUIStyle)"MeTransitionSelect",GUILayout.Height(100));
@@ -493,7 +504,7 @@ namespace GameFramework
                         (GUIStyle) "OL Title");
                     if (flag == true)
                     {
-                        selectLayerIndex = i;
+                        selectLayerDefIndex = i;
                     }
                 }
             }
@@ -543,7 +554,7 @@ namespace GameFramework
             for (int i = 0; i < data.blockDefinitions.Count; i++)
             {
                 var def = data.blockDefinitions[i];
-                if (i == selectBlockIndex)
+                if (i == selectBlockDefIndex)
                 {
                     EditorGUILayout.Space();
                     EditorGUILayout.BeginVertical((GUIStyle)"MeTransitionSelect", GUILayout.Height(200));
@@ -604,7 +615,7 @@ namespace GameFramework
                     MyGUITools.SetBackgroundColor(Color.red);
                     if (GUILayout.Button("Del", GUILayout.MinWidth(80)))
                     {
-                        data.blockDefinitions.RemoveAt(selectBlockIndex);
+                        data.blockDefinitions.RemoveAt(selectBlockDefIndex);
                     }
                     MyGUITools.RestoreBackgroundColor();
                     EditorGUILayout.EndHorizontal();
@@ -617,7 +628,7 @@ namespace GameFramework
                         (GUIStyle) "OL Title");
                     if (flag == true)
                     {
-                        selectBlockIndex = i;
+                        selectBlockDefIndex = i;
                     }
                 }
             }

@@ -3,10 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using GameFramework;
-using Sirenix.OdinInspector;
 using UniRx;
 public class PlayerInfoView : UIView {
-    [ShowInInspector]
     public override string TypeID
     {
         get
@@ -14,7 +12,6 @@ public class PlayerInfoView : UIView {
             return "PlayerInfoView";
         }
     }
-    [Title("Controls")]
     public Text playerLvLabel;
     public Text playerNameLabel;
     public Image playerAvatarImage;

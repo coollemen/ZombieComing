@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using UniRx;
 using UniRx.Triggers;
-using Sirenix.OdinInspector;
 using GameFramework;
 public class PlayerInfoContext : UIContext
 {
@@ -20,7 +19,6 @@ public class PlayerInfoContext : UIContext
     /// <summary>
     /// 玩家等级
     /// </summary>
-    [ShowInInspector]
     public int playerLv
     {
         get { return this.playLvProperty.Value; }
@@ -33,7 +31,6 @@ public class PlayerInfoContext : UIContext
     /// <summary>
     /// 玩家名字
     /// </summary>
-    [ShowInInspector]
     public string playerName
     {
         get { return playNameProperty.Value; }
@@ -44,7 +41,6 @@ public class PlayerInfoContext : UIContext
     /// <summary>
     /// 玩家头像
     /// </summary>
-    [ShowInInspector]
     public Texture2D playerAvatar
     {
         get { return playAvatarProperty.Value; }

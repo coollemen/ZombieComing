@@ -1,8 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using Sirenix.OdinInspector;
-using Sirenix.Serialization;
 using UnityEditor;
 
 namespace GameDesigner
@@ -23,7 +21,6 @@ namespace GameDesigner
         public BlockPivotType pivotType = BlockPivotType.Center;
         private GridMode gridMode = GridMode.PanelZX;
 
-        [ShowInInspector]
         public GridMode GridMode
         {
             get { return gridMode; }
@@ -52,7 +49,6 @@ namespace GameDesigner
             }
         }
 
-        [ShowInInspector, PropertyRange(1, 16)]
         public int XSlide
         {
             get { return xslide; }
@@ -64,8 +60,6 @@ namespace GameDesigner
         }
 
         private int yslide = 16;
-
-        [ShowInInspector, PropertyRange(1, 16)]
         public int YSlide
         {
             get { return yslide; }
@@ -77,8 +71,6 @@ namespace GameDesigner
         }
 
         private int zslide = 16;
-
-        [ShowInInspector, PropertyRange(1, 16)]
         public int ZSlide
         {
             get { return zslide; }
@@ -122,8 +114,6 @@ namespace GameDesigner
                 Gizmos.DrawWireCube(blockInfos[bb.id].position, new Vector3(1f, 1f, 1f));
             }
         }
-
-        [ButtonGroup("Create Blocks")]
         public void CreateBlocks()
         {
             this.ClearBlocks();
@@ -159,7 +149,6 @@ namespace GameDesigner
             this.CaculateCheckBounds();
         }
 
-        [ButtonGroup("Clear Blocks")]
         public void ClearBlocks()
         {
             for (int i = 0; i < blocks.Count; i++)
@@ -171,7 +160,6 @@ namespace GameDesigner
             blockInfos.Clear();
         }
 
-        [ButtonGroup("Build Blocks")]
         public void BuildBlocks()
         {
         }

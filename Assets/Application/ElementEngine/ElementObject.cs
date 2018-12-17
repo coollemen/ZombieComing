@@ -1,7 +1,5 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
-using Sirenix.OdinInspector;
-using Sirenix.Serialization;
 using UnityEngine;
 
 /// <summary>
@@ -49,8 +47,6 @@ public class ElementObject : MonoBehaviour {
     ///// </summary>
     //public int bloodDefense;
 
-    [OdinSerialize]
-    [InfoBox("添加新的元素特性")]
     public ElementProperty[] elementProperties;
 
     // Use this for initialization

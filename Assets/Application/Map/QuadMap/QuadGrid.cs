@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-using Sirenix.OdinInspector;
 public class QuadGrid : MonoBehaviour
 {
     public int width=50;
@@ -37,7 +36,6 @@ public class QuadGrid : MonoBehaviour
 //        Gizmos.color = Color.yellow;
 //        Gizmos.DrawSphere(transform.position, 1);
     }
-    [Button("Create BlockTerrain Grid")]
     private void CreateMapGrid()
     {
         ClearMapGrid();
@@ -68,7 +66,6 @@ public class QuadGrid : MonoBehaviour
             }
         }
     }
-    [Button("Clear BlockTerrain Grid")]
     private void ClearMapGrid()
     {
         for (int i = 0; i < cells.Count; i++)

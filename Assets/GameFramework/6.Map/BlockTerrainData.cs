@@ -1,7 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using Sirenix.OdinInspector;
 namespace GameFramework
 {
     [System.Serializable]
@@ -91,7 +90,6 @@ namespace GameFramework
         /// <summary>
         /// 版本
         /// </summary>
-        [ShowInInspector,PropertyOrder(1)]
         public string version
         {
             get { return string.Format("{0}.{1}.{2}", versionMainNum, versionFunctionNum, versionFixNum); }

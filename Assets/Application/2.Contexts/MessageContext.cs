@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using UnityEngine;
 using GameFramework;
-using Sirenix.OdinInspector;
 using UniRx;
 public class MessageContext : UIContext {
 
@@ -19,7 +18,6 @@ public class MessageContext : UIContext {
     /// <summary>
     /// 玩家名字
     /// </summary>
-    [ShowInInspector]
     public string message
     {
         get { return msgProperty.Value; }

@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using GameFramework;
-using Sirenix.OdinInspector;
 using UniRx;
 using UniRx.Triggers;
 public class MainMenuView : UIView {
