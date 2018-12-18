@@ -32,6 +32,10 @@ namespace GameFramework
             sections = new Section[sectionCount];
             StartCoroutine(CreateChunkMesh());
         }
+        /// <summary>
+        /// 异步创建chunk的mesh
+        /// </summary>
+        /// <returns></returns>
         IEnumerator CreateChunkMesh()
         {
             while (isWorking)
