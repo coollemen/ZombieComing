@@ -2,13 +2,12 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
-
+using Unity.EditorCoroutines.Editor;
 namespace GameFramework
 {
     [CustomEditor(typeof(BlockTerrain))]
     public class BlockTerrainEditor : Editor
     {
-
         public string[] panelNames = new string[] {"笔刷", "图块", "图层", "设置"};
         public int selectPanelIndex =0;
         public string[] blockCreateModes = new string[] {"One Tex", "Two Tex", "Tree Tex", "Six Tex"};
@@ -391,7 +390,7 @@ namespace GameFramework
             {
                 //创建map的chunks
                 MyTools.DeleteAllChildren(blockTerrain.transform);
-                blockTerrain.CreateMapByEditor();
+                //EditorCoroutineUtility.StartCoroutine(blockTerrain.CreateRandomMap(), this);
             }
             if (GUILayout.Button("更新Mesh"))
             {
