@@ -33,84 +33,60 @@ namespace GameFramework
         public BlockDirection direction = BlockDirection.Front;
 
         //前面贴图的坐标
-        public byte textureFrontX;
-        public byte textureFrontY;
-
+        public Vector2[] uvFront;
         //后面贴图的坐标
-        public byte textureBackX;
-        public byte textureBackY;
+        public Vector2[] uvBack;
 
         //右面贴图的坐标
-        public byte textureRightX;
-        public byte textureRightY;
+        public Vector2[] uvRight;
 
         //左面贴图的坐标
-        public byte textureLeftX;
-        public byte textureLeftY;
+        public Vector2[] uvLeft;
 
         //上面贴图的坐标
-        public byte textureTopX;
-        public byte textureTopY;
+        public Vector2[] uvTop;
 
         //下面贴图的坐标
-        public byte textureBottomX;
-        public byte textureBottomY;
+        public Vector2[] uvBottom;
 
         //都是A面的方块
-        public Block(byte id, string name, byte textureX, byte textureY)
-            : this(id, name, textureX, textureY, textureX, textureY, textureX, textureY, textureX, textureY)
+        public Block(byte id, string name, Vector2[] face)
+            : this(id, name, face, face, face, face, face, face)
         {
         }
 
         //上面是A，其他面是B的方块
-        public Block(byte id, string name, byte textureX, byte textureY, byte textureTopX, byte textureTopY)
-            : this(id, name, textureX, textureY, textureX, textureY, textureX, textureY, textureX, textureY,
-                textureTopX, textureTopY, textureX, textureY)
+        public Block(byte id, string name, Vector2[] top,  Vector2[] other)
+            : this(id, name, top, other, other, other, other, other)
         {
         }
 
         //上面是A，下面是B，其他面是C的方块
-        public Block(byte id, string name, byte textureX, byte textureY, byte textureTopX, byte textureTopY,
-            byte textureBottomX, byte textureBottomY)
-            : this(id, name, textureX, textureY, textureX, textureY, textureX, textureY, textureX, textureY,
-                textureTopX, textureTopY, textureBottomX, textureBottomY)
+        public Block(byte id, string name, Vector2[] top, Vector2[] bottom,Vector2[] other)
+            : this(id, name, top, bottom, other, other, other, other)
         {
         }
 
         //上面是A，下面是B，前面是C，其他面是D的方块
-        public Block(byte id, string name, byte textureFrontX, byte textureFrontY, byte textureX, byte textureY,
-            byte textureTopX, byte textureTopY, byte textureBottomX, byte textureBottomY)
-            : this(id, name, textureFrontX, textureFrontY, textureX, textureY, textureX, textureY, textureX, textureY,
-                textureTopX, textureTopY, textureBottomX, textureBottomY)
+        public Block(byte id, string name,Vector2[] top,Vector2[] bottom,Vector2[] front,Vector2[] other)
+            : this(id, name, top,bottom,other,other,front,other)
         {
         }
 
         //上下左右前后面都不一样的方块
-        public Block(byte id, string name, byte textureFrontX, byte textureFrontY, byte textureBackX, byte textureBackY,
-            byte textureRightX, byte textureRightY,
-            byte textureLeftX, byte textureLeftY, byte textureTopX, byte textureTopY, byte textureBottomX,
-            byte textureBottomY)
+        public Block(byte id, string name, Vector2[] top,Vector2[] bottom,Vector2[] left,Vector2[] right,Vector2[] front,Vector2[] back)
         {
             this.id = id;
             this.name = name;
 
-            this.textureFrontX = textureFrontX;
-            this.textureFrontY = textureFrontY;
+            this.uvTop = top;
+            this.uvBottom = bottom;
 
-            this.textureBackX = textureBackX;
-            this.textureBackY = textureBackY;
+            this.uvLeft = left;
+            this.uvRight = right;
 
-            this.textureRightX = textureRightX;
-            this.textureRightY = textureRightY;
-
-            this.textureLeftX = textureLeftX;
-            this.textureLeftY = textureLeftY;
-
-            this.textureTopX = textureTopX;
-            this.textureTopY = textureTopY;
-
-            this.textureBottomX = textureBottomX;
-            this.textureBottomY = textureBottomY;
+            this.uvFront = front;
+            this.uvBack = back;
         }
     }
 }

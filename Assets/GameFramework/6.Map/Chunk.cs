@@ -17,7 +17,7 @@ namespace GameFramework
         public Mesh mesh;
         public Section[] sections;
         public int sectionCount = 16;
-
+        public BlockTerrain terrain;
         //当前Chunk是否正在生成中
         private bool isWorking = false;
         //是否需要更新
@@ -29,26 +29,31 @@ namespace GameFramework
 
         public void Init()
         {
-            sections = new Section[sectionCount];
+
             StartCoroutine(CreateChunkMesh());
         }
         /// <summary>
         /// 异步创建chunk的mesh
         /// </summary>
         /// <returns></returns>
-        IEnumerator CreateChunkMesh()
+        public IEnumerator CreateChunkMesh()
         {
             while (isWorking)
             {
                 yield return null;
             }
             isWorking = true;
+            if (terrain == null)
+            {
+                this.terrain = GetComponentInParent<BlockTerrain>();
+            }
+            sections = new Section[sectionCount];
             mesh = new Mesh();
             mesh.indexFormat = UnityEngine.Rendering.IndexFormat.UInt32;
             mesh.name = "chunk";
             for (int i = 0; i < sections.Length; i++)
             {
-                sections[i] = new Section(i);
+                sections[i] = new Section(i,terrain);
                 sections[i].CreateBlocks();
                yield return StartCoroutine(sections[i].CreateMesh());
             }

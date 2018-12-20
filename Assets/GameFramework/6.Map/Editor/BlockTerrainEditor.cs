@@ -386,16 +386,23 @@ namespace GameFramework
             data.height = EditorGUILayout.IntField("Height(Y)", data.height);
             data.depth = EditorGUILayout.IntField("Depth(Z)", data.depth);
 
-            if (GUILayout.Button("创建地形"))
+            GUILayout.BeginHorizontal();
+            if (GUILayout.Button("创建地形",(GUIStyle)"ButtonLeft"))
             {
                 //创建map的chunks
                 MyTools.DeleteAllChildren(blockTerrain.transform);
-                //EditorCoroutineUtility.StartCoroutine(blockTerrain.CreateRandomMap(), this);
+                EditorCoroutineUtility.StartCoroutine(blockTerrain.CreateMapByEditor(), this);
             }
-            if (GUILayout.Button("更新Mesh"))
+            if (GUILayout.Button("清空Mesh缓存",(GUIStyle)"ButtonMid"))
+            {
+                //创建map的chunks
+                MyTools.DeleteAllChildren(blockTerrain.transform);
+            }
+            if (GUILayout.Button("更新Mesh", (GUIStyle)"ButtonRight"))
             {
                 //blockTerrain.CreateRandomMap();
             }
+            GUILayout.EndHorizontal();
             selectPanelIndex = GUILayout.Toolbar(selectPanelIndex, panelNames);
             if (panelNames[selectPanelIndex] == "笔刷")
             {

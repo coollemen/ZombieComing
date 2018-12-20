@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using Unity.EditorCoroutines.Editor;
 namespace GameFramework
 {
     public class BlockTerrain : MonoSingleton<BlockTerrain>
@@ -14,7 +14,7 @@ namespace GameFramework
         public Chunk[,] viewChunks;
         public GameObject chunkPrefab;
         public BlockTerrainData data;
-
+        public Dictionary<byte, Block> blocks = new Dictionary<byte, Block>();
         // Use this for initialization
         void Start()
         {
@@ -42,8 +42,9 @@ namespace GameFramework
 
         }
 
-        public void CreateMapByEditor()
+        public IEnumerator CreateMapByEditor()
         {
+            this.CreateBlocks();
             viewChunks = new Chunk[width, depth];
             for (int j = 0; j < depth; j++)
             {
@@ -57,12 +58,38 @@ namespace GameFramework
                             transform.position.z + j * 16 + 8);
                     go.name = string.Format("Chunk_{0}_{1}", i, j);
                     viewChunks[i, j] = go.GetComponent<Chunk>();
-                    viewChunks[i, j].Init();
+                    yield return StartCoroutine(viewChunks[i, j].CreateChunkMesh());
 
                 }
             }
         }
+        /// <summary>
+        /// 根据地图块定义创建block
+        /// </summary>
+        public void CreateBlocks()
+        {
+            blocks.Clear();
+            foreach (var def in data.blockDefinitions)
+            {
+                Block b = new Block((byte)def.id, def.name, def.top.uv, def.bottom.uv, def.left.uv, def.right.uv, def.front.uv,
+                    def.back.uv);
+                this.blocks.Add(b.id, b);
+            }
+        }
 
+        public Vector2[] GetUvFromSprite(Sprite spr)
+        {
+            return null;
+        }
+        /// <summary>
+        /// 获取指定id的block
+        /// </summary>
+        /// <param name="id">id</param>
+        /// <returns>地图块</returns>
+        public  Block GetBlock(byte id)
+        {
+            return blocks.ContainsKey(id) ? blocks[id] : null;
+        }
         /// <summary>
         /// 创建随机地图
         /// </summary>
