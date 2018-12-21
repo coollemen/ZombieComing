@@ -47,14 +47,14 @@ namespace GameFramework
 
         public SectionData()
         {
-            for (int k = 0; k < 16; k++)
+            for (int x = 0; x < 16; x++)
             {
-                for (int j = 0; j < 16; j++)
+                for (int y = 0; y < 16; y++)
                 {
-                    for (int i = 0; i < 16; i++)
+                    for (int z = 0; z < 16; z++)
                     {
                         //block数值为0代表该Block为空，没有数据
-                        blocks[i, j, k] = 0;
+                        blocks[x, y, z] = 0;
                     }
                 }
             }
