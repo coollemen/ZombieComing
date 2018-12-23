@@ -4,6 +4,36 @@ using UnityEngine;
 namespace GameFramework
 {
     [System.Serializable]
+    public class SectionData
+    {
+        public byte[,,] blocks = new byte[16, 16, 16];
+
+        public SectionData()
+        {
+            this.Init();
+        }
+
+        public void Init()
+        {
+            for (int x = 0; x < 16; x++)
+            {
+                for (int y = 0; y < 16; y++)
+                {
+                    for (int z = 0; z < 16; z++)
+                    {
+                        //block数值为0代表该Block为空，没有数据
+                        blocks[x, y, z] = 0;
+                    }
+                }
+            }
+        }
+        public byte this[int x, int y, int z]
+        {
+            get { return blocks[x, y, z]; }
+            set { blocks[x, y, z] = value; }
+        }
+    }
+    [System.Serializable]
     public class ChunkData
     {
         public List<SectionData> sectionData;
@@ -40,31 +70,7 @@ namespace GameFramework
         }
         
     }
-    [System.Serializable]
-    public class SectionData
-    {
-        public byte[,,] blocks = new byte[16, 16, 16];
 
-        public SectionData()
-        {
-            for (int x = 0; x < 16; x++)
-            {
-                for (int y = 0; y < 16; y++)
-                {
-                    for (int z = 0; z < 16; z++)
-                    {
-                        //block数值为0代表该Block为空，没有数据
-                        blocks[x, y, z] = 0;
-                    }
-                }
-            }
-        }
-        public byte this[int x, int y, int z]
-        {
-            get { return blocks[x,y,z]; }
-            set { blocks[x, y, z] = value; }
-        }
-    }
     [CreateAssetMenu(fileName = "CustomMapData.asset", menuName = "GameFramework/BlockTerrain Data Asset")]
     /// <summary>
     /// 地图数据
@@ -114,7 +120,9 @@ namespace GameFramework
         /// block数据
         /// </summary>
         public List<BlockDefinition> blockDefinitions = new List<BlockDefinition>();
-
+        /// <summary>
+        /// 地形层定义
+        /// </summary>
         public List<BlockTerrainLayer> layers = new List<BlockTerrainLayer>();
         private void Awake()
         {

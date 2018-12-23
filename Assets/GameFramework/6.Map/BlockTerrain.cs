@@ -7,9 +7,12 @@ namespace GameFramework
     public class BlockTerrain : MonoSingleton<BlockTerrain>
     {
         public int width = 64;
+        public int height = 64;
         public int depth = 64;
+
         public int viewWidth = 9;
         public int viewDepth = 9;
+
         public Chunk[,] chunks;
         public Chunk[,] viewChunks;
         public GameObject chunkPrefab;
@@ -28,16 +31,32 @@ namespace GameFramework
         {
 
         }
-        public void CreateMap()
+        /// <summary>
+        /// 创建地形
+        /// </summary>
+        public void CreateTerrain()
         {
 
         }
-        public void LoadMap()
+        /// <summary>
+        /// 装载地形数据
+        /// </summary>
+        public void LoadTerrain()
         {
-
+            if (this.data == null)
+            {
+                Debug.LogError("Terrain Data Is Null,Load Failed!");
+                return;
+            }
+            //读取数据
+            this.width = data.width;
+            this.height = data.height;
+            this.depth = data.depth;
         }
-
-        public void SaveMap()
+        /// <summary>
+        /// 保存地形数据
+        /// </summary>
+        public void SaveTerrain()
         {
 
         }

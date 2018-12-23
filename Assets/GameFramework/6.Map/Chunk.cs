@@ -14,16 +14,42 @@ namespace GameFramework
     [RequireComponent(typeof(MeshCollider))]
     public class Chunk : MonoBehaviour
     {
+        /// <summary>
+        /// 网格
+        /// </summary>
         public Mesh mesh;
+        /// <summary>
+        /// 断面数组
+        /// </summary>
         public Section[] sections;
+        /// <summary>
+        /// 断面个数
+        /// </summary>
         public int sectionCount = 16;
-
+        /// <summary>
+        /// 地形父组件
+        /// </summary>
         public BlockTerrain terrain;
-
-        //当前Chunk是否正在生成中
+        /// <summary>
+        /// 行数
+        /// </summary>
+        public int row;
+        /// <summary>
+        /// 列数
+        /// </summary>
+        public int col;
+        /// <summary>
+        /// 簇数据
+        /// </summary>
+        public ChunkData data;
+        /// <summary>
+        ///当前Chunk是否正在生成中
+        /// </summary>   
         private bool isWorking = false;
 
-        //是否需要更新
+        /// <summary>
+        ///是否需要更新
+        /// </summary>
         public bool isDirty = false;
 
         void Start()
@@ -37,7 +63,7 @@ namespace GameFramework
         }
 
         /// <summary>
-        /// 异步创建chunk的mesh
+        /// 异步创建chunk的网格
         /// </summary>
         /// <returns></returns>
         public IEnumerator CreateChunkMesh()
@@ -64,7 +90,7 @@ namespace GameFramework
             for (int i = 0; i < sections.Length; i++)
             {
                 sections[i] = new Section(i, terrain);
-                sections[i].CreateBlocks();
+                sections[i].CreateBlocks(this.data.sectionData[i]);
                 yield return StartCoroutine(sections[i].CreateMesh());
             }
 
