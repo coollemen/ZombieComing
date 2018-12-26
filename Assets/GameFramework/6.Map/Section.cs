@@ -91,9 +91,9 @@ namespace GameFramework
         }
 
         /// <summary>
-        /// 创建地图块
+        /// 初始化地图块,每个block的值为0
         /// </summary>
-        public void CreateBlocks()
+        public void InitBlocks()
         {
             blocks = new byte[width, height, depth];
             for (int x = 0; x < Section.width; x++)
@@ -102,17 +102,7 @@ namespace GameFramework
                 {
                     for (int z = 0; z < Section.depth; z++)
                     {
-                        //                        if (y == Section.height - 1 && id == 1)
-                        //                        {
-                        //                            if (Random.Range(1, terrain.blocks.Count) == 1)
-                        //                            {
-                        //                                blocks[x, y, z] = 1;
-                        //                            }
-                        //                        }
-                        //                        else
-                        //                        {
-                        blocks[x, y, z] = 1;
-                        //                        }
+                        blocks[x, y, z] = 0;
                     }
                 }
             }
@@ -121,26 +111,16 @@ namespace GameFramework
         /// 创建地图块
         /// </summary>
         /// <param name="data">断面数据</param>
-        public void CreateBlocks(SectionData data)
+        public void SetBlocks(SectionData data)
         {
-//            blocks = new byte[width, height, depth];
-//            for (int x = 0; x < Section.width; x++)
-//            {
-//                for (int y = 0; y < Section.height; y++)
-//                {
-//                    for (int z = 0; z < Section.depth; z++)
-//                    {
-//                        blocks[x, y, z] = data[x, y, z];
-//                    }
-//                }
-//            }
             this.blocks = data.blocks;
+            isDirty = true;
         }
         /// <summary>
-        /// 创建Mesh
+        /// 异步创建Mesh
         /// </summary>
         /// <returns></returns>
-        public IEnumerator CreateMesh()
+        public IEnumerator CreateSectionMeshAsyn()
         {
             while (isWorking)
             {
@@ -238,7 +218,7 @@ namespace GameFramework
         /// <param name="y">y位置</param>
         /// <param name="z">z位置</param>
         /// <param name="blockID">地图类型ID</param>
-        public void CreateBlock(int x, int y, int z, byte blockID)
+        public void SetBlock(int x, int y, int z, byte blockID)
         {
             this.blocks[x, y, z] = blockID;
             isDirty = true;

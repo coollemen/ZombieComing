@@ -9,21 +9,85 @@ namespace GameFramework
         public int width = 64;
         public int height = 64;
         public int depth = 64;
-
+        public BlockTerrainData data;
         public int viewWidth = 9;
         public int viewDepth = 9;
 
-        public Chunk[,] chunks;
+//        public Chunk[,] chunks;
         public Chunk[,] viewChunks;
         public GameObject chunkPrefab;
-        public BlockTerrainData data;
-        public Dictionary<byte, Block> blocks = new Dictionary<byte, Block>();
+
+        public Dictionary<byte, Block> blockPool = new Dictionary<byte, Block>();
+        #region 属性
+        public int Width
+        {
+            get
+            {
+                if (this.data == null)
+                {
+                    return -1;
+                }
+                else
+                {
+                   return this.data.width;
+                }
+            }
+            set
+            {
+                if (this.data != null)
+                {
+                    this.data.width = value;
+                }
+            }
+        }
+        public int Height
+        {
+            get
+            {
+                if (this.data == null)
+                {
+                    return -1;
+                }
+                else
+                {
+                    return this.data.height;
+                }
+            }
+            set
+            {
+                if (this.data != null)
+                {
+                    this.data.height = value;
+                }
+            }
+        }
+        public int Depth
+        {
+            get
+            {
+                if (this.data == null)
+                {
+                    return -1;
+                }
+                else
+                {
+                    return this.data.depth;
+                }
+            }
+            set
+            {
+                if (this.data != null)
+                {
+                    this.data.depth = value;
+                }
+            }
+        }
+        #endregion
         // Use this for initialization
         void Start()
         {
-            chunks = new Chunk[width, depth];
+//            chunks = new Chunk[width, depth];
             viewChunks = new Chunk[viewWidth, viewDepth];
-            CreateRandomMap();
         }
 
         // Update is called once per frame
@@ -41,30 +105,13 @@ namespace GameFramework
         /// <summary>
         /// 装载地形数据
         /// </summary>
-        public void LoadTerrain()
+        public IEnumerator LoadTerrainAsyn()
         {
-            if (this.data == null)
-            {
-                Debug.LogError("Terrain Data Is Null,Load Failed!");
-                return;
-            }
             //读取数据
-            this.width = data.width;
-            this.height = data.height;
-            this.depth = data.depth;
-        }
-        /// <summary>
-        /// 保存地形数据
-        /// </summary>
-        public void SaveTerrain()
-        {
-
-        }
-
-        public IEnumerator CreateMapByEditor()
-        {
             this.CreateBlocks();
-            viewChunks = new Chunk[width, depth];
+            //初始化chunk数组
+            viewChunks = new Chunk[this.Width, this.Depth];
+            //创建chunk子物体
             for (int j = 0; j < depth; j++)
             {
                 for (int i = 0; i < width; i++)
@@ -77,29 +124,48 @@ namespace GameFramework
                             transform.position.z + j * 16 + 8);
                     go.name = string.Format("Chunk_{0}_{1}", i, j);
                     viewChunks[i, j] = go.GetComponent<Chunk>();
-                    yield return StartCoroutine(viewChunks[i, j].CreateChunkMesh());
-
+                    //获取chunk的数据
+                    viewChunks[i, j].data = this.data.chunkDatas[j][i];
+                    yield return StartCoroutine(viewChunks[i, j].CreateChunkMeshAsyn());
                 }
             }
         }
+        /// <summary>
+        ///更新地形数据
+        /// </summary>
+        public IEnumerator UpdateTerrainAsyn()
+        {
+            //创建chunk子物体
+            for (int j = 0; j < depth; j++)
+            {
+                for (int i = 0; i < width; i++)
+                {
+                    yield return StartCoroutine(viewChunks[i, j].UpdateChunkMeshAsyn());
+                }
+            }
+        }
+        /// <summary>
+        /// 保存地形数据
+        /// </summary>
+        public void SaveTerrain()
+        {
+
+        }
+
         /// <summary>
         /// 根据地图块定义创建block
         /// </summary>
         public void CreateBlocks()
         {
-            blocks.Clear();
+            blockPool.Clear();
             foreach (var def in data.blockDefinitions)
             {
                 Block b = new Block((byte)def.id, def.name, def.top.uv, def.bottom.uv, def.left.uv, def.right.uv, def.front.uv,
                     def.back.uv);
-                this.blocks.Add(b.id, b);
+                this.blockPool.Add(b.id, b);
             }
         }
 
-        public Vector2[] GetUvFromSprite(Sprite spr)
-        {
-            return null;
-        }
         /// <summary>
         /// 获取指定id的block
         /// </summary>
@@ -107,28 +173,9 @@ namespace GameFramework
         /// <returns>地图块</returns>
         public  Block GetBlock(byte id)
         {
-            return blocks.ContainsKey(id) ? blocks[id] : null;
+            return blockPool.ContainsKey(id) ? blockPool[id] : null;
         }
-        /// <summary>
-        /// 创建随机地图
-        /// </summary>
-        public void CreateRandomMap()
-        {
-            viewChunks = new Chunk[viewWidth, viewDepth];
-            for (int i = 0; i < viewWidth; i++)
-            {
-                for (int j = 0; j < viewDepth; j++)
-                {
-                    //地图原点在左下角
-                    var go = Instantiate(chunkPrefab);
-                    go.transform.SetParent(this.transform);
-                    go.transform.position =
-                        new Vector3(transform.position.x+i*16+8, transform.position.y, transform.position.z+j*16+8);
-                    go.name = string.Format("Chunk_{0}_{1}", i, j);
-                    viewChunks[i, j] = go.GetComponent<Chunk>();                  
-                }
-            }
-        }
+
         /// <summary>
         /// 在地图指定位置设置地图块（Block）
         /// </summary>
@@ -140,7 +187,7 @@ namespace GameFramework
         {
             int mapX = Mathf.FloorToInt(x / 16);
             int mapZ = Mathf.FloorToInt(z / 16);
-            var chunk = chunks[mapX, mapZ];
+            var chunk = viewChunks[mapX, mapZ];
             //判断Chunk是否正确
             if (chunk == null)
             {
@@ -162,7 +209,7 @@ namespace GameFramework
         {
             int mapX = Mathf.FloorToInt(x / 16);
             int mapZ = Mathf.FloorToInt(z / 16);
-            var chunk = chunks[mapX, mapZ];
+            var chunk = viewChunks[mapX, mapZ];
             //判断Chunk是否正确
             if (chunk == null)
             {

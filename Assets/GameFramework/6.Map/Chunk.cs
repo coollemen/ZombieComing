@@ -59,14 +59,14 @@ namespace GameFramework
 
         public void Init()
         {
-            StartCoroutine(CreateChunkMesh());
+            StartCoroutine(CreateChunkMeshAsyn());
         }
 
         /// <summary>
         /// 异步创建chunk的网格
         /// </summary>
         /// <returns></returns>
-        public IEnumerator CreateChunkMesh()
+        public IEnumerator CreateChunkMeshAsyn()
         {
             while (isWorking)
             {
@@ -90,8 +90,8 @@ namespace GameFramework
             for (int i = 0; i < sections.Length; i++)
             {
                 sections[i] = new Section(i, terrain);
-                sections[i].CreateBlocks(this.data.sectionData[i]);
-                yield return StartCoroutine(sections[i].CreateMesh());
+                sections[i].SetBlocks(this.data.sectionData[i]);
+                yield return StartCoroutine(sections[i].CreateSectionMeshAsyn());
             }
 
             CombineInstance[] instances = new CombineInstance[sections.Length];
@@ -100,7 +100,7 @@ namespace GameFramework
                 instances[i] = new CombineInstance();
                 instances[i].mesh = sections[i].mesh;
                 Vector3 pos = Vector3.zero;
-                pos.y += i * 16 - 8 * sectionCount + 8;
+                pos.y += i * 16 + 8;
                 Quaternion rot = Quaternion.identity;
                 Vector3 scale = new Vector3(1, 1, 1);
                 instances[i].transform = Matrix4x4.TRS(pos, rot, scale);
@@ -126,13 +126,13 @@ namespace GameFramework
         {
             if (isDirty)
             {
-                StartCoroutine(UpdateMesh());
+                StartCoroutine(UpdateChunkMeshAsyn());
             }
         }
 
-        public IEnumerator UpdateMesh()
+        public IEnumerator UpdateChunkMeshAsyn()
         {
-            Debug.Log("Update Mesh Start!");
+//            Debug.Log("Update Mesh Start!");
             while (isWorking)
             {
                 yield return null;
@@ -145,7 +145,7 @@ namespace GameFramework
             {
                 if (sections[i].isDirty)
                 {
-                    yield return StartCoroutine(sections[i].CreateMesh());
+                    yield return StartCoroutine(sections[i].CreateSectionMeshAsyn());
                 }
             }
 
@@ -155,7 +155,7 @@ namespace GameFramework
                 instances[i] = new CombineInstance();
                 instances[i].mesh = sections[i].mesh;
                 Vector3 pos = Vector3.zero;
-                pos.y += i * 16 - 8 * sectionCount + 8;
+                pos.y += i * 16 + 8;
                 Quaternion rot = Quaternion.identity;
                 Vector3 scale = new Vector3(1, 1, 1);
                 instances[i].transform = Matrix4x4.TRS(pos, rot, scale);
@@ -170,7 +170,7 @@ namespace GameFramework
 
             isWorking = false;
             isDirty = false;
-            Debug.Log("Update Mesh End!");
+//            Debug.Log("Update Mesh End!");
         }
 
         public void FocusBlock(Vector3 worldPoint)
@@ -220,7 +220,7 @@ namespace GameFramework
         {
             int sectionIndex = Mathf.FloorToInt(y / 16);
             int sectionY = y % 16;
-            sections[sectionIndex].blocks[x, sectionY, z] = block;
+            sections[sectionIndex].SetBlock(x, sectionY, z,block);
         }
 
         public Vector3 GetBlockFromWorldPoint(Vector3 worldPoint)

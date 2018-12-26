@@ -16,6 +16,7 @@ MonoBehaviour:
   width: 16
   height: 16
   depth: 16
+  chunkDatas: []
   blockDefinitions:
   - id: 0
     name: "\u6CE5\u5730"

@@ -21,8 +21,8 @@ namespace GameFramework
                 {
                     for (int z = 0; z < 16; z++)
                     {
-                        //block数值为0代表该Block为空，没有数据
-                        blocks[x, y, z] = 0;
+                            //block数值为0代表该Block为空，没有数据
+                            blocks[x, y, z] = 0;
                     }
                 }
             }
@@ -48,6 +48,17 @@ namespace GameFramework
             for (int i = 0; i < sectionCount; i++)
             {
                 var sd = new SectionData();
+                if (i == 0)
+                {
+                    //将最底层的数据刷为第一个block
+                    for(int z = 0; z < 16;z++)
+                    {
+                        for (int x = 0; x < 16; x++)
+                        {
+                            sd[x, 0, z] = 1;
+                        }
+                    }
+                }
                 this.sectionData.Add(sd);
             }
         }
@@ -70,7 +81,11 @@ namespace GameFramework
         }
         
     }
-
+    [System.Serializable]
+    public class ChunkRow : List<ChunkData>
+    {
+        
+    }
     [CreateAssetMenu(fileName = "CustomMapData.asset", menuName = "GameFramework/BlockTerrain Data Asset")]
     /// <summary>
     /// 地图数据
@@ -115,7 +130,7 @@ namespace GameFramework
         /// <summary>
         /// chunk数据
         /// </summary>
-        public List<List<ChunkData>> chunkDatas = new List<List<ChunkData>>();
+        public List<ChunkRow> chunkDatas = new List<ChunkRow>();
         /// <summary>
         /// block数据
         /// </summary>
@@ -151,9 +166,10 @@ namespace GameFramework
         /// </summary>
         public void InitChunksData()
         {
+            this.chunkDatas.Clear();
             for (int i = 0; i < width; i++)
             {
-                var col = new List<ChunkData>();
+                var col = new ChunkRow();
                 for (int j = 0; j < depth; j++)
                 {
                     var cd = new ChunkData(height);

@@ -33,6 +33,7 @@ namespace GameFramework
         private BlockTerrain _terrain;
         private BlockTerrainData _terrainData;
 
+        private int layer = 0;
         private void OnEnable()
         {
             _terrain = (BlockTerrain) target;
@@ -67,6 +68,7 @@ namespace GameFramework
             var blockPoint = GetHitBlockMapPoint(mouseRay);
             //绘制鼠标所指的Block
             Handles.BeginGUI();
+            OnSceneViewGUI();
             GUI.Label(new Rect(Event.current.mousePosition, new Vector2(100, 30)), blockPoint.ToString());
             Handles.EndGUI();
 
@@ -87,14 +89,48 @@ namespace GameFramework
             {
                 if (Event.current.button == 0 && isMouseIn)
                 {
-                    Debug.Log("Mouse Left Button Click!");
-
+                    Debug.Log("Mouse Left Button Click! " + blockPoint.ToString());
+                    this.SetBlockOnPoint(blockPoint,1);
+                }
+                else if (Event.current.button == 1 && isMouseIn)
+                {
+                    this.SetBlockOnPoint(blockPoint, 0);
+                    Debug.Log("Mouse Right Button Click! " + blockPoint.ToString());
                 }
             }
         }
 
         #region SenceView相关函数
 
+        public void OnSceneViewGUI()
+        {
+            GUILayout.Label(layer.ToString());
+            GUILayout.BeginVertical(GUILayout.Width(20),GUILayout.Height(200));
+            if (GUILayout.Button("+"))
+            {
+                if (layer < 255)
+                {
+                    layer++;
+                }
+            }
+            GUILayout.BeginHorizontal();
+            GUILayout.Space(10);
+           layer=(int) GUILayout.VerticalSlider(layer, 255, 0);
+            GUILayout.EndHorizontal();
+            if (GUILayout.Button("-"))
+            {
+                if (layer >0)
+                {
+                    layer--;
+                }
+            }
+            GUILayout.EndVertical();
+        }
+        public void SetBlockOnPoint(Vector3Int point,byte blockID)
+        {
+            this._terrain.SetBlockByMapPoint(point.x, point.y, point.z, blockID);
+            EditorCoroutineUtility.StartCoroutine(this._terrain.UpdateTerrainAsyn(),this);
+        }
         /// <summary>
         /// 获取鼠标所在block的地图点坐标
         /// </summary>
@@ -391,7 +427,8 @@ namespace GameFramework
             {
                 //创建map的chunks
                 MyTools.DeleteAllChildren(blockTerrain.transform);
-                EditorCoroutineUtility.StartCoroutine(blockTerrain.CreateMapByEditor(), this);
+                InitTerrainData();
+                EditorCoroutineUtility.StartCoroutine(blockTerrain.LoadTerrainAsyn(), this);
             }
             if (GUILayout.Button("清空Mesh缓存",(GUIStyle)"ButtonMid"))
             {
@@ -423,6 +460,10 @@ namespace GameFramework
 
         #region OnInspectorGUI相关函数
 
+        public void InitTerrainData()
+        {
+            _terrainData.InitChunksData();
+        }
         /// <summary>
         /// 绘制笔刷页面
         /// </summary>
