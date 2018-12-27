@@ -74,7 +74,7 @@ namespace GameFramework
 
             //绘制地图碰撞盒
             var mapBounds = this.GetMapBounds(_terrain);
-            //判读鼠标是不是在地图内
+            //判断鼠标是不是在地图内
             if (mapBounds.IntersectRay(mouseRay))
             {
                 this.DrawMapBounds(mapBounds);
