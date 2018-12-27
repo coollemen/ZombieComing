@@ -12,7 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e67dd8e6f09651a4aafc8bdd2b275471, type: 3}
   m_Name: CustomMapData
   m_EditorClassIdentifier: 
-  name: BlockTerrain Data
   width: 16
   height: 16
   depth: 16

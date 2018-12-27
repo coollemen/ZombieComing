@@ -93,10 +93,6 @@ namespace GameFramework
     public class BlockTerrainData : ScriptableObject
     {
         /// <summary>
-        /// 地图的名称
-        /// </summary>
-        public string name;
-        /// <summary>
         /// 主版本数字
         /// </summary>
         private int versionMainNum;
