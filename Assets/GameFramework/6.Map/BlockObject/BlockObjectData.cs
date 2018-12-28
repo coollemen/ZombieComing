@@ -7,6 +7,7 @@ namespace GameFramework
     /// <summary>
     /// 图块物体的数据
     /// </summary>
+    [CreateAssetMenu(fileName = "CustomBlockObject.asset", menuName = "GameFramework/Block Object Data Asset")]
     public class BlockObjectData : ScriptableObject
     {
 
