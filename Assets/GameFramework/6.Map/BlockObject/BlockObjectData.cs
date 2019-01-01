@@ -29,7 +29,7 @@ namespace GameFramework
         /// <summary>
         /// 图块定义数组
         /// </summary>
-        public List<BlockDefinition> blockDefinitions = new List<BlockDefinition>();
+        public BlockDefinitionCollection blockDefs;
 
         /// <summary>
         /// 获取图块数据的宽度(x维度)
@@ -92,7 +92,7 @@ namespace GameFramework
         {
             this.name = "block object";
             this.blocks = new byte[defaultSize, defaultSize, defaultSize];
-            this.blockDefinitions = new List<BlockDefinition>();
+            this.blockDefs = new  BlockDefinitionCollection();
             this.description = "";
 
         }

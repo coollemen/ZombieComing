@@ -13,7 +13,8 @@ namespace GameFramework
             base.OnInspectorGUI();
             if (GUILayout.Button("打开编辑器"))
             {
-                BlockObjectSceneEditor.ShowWindow(target as BlockObjectData);
+                BlockObjectSceneEditor.Instance.OpenEditorScene(target as BlockObjectData);
+                GUIUtility.ExitGUI();
             }
         }
     }

@@ -160,9 +160,20 @@ namespace GameFramework
             blockPool.Clear();
             foreach (var def in data.blockDefinitions)
             {
-                Block b = new Block((byte)def.id, def.name, def.top.uv, def.bottom.uv, def.left.uv, def.right.uv, def.front.uv,
-                    def.back.uv);
-                this.blockPool.Add(b.id, b);
+                if (def is SpriteBlockDefinition)
+                {
+                    var sprBlockDef = def as SpriteBlockDefinition;
+
+                    Block b = new Block((byte)sprBlockDef.id, 
+                        sprBlockDef.name, 
+                        sprBlockDef.top.uv, 
+                        sprBlockDef.bottom.uv, 
+                        sprBlockDef.left.uv, 
+                        sprBlockDef.right.uv,
+                        sprBlockDef.front.uv,
+                        sprBlockDef.back.uv);
+                    this.blockPool.Add(b.id, b);
+                }
             }
         }
 

@@ -608,54 +608,62 @@ namespace GameFramework
                     GUILayout.Toggle(true, string.Format("ID:{0},Name:{1}", def.id, def.name),
                         (GUIStyle)"MeTransitionSelectHead",GUILayout.Height(30));
                     def = data.blockDefinitions[i];
-                    def.id = EditorGUILayout.IntField("ID", def.id);
-                    def.name = EditorGUILayout.TextField("Name", def.name);
-                    //贴图设置
-                    EditorGUILayout.PrefixLabel("CreateMode");
-                    blockCreateModeIndex = GUILayout.Toolbar(blockCreateModeIndex, blockCreateModes);
-                    if (blockCreateModeIndex == 0)
+                    if (def is SpriteBlockDefinition)
                     {
-                        var temp = EditorGUILayout.ObjectField("All Face", def.top, typeof(Sprite), false) as Sprite;
-                        if (temp != null && temp != def.top)
+                         var sprDef = def as SpriteBlockDefinition;
+
+                        sprDef.id = EditorGUILayout.IntField("ID", sprDef.id);
+                        sprDef.name = EditorGUILayout.TextField("Name", sprDef.name);
+                        //贴图设置
+                        EditorGUILayout.PrefixLabel("CreateMode");
+                        blockCreateModeIndex = GUILayout.Toolbar(blockCreateModeIndex, blockCreateModes);
+                        if (blockCreateModeIndex == 0)
                         {
-                            def.top = temp;
-                            def.bottom = def.front = def.back = def.left = def.right = def.top;
+                            var temp = EditorGUILayout.ObjectField("All Face", sprDef.top, typeof(Sprite), false) as Sprite;
+                            if (temp != null && temp != sprDef.top)
+                            {
+                                sprDef.top = temp;
+                                sprDef.bottom = sprDef.front = sprDef.back = sprDef.left = sprDef.right = sprDef.top;
+                            }
                         }
-                    }
-                    else if (blockCreateModeIndex == 1)
-                    {
-                        def.top = EditorGUILayout.ObjectField("Top Face", def.top, typeof(Sprite), false) as Sprite;
-                        var temp =
-                            EditorGUILayout.ObjectField("Other Face", def.bottom, typeof(Sprite), false) as Sprite;
-                        if (temp != null && temp != def.bottom)
+                        else if (blockCreateModeIndex == 1)
                         {
-                            def.bottom = temp;
-                            def.front = def.back = def.left = def.right = def.bottom;
+                            sprDef.top = EditorGUILayout.ObjectField("Top Face", sprDef.top, typeof(Sprite), false) as Sprite;
+                            var temp =
+                                EditorGUILayout.ObjectField("Other Face", sprDef.bottom, typeof(Sprite), false) as Sprite;
+                            if (temp != null && temp != sprDef.bottom)
+                            {
+                                sprDef.bottom = temp;
+                                sprDef.front = sprDef.back = sprDef.left = sprDef.right = sprDef.bottom;
+                            }
                         }
-                    }
-                    else if (blockCreateModeIndex == 2)
-                    {
-                        def.top = EditorGUILayout.ObjectField("Top Face", def.top, typeof(Sprite), false) as Sprite;
-                        def.bottom =
-                            EditorGUILayout.ObjectField("Bottom Face", def.bottom, typeof(Sprite), false) as Sprite;
-                        var temp = EditorGUILayout.ObjectField("Other Face", def.front, typeof(Sprite), false) as Sprite;
-                        if (temp != null && temp != def.front)
+                        else if (blockCreateModeIndex == 2)
                         {
-                            def.front = temp;
-                            def.back = def.left = def.right = def.front;
+                            sprDef.top = EditorGUILayout.ObjectField("Top Face", sprDef.top, typeof(Sprite), false) as Sprite;
+                            sprDef.bottom =
+                                EditorGUILayout.ObjectField("Bottom Face", sprDef.bottom, typeof(Sprite), false) as Sprite;
+                            var temp =
+                                EditorGUILayout.ObjectField("Other Face", sprDef.front, typeof(Sprite), false) as Sprite;
+                            if (temp != null && temp != sprDef.front)
+                            {
+                                sprDef.front = temp;
+                                sprDef.back = sprDef.left = sprDef.right = sprDef.front;
+                            }
                         }
-                    }
-                    else if (blockCreateModeIndex == 3)
-                    {
-                        def.top = EditorGUILayout.ObjectField("Top Face", def.top, typeof(Sprite), false) as Sprite;
-                        def.bottom =
-                            EditorGUILayout.ObjectField("Bottom Face", def.bottom, typeof(Sprite), false) as Sprite;
-                        def.front =
-                            EditorGUILayout.ObjectField("Front Face", def.front, typeof(Sprite), false) as Sprite;
-                        def.back = EditorGUILayout.ObjectField("Back Face", def.back, typeof(Sprite), false) as Sprite;
-                        def.left = EditorGUILayout.ObjectField("Left Face", def.left, typeof(Sprite), false) as Sprite;
-                        def.right =
-                            EditorGUILayout.ObjectField("Right Face", def.right, typeof(Sprite), false) as Sprite;
+                        else if (blockCreateModeIndex == 3)
+                        {
+                            sprDef.top = EditorGUILayout.ObjectField("Top Face", sprDef.top, typeof(Sprite), false) as Sprite;
+                            sprDef.bottom =
+                                EditorGUILayout.ObjectField("Bottom Face", sprDef.bottom, typeof(Sprite), false) as Sprite;
+                            sprDef.front =
+                                EditorGUILayout.ObjectField("Front Face", sprDef.front, typeof(Sprite), false) as Sprite;
+                            sprDef.back =
+                                EditorGUILayout.ObjectField("Back Face", sprDef.back, typeof(Sprite), false) as Sprite;
+                            sprDef.left =
+                                EditorGUILayout.ObjectField("Left Face", sprDef.left, typeof(Sprite), false) as Sprite;
+                            sprDef.right =
+                                EditorGUILayout.ObjectField("Right Face", sprDef.right, typeof(Sprite), false) as Sprite;
+                        }
                     }
                     EditorGUILayout.BeginHorizontal();
                     GUILayout.FlexibleSpace();

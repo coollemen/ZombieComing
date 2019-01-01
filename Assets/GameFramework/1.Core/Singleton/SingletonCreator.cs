@@ -31,7 +31,7 @@ namespace GameFramework
 
     public static class SingletonCreator
     {
-        public static T CreateSingleton<T>() where T : class, ISingleton
+        public static T CreateSingleton<T>() where T : class
         {
             // 获取私有构造函数
             var ctors = typeof(T).GetConstructors(BindingFlags.Instance | BindingFlags.NonPublic);
@@ -46,7 +46,6 @@ namespace GameFramework
 
             // 通过构造函数，常见实例
             var retInstance = ctor.Invoke(null) as T;
-            retInstance.OnSingletonInit();
 
             return retInstance;
         }
