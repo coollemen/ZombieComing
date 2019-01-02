@@ -11,5 +11,10 @@ namespace GameFramework
         {
             this.name = "tool";
         }
+
+        public virtual void OnGUI()
+        {
+
+        }
     }
 }

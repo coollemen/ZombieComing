@@ -25,11 +25,13 @@ namespace GameFramework
         public List<string> blockNames = new List<string>();
         public int selectedBlockIndex = 0;
 
-        public string[] toolNames = new string[] {"画笔", "油漆桶", "选择工具", "移动工具","3D物体"};
+        public string[] toolNames = new string[] {"画笔", "油漆桶", "选择工具", "移动工具","几何体"};
         public int selectedToolIndex = 0;
 
-        public string[] geometryNames = new string[] {"正方体", "长方体", "球", "圆柱体"};
+        public string[] geometryNames = new string[] {"正方体", "球", "圆柱体"};
         public int selectedGeometeryIndex = 0;
+
+        public Dictionary<string, EditorTool> tools = new Dictionary<string, EditorTool>();
         public BlockObjectRTE boEditor;
 
         public override void OnInspectorGUI()
@@ -220,7 +222,13 @@ namespace GameFramework
             selectedToolIndex = GUILayout.Toolbar(selectedToolIndex, toolNames);
             if (toolNames[selectedToolIndex] == "画笔")
             {
+                if (!tools.ContainsKey("画笔"))
+                {
+                    var brushTool = new BrushEditorTool();
+                    this.tools.Add(brushTool.name,brushTool);
+                }
 
+                this.tools["画笔"].OnGUI();
             }
             else if (toolNames[selectedToolIndex] == "油漆桶")
             {
@@ -231,9 +239,15 @@ namespace GameFramework
             else if (toolNames[selectedToolIndex] == "移动工具")
             {
             }
-            else if (toolNames[selectedToolIndex] == "3D物体")
+            else if (toolNames[selectedToolIndex] == "几何体")
             {
-                selectedGeometeryIndex = EditorGUILayout.Popup("几何体",selectedGeometeryIndex, geometryNames);
+                if (!tools.ContainsKey("几何体"))
+                {
+                    var geometryTool = new GeometryEditorTool();
+                    this.tools.Add(geometryTool.name, geometryTool);
+                }
+
+                tools["几何体"].OnGUI();
             }
         }
         
