@@ -8,7 +8,10 @@ namespace GameFramework
     [CustomEditor(typeof(BlockObjectRTE))]
     public class BlockObjectRTEEditor : Editor
     {
-        public Vector3Int canvasSize;
+        public Vector3Int canvasSize = new Vector3Int(256, 256, 256);
+        public int viewPanelX = 1;
+        public int viewPanelY = 1;
+        public int viewPanelZ = 1;
         public string[] panelNames = new string[] {"工具栏", "图块", "设置"};
         public int selectedPanelIndex = 0;
 
@@ -25,7 +28,7 @@ namespace GameFramework
         public List<string> blockNames = new List<string>();
         public int selectedBlockIndex = 0;
 
-        public string[] toolNames = new string[] {"画笔", "油漆桶", "选择工具", "移动工具","几何体"};
+        public string[] toolNames = new string[] {"画笔", "油漆桶", "选择工具", "移动工具", "几何体"};
         public int selectedToolIndex = 0;
 
         public string[] geometryNames = new string[] {"正方体", "球", "圆柱体"};
@@ -33,6 +36,20 @@ namespace GameFramework
 
         public Dictionary<string, EditorTool> tools = new Dictionary<string, EditorTool>();
         public BlockObjectRTE boEditor;
+
+        private void OnEnable()
+        {
+        }
+
+        private void OnDisable()
+        {
+            EditorUtility.SetDirty(boEditor.data);
+        }
+
+        private void OnDestroy()
+        {
+            EditorUtility.SetDirty(boEditor.data);
+        }
 
         public override void OnInspectorGUI()
         {
@@ -45,6 +62,9 @@ namespace GameFramework
             EditorGUILayout.LabelField("Canvas");
             EditorGUI.indentLevel++;
             this.canvasSize = EditorGUILayout.Vector3IntField("Size", canvasSize);
+            viewPanelX = EditorGUILayout.IntSlider("Panel X", viewPanelX, 1, canvasSize.x);
+            viewPanelY = EditorGUILayout.IntSlider("Panel Y", viewPanelY, 1, canvasSize.y);
+            viewPanelZ = EditorGUILayout.IntSlider("Panel Z", viewPanelZ, 1, canvasSize.z);
             EditorGUI.indentLevel--;
             selectedPanelIndex = GUILayout.Toolbar(selectedPanelIndex, panelNames);
             if (selectedPanelIndex == 0)
@@ -225,7 +245,7 @@ namespace GameFramework
                 if (!tools.ContainsKey("画笔"))
                 {
                     var brushTool = new BrushEditorTool();
-                    this.tools.Add(brushTool.name,brushTool);
+                    this.tools.Add(brushTool.name, brushTool);
                 }
 
                 this.tools["画笔"].OnGUI();
@@ -250,17 +270,41 @@ namespace GameFramework
                 tools["几何体"].OnGUI();
             }
         }
-        
+
         private void DrawConfigPanel()
         {
         }
 
         public void OnSceneGUI()
         {
+            Color faceColor = new Color(1, 1, 1, 0.2f);
+            Color lineColor = new Color(1, 0.38f, 0, 1f);
+            this.DrawBackgroundGrid(canvasSize.x, canvasSize.z, faceColor, lineColor);
         }
 
         #region 场景视图绘制函数
 
+        public void DrawBackgroundGrid(int width, int depth, Color faceColor, Color lineColor)
+        {
+            Vector3[] vectors = new Vector3[4]
+            {
+                new Vector3(0, 0, 0),
+                new Vector3(width, 0, 0),
+                new Vector3(width, 0, depth),
+                new Vector3(0, 0, depth)
+            };
+            Handles.DrawSolidRectangleWithOutline(vectors, faceColor, lineColor);
+        }
+
+        public void CreateHitBounds()
+        {
+            
+        }
+
+        public void CheckHitBounds()
+        {
+            
+        }
         #endregion
     }
 }
