@@ -13,10 +13,12 @@ namespace GameFramework
         /// 数据
         /// </summary>
         public BlockObjectData data;
+
         /// <summary>
         /// 图块池
         /// </summary>
         public Dictionary<byte, Block> blockPool;
+
         /// <summary>
         /// 地图块的三维数组，每个块数据类型为byte，
         /// 存储block的id,如果为0，代表空
@@ -29,6 +31,11 @@ namespace GameFramework
         public Mesh mesh;
 
         /// <summary>
+        /// mesh 创建为单色图块还是贴图图块
+        /// </summary>
+        public MeshCreateMode createMode;
+
+        /// <summary>
         ///顶点列表
         /// </summary>
         private List<Vector3> vertices = new List<Vector3>();
@@ -37,6 +44,11 @@ namespace GameFramework
         ///三角形面顶点索引列表
         /// </summary>
         private List<int> triangles = new List<int>();
+
+        /// <summary>
+        /// 顶点颜色列表
+        /// </summary>
+        private List<Color> colors = new List<Color>();
 
         /// <summary>
         ///所有的uv信息
@@ -57,17 +69,17 @@ namespace GameFramework
         ///当前是否正在生成中
         /// </summary>
         private bool isWorking = false;
+
         // Start is called before the first frame update
         void Start()
         {
-
         }
 
         // Update is called once per frame
         void Update()
         {
-
         }
+
         /// <summary>
         /// 将数据读取到组件
         /// </summary>
@@ -85,6 +97,7 @@ namespace GameFramework
                 }
             }
         }
+
         /// <summary>
         /// 将组件数据保存
         /// </summary>
@@ -101,6 +114,7 @@ namespace GameFramework
                 }
             }
         }
+
         /// <summary>
         /// 获取图块
         /// </summary>
@@ -110,6 +124,7 @@ namespace GameFramework
         {
             return this.blockPool.ContainsKey(id) ? blockPool[id] : null;
         }
+
         /// <summary>
         /// 初始化地图块,每个block的值为0
         /// </summary>
@@ -117,6 +132,7 @@ namespace GameFramework
         {
             blocks = data.blocks;
         }
+
         /// <summary>
         /// 创建地图块
         /// </summary>
@@ -126,6 +142,7 @@ namespace GameFramework
             this.blocks = data.blocks;
             isDirty = true;
         }
+
         /// <summary>
         /// 异步创建Mesh
         /// </summary>
@@ -146,14 +163,14 @@ namespace GameFramework
             triangles.Clear();
             uv.Clear();
             //把所有面的点和面的索引添加进去
-            for (int x = 0; x <data.Width; x++)
+            for (int x = 0; x < data.Width; x++)
             {
                 for (int y = 0; y < data.Height; y++)
                 {
                     for (int z = 0; z < data.Depth; z++)
                     {
                         //获取当前坐标的Block对象
-                        Block block = this.GetBlock((byte)(this.blocks[x, y, z] - 1));
+                        Block block = this.GetBlock((byte) (this.blocks[x, y, z] - 1));
                         if (block == null) continue;
                         if (IsBlockTransparent(x + 1, y, z))
                         {
@@ -191,7 +208,14 @@ namespace GameFramework
             //为点和index赋值
             mesh.vertices = vertices.ToArray();
             mesh.triangles = triangles.ToArray();
-            mesh.uv = uv.ToArray();
+            if (createMode == MeshCreateMode.Color)
+            {
+                mesh.colors = this.colors.ToArray();
+            }
+            else
+            {
+                mesh.uv = uv.ToArray();
+            }
             mesh.RecalculateNormals();
             mesh.RecalculateBounds();
             isWorking = false;
@@ -235,6 +259,7 @@ namespace GameFramework
             this.blocks[x, y, z] = 0;
             isDirty = true;
         }
+
         #region 创建各个面
 
         //左面
@@ -263,11 +288,21 @@ namespace GameFramework
             vertices.Add(new Vector3(-0.5f + p.x, 0.5f + p.y, -0.5f + p.z));
             vertices.Add(new Vector3(-0.5f + p.x, 0.5f + p.y, 0.5f + p.z));
 
-            //添加UV坐标点，跟上面4个点循环的顺序一致
-            uv.Add(new Vector2(block.uvLeft[3].x + shrinkSize, block.uvLeft[3].y + shrinkSize));
-            uv.Add(new Vector2(block.uvLeft[1].x - shrinkSize, block.uvLeft[1].y + shrinkSize));
-            uv.Add(new Vector2(block.uvLeft[2].x - shrinkSize, block.uvLeft[2].y - shrinkSize));
-            uv.Add(new Vector2(block.uvLeft[0].x + shrinkSize, block.uvLeft[0].y - shrinkSize));
+            if (createMode == MeshCreateMode.Color)
+            {
+                colors.Add(block.color);
+                colors.Add(block.color);
+                colors.Add(block.color);
+                colors.Add(block.color);
+            }
+            else
+            {
+                //添加UV坐标点，跟上面4个点循环的顺序一致
+                uv.Add(new Vector2(block.uvLeft[3].x + shrinkSize, block.uvLeft[3].y + shrinkSize));
+                uv.Add(new Vector2(block.uvLeft[1].x - shrinkSize, block.uvLeft[1].y + shrinkSize));
+                uv.Add(new Vector2(block.uvLeft[2].x - shrinkSize, block.uvLeft[2].y - shrinkSize));
+                uv.Add(new Vector2(block.uvLeft[0].x + shrinkSize, block.uvLeft[0].y - shrinkSize));
+            }
         }
 
         //右面
@@ -295,12 +330,21 @@ namespace GameFramework
             vertices.Add(new Vector3(0.5f + p.x, -0.5f + p.y, 0.5f + p.z));
             vertices.Add(new Vector3(0.5f + p.x, 0.5f + p.y, 0.5f + p.z));
             vertices.Add(new Vector3(0.5f + p.x, 0.5f + p.y, -0.5f + p.z));
-
-            //添加UV坐标点，跟上面4个点循环的顺序一致
-            uv.Add(new Vector2(block.uvRight[3].x + shrinkSize, block.uvRight[3].y + shrinkSize));
-            uv.Add(new Vector2(block.uvRight[1].x - shrinkSize, block.uvRight[1].y + shrinkSize));
-            uv.Add(new Vector2(block.uvRight[2].x - shrinkSize, block.uvRight[2].y - shrinkSize));
-            uv.Add(new Vector2(block.uvRight[0].x + shrinkSize, block.uvRight[0].y - shrinkSize));
+            if (createMode == MeshCreateMode.Color)
+            {
+                colors.Add(block.color);
+                colors.Add(block.color);
+                colors.Add(block.color);
+                colors.Add(block.color);
+            }
+            else
+            {
+                //添加UV坐标点，跟上面4个点循环的顺序一致
+                uv.Add(new Vector2(block.uvRight[3].x + shrinkSize, block.uvRight[3].y + shrinkSize));
+                uv.Add(new Vector2(block.uvRight[1].x - shrinkSize, block.uvRight[1].y + shrinkSize));
+                uv.Add(new Vector2(block.uvRight[2].x - shrinkSize, block.uvRight[2].y - shrinkSize));
+                uv.Add(new Vector2(block.uvRight[0].x + shrinkSize, block.uvRight[0].y - shrinkSize));
+            }
         }
 
 
@@ -329,11 +373,21 @@ namespace GameFramework
             vertices.Add(new Vector3(-0.5f + p.x, -0.5f + p.y, 0.5f + p.z));
             vertices.Add(new Vector3(-0.5f + p.x, 0.5f + p.y, 0.5f + p.z));
             vertices.Add(new Vector3(0.5f + p.x, 0.5f + p.y, 0.5f + p.z));
-            //添加UV坐标点，跟上面4个点循环的顺序一致
-            uv.Add(new Vector2(block.uvBack[3].x + shrinkSize, block.uvBack[3].y + shrinkSize));
-            uv.Add(new Vector2(block.uvBack[1].x - shrinkSize, block.uvBack[1].y + shrinkSize));
-            uv.Add(new Vector2(block.uvBack[2].x - shrinkSize, block.uvBack[2].y - shrinkSize));
-            uv.Add(new Vector2(block.uvBack[0].x + shrinkSize, block.uvBack[0].y - shrinkSize));
+            if (createMode == MeshCreateMode.Color)
+            {
+                colors.Add(block.color);
+                colors.Add(block.color);
+                colors.Add(block.color);
+                colors.Add(block.color);
+            }
+            else
+            {
+                //添加UV坐标点，跟上面4个点循环的顺序一致
+                uv.Add(new Vector2(block.uvBack[3].x + shrinkSize, block.uvBack[3].y + shrinkSize));
+                uv.Add(new Vector2(block.uvBack[1].x - shrinkSize, block.uvBack[1].y + shrinkSize));
+                uv.Add(new Vector2(block.uvBack[2].x - shrinkSize, block.uvBack[2].y - shrinkSize));
+                uv.Add(new Vector2(block.uvBack[0].x + shrinkSize, block.uvBack[0].y - shrinkSize));
+            }
         }
 
         private Vector3 GetCubePivot(int x, int y, int z)
@@ -361,12 +415,21 @@ namespace GameFramework
             vertices.Add(new Vector3(0.5f + p.x, -0.5f + p.y, -0.5f + p.z));
             vertices.Add(new Vector3(0.5f + p.x, 0.5f + p.y, -0.5f + p.z));
             vertices.Add(new Vector3(-0.5f + p.x, 0.5f + p.y, -0.5f + p.z));
-
-            //添加UV坐标点，跟上面4个点循环的顺序一致
-            uv.Add(new Vector2(block.uvFront[3].x + shrinkSize, block.uvFront[3].y + shrinkSize));
-            uv.Add(new Vector2(block.uvFront[1].x - shrinkSize, block.uvFront[1].y + shrinkSize));
-            uv.Add(new Vector2(block.uvFront[2].x - shrinkSize, block.uvFront[2].y - shrinkSize));
-            uv.Add(new Vector2(block.uvFront[0].x + shrinkSize, block.uvFront[0].y - shrinkSize));
+            if (createMode == MeshCreateMode.Color)
+            {
+                colors.Add(block.color);
+                colors.Add(block.color);
+                colors.Add(block.color);
+                colors.Add(block.color);
+            }
+            else
+            {
+                //添加UV坐标点，跟上面4个点循环的顺序一致
+                uv.Add(new Vector2(block.uvFront[3].x + shrinkSize, block.uvFront[3].y + shrinkSize));
+                uv.Add(new Vector2(block.uvFront[1].x - shrinkSize, block.uvFront[1].y + shrinkSize));
+                uv.Add(new Vector2(block.uvFront[2].x - shrinkSize, block.uvFront[2].y - shrinkSize));
+                uv.Add(new Vector2(block.uvFront[0].x + shrinkSize, block.uvFront[0].y - shrinkSize));
+            }
         }
 
         //上面
@@ -394,12 +457,21 @@ namespace GameFramework
             vertices.Add(new Vector3(0.5f + p.x, 0.5f + p.y, -0.5f + p.z));
             vertices.Add(new Vector3(0.5f + p.x, 0.5f + p.y, 0.5f + p.z));
             vertices.Add(new Vector3(-0.5f + p.x, 0.5f + p.y, 0.5f + p.z));
-
-            //添加UV坐标点，跟上面4个点循环的顺序一致
-            uv.Add(new Vector2(block.uvTop[3].x + shrinkSize, block.uvTop[3].y + shrinkSize));
-            uv.Add(new Vector2(block.uvTop[1].x - shrinkSize, block.uvTop[1].y + shrinkSize));
-            uv.Add(new Vector2(block.uvTop[2].x - shrinkSize, block.uvTop[2].y - shrinkSize));
-            uv.Add(new Vector2(block.uvTop[0].x + shrinkSize, block.uvTop[0].y - shrinkSize));
+            if (createMode == MeshCreateMode.Color)
+            {
+                colors.Add(block.color);
+                colors.Add(block.color);
+                colors.Add(block.color);
+                colors.Add(block.color);
+            }
+            else
+            {
+                //添加UV坐标点，跟上面4个点循环的顺序一致
+                uv.Add(new Vector2(block.uvTop[3].x + shrinkSize, block.uvTop[3].y + shrinkSize));
+                uv.Add(new Vector2(block.uvTop[1].x - shrinkSize, block.uvTop[1].y + shrinkSize));
+                uv.Add(new Vector2(block.uvTop[2].x - shrinkSize, block.uvTop[2].y - shrinkSize));
+                uv.Add(new Vector2(block.uvTop[0].x + shrinkSize, block.uvTop[0].y - shrinkSize));
+            }
         }
 
         //下面
@@ -435,12 +507,21 @@ namespace GameFramework
             vertices.Add(new Vector3(0.5f + p.x, -0.5f + p.y, -0.5f + p.z));
             vertices.Add(new Vector3(0.5f + p.x, -0.5f + p.y, 0.5f + p.z));
             vertices.Add(new Vector3(-0.5f + p.x, -0.5f + p.y, 0.5f + p.z));
-
-            //添加UV坐标点，跟上面4个点循环的顺序一致
-            uv.Add(new Vector2(block.uvBottom[3].x + shrinkSize, block.uvBottom[3].y + shrinkSize));
-            uv.Add(new Vector2(block.uvBottom[1].x - shrinkSize, block.uvBottom[1].y + shrinkSize));
-            uv.Add(new Vector2(block.uvBottom[2].x - shrinkSize, block.uvBottom[2].y - shrinkSize));
-            uv.Add(new Vector2(block.uvBottom[0].x + shrinkSize, block.uvBottom[0].y - shrinkSize));
+            if (createMode == MeshCreateMode.Color)
+            {
+                colors.Add(block.color);
+                colors.Add(block.color);
+                colors.Add(block.color);
+                colors.Add(block.color);
+            }
+            else
+            {
+                //添加UV坐标点，跟上面4个点循环的顺序一致
+                uv.Add(new Vector2(block.uvBottom[3].x + shrinkSize, block.uvBottom[3].y + shrinkSize));
+                uv.Add(new Vector2(block.uvBottom[1].x - shrinkSize, block.uvBottom[1].y + shrinkSize));
+                uv.Add(new Vector2(block.uvBottom[2].x - shrinkSize, block.uvBottom[2].y - shrinkSize));
+                uv.Add(new Vector2(block.uvBottom[0].x + shrinkSize, block.uvBottom[0].y - shrinkSize));
+            }
         }
 
         #endregion

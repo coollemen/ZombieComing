@@ -32,6 +32,7 @@ namespace GameFramework
         //方向（指的是前面所面朝的方向）
         public BlockDirection direction = BlockDirection.Front;
 
+        public Color color;
         //前面贴图的坐标
         public Vector2[] uvFront;
         //后面贴图的坐标
@@ -49,6 +50,12 @@ namespace GameFramework
         //下面贴图的坐标
         public Vector2[] uvBottom;
 
+        public Block(byte setId, string setName, Color setColor)
+        {
+            this.id = setId;
+            this.name = setName;
+            this.color = setColor;
+        }
         //都是A面的方块
         public Block(byte id, string name, Vector2[] face)
             : this(id, name, face, face, face, face, face, face)

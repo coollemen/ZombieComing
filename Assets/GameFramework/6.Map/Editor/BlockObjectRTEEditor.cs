@@ -280,6 +280,26 @@ namespace GameFramework
             Color faceColor = new Color(1, 1, 1, 0.2f);
             Color lineColor = new Color(1, 0.38f, 0, 1f);
             this.DrawBackgroundGrid(canvasSize.x, canvasSize.z, faceColor, lineColor);
+            var bounds = CreateHitBoundsXZ(0, canvasSize.x, canvasSize.z);
+            Ray mouseRay = HandleUtility.GUIPointToWorldRay(Event.current.mousePosition);
+            var hitBounds = CheckHitBounds(mouseRay, bounds);
+            var oldColor = Handles.color;
+            Handles.color = Color.green;
+            foreach (var hb in hitBounds)
+            {
+                Handles.DrawWireCube(hb.center, hb.size);        
+            }
+            Handles.color = oldColor;
+
+            Handles.BeginGUI();
+            foreach (var hb in hitBounds)
+            {
+                Vector3 p = new Vector3(hb.center.x - 0.5f, hb.center.y - 0.5f, hb.center.z - 0.5f);
+                GUILayout.Label("当前选择图块坐标："+p.ToString());
+            }
+            Handles.EndGUI();
+
+            SceneView.RepaintAll();
         }
 
         #region 场景视图绘制函数
@@ -296,15 +316,33 @@ namespace GameFramework
             Handles.DrawSolidRectangleWithOutline(vectors, faceColor, lineColor);
         }
 
-        public void CreateHitBounds()
+        public List<Bounds> CreateHitBoundsXZ(int y,int width,int depth)
         {
-            
+            List<Bounds> bounds = new List<Bounds>();
+            for (int z = 0; z < depth; z++)
+            {
+                for (int x = 0; x < width; x++)
+                {
+                    var b = new Bounds(new Vector3(x + 0.5f, y + 0.5f, z + 0.5f), new Vector3(1, 1, 1));
+                    bounds.Add(b);
+                }
+            }
+            return bounds;
         }
 
-        public void CheckHitBounds()
+        public List<Bounds> CheckHitBounds(Ray mouseRay,List<Bounds> bounds)
         {
-            
+            List<Bounds> hitBounds = new List<Bounds>();
+            foreach (var b in bounds)
+            {
+                if (b.IntersectRay(mouseRay))
+                {
+                    hitBounds.Add(b);
+                }
+            }
+            return hitBounds;
         }
+
         #endregion
     }
 }
