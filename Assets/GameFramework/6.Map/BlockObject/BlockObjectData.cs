@@ -14,7 +14,7 @@ namespace GameFramework
         /// <summary>
         /// 地图块数据
         /// </summary>
-        public byte[,,] blocks;
+        public ByteArray3D blocks;
 
         /// <summary>
         /// 描述
@@ -24,7 +24,7 @@ namespace GameFramework
         /// <summary>
         /// 默认数组大小
         /// </summary>
-        private int defaultSize = 256;
+        private int defaultSize = 128;
 
         /// <summary>
         /// 图块定义数组
@@ -44,7 +44,7 @@ namespace GameFramework
                 }
                 else
                 {
-                    return this.blocks.GetLength(0);
+                    return this.blocks.Count;
                 }
             }
         }
@@ -62,7 +62,7 @@ namespace GameFramework
                 }
                 else
                 {
-                    return this.blocks.GetLength(1);
+                    return this.blocks[0].Count; ;
                 }
             }
         }
@@ -80,21 +80,14 @@ namespace GameFramework
                 }
                 else
                 {
-                    return this.blocks.GetLength(2);
+                    return this.blocks[0][0].Count;
                 }
             }
         }
 
-        /// <summary>
-        /// 初始化
-        /// </summary>
-        public void Awake()
+        public void InitBlocksArray()
         {
-            this.name = "block object";
-            this.blocks = new byte[defaultSize, defaultSize, defaultSize];
-            this.blockDefs = new  BlockDefinitionCollection();
-            this.description = "";
-
+            this.ResizeBlocksArray(defaultSize, defaultSize, defaultSize);
         }
 
         /// <summary>
@@ -106,7 +99,7 @@ namespace GameFramework
         /// <returns>数据</returns>
         public byte GetBlock(int x, int y, int z)
         {
-            return this.blocks[x, y, z];
+            return this.blocks[x][y][ z];
         }
 
         /// <summary>
@@ -118,7 +111,7 @@ namespace GameFramework
         /// <param name="b">数据</param>
         public void SetBlock(int x, int y, int z, byte b)
         {
-            this.blocks[x, y, z] = b;
+            this.blocks[x][y][z] = b;
         }
 
         /// <summary>
@@ -129,7 +122,51 @@ namespace GameFramework
         /// <param name="depth"></param>
         public void ResizeBlocksArray(int width, int height, int depth)
         {
-            this.blocks = new byte[width, height, depth];
+            this.blocks = new ByteArray3D();
+            for (int x = 0; x < width; x++)
+            {
+                ByteArray2D byteArray2D = new ByteArray2D();
+                for (int y = 0; y < height; y++)
+                {
+                    ByteArray byteArray = new ByteArray();
+                    for (int z = 0; z < depth; z++)
+                    {
+                        byteArray.Add(0);
+                    }
+                    byteArray2D.Add(byteArray);
+                }
+                this.blocks.Add(byteArray2D);
+            }
+        }
+
+        public byte[,,] GetBlocks()
+        {
+            byte[,,] data = new byte[Width, Height, Depth];
+            for (int x = 0; x < Width; x++)
+            {
+                for (int y = 0; y < Height; y++)
+                {
+                    for (int z = 0; z < Depth; z++)
+                    {
+                        data[x, y, z] = blocks[x][y][z];
+                    }
+                }
+            }
+            return data;
+        }
+
+        public void SetBlocks(byte[,,] data)
+        {
+            for (int x = 0; x < Width; x++)
+            {
+                for (int y = 0; y < Height; y++)
+                {
+                    for (int z = 0; z < Depth; z++)
+                    {
+                         blocks[x][y][z]= data[x, y, z] ;
+                    }
+                }
+            }
         }
     }
 }

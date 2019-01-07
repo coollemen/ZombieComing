@@ -8,7 +8,20 @@ namespace GameFramework
     [CustomEditor(typeof(BlockObjectRTE))]
     public class BlockObjectRTEEditor : Editor
     {
-        public Vector3Int canvasSize = new Vector3Int(256, 256, 256);
+        #region CanvasViewMode定义
+
+        public enum CanvasViewMode
+        {
+            PanelXY,
+            PanelYZ,
+            PanelXZ,
+            Free
+        }
+
+        #endregion
+
+        public Vector3Int canvasSize = new Vector3Int(100, 100, 100);
+        public CanvasViewMode canvasViewMode = CanvasViewMode.PanelXZ;
         public int viewPanelX = 1;
         public int viewPanelY = 1;
         public int viewPanelZ = 1;
@@ -33,6 +46,11 @@ namespace GameFramework
 
         public string[] geometryNames = new string[] {"正方体", "球", "圆柱体"};
         public int selectedGeometeryIndex = 0;
+
+        Color faceColor = new Color(1, 1, 1, 0.2f);
+        Color hitFaceColor = new Color(0, 1, 0, 0.2f);
+        Color lineColor = new Color(1, 0.38f, 0, 1f);
+        Color hitLineColor = new Color(1, 1, 1, 0.5f);
 
         public Dictionary<string, EditorTool> tools = new Dictionary<string, EditorTool>();
         public BlockObjectRTE boEditor;
@@ -62,9 +80,25 @@ namespace GameFramework
             EditorGUILayout.LabelField("Canvas");
             EditorGUI.indentLevel++;
             this.canvasSize = EditorGUILayout.Vector3IntField("Size", canvasSize);
-            viewPanelX = EditorGUILayout.IntSlider("Panel X", viewPanelX, 1, canvasSize.x);
-            viewPanelY = EditorGUILayout.IntSlider("Panel Y", viewPanelY, 1, canvasSize.y);
-            viewPanelZ = EditorGUILayout.IntSlider("Panel Z", viewPanelZ, 1, canvasSize.z);
+            this.canvasViewMode = (CanvasViewMode) EditorGUILayout.EnumPopup("View Mode", canvasViewMode);
+            if (canvasViewMode == CanvasViewMode.Free)
+            {
+                viewPanelX = EditorGUILayout.IntSlider("Panel X", viewPanelX, 1, canvasSize.x);
+                viewPanelY = EditorGUILayout.IntSlider("Panel Y", viewPanelY, 1, canvasSize.y);
+                viewPanelZ = EditorGUILayout.IntSlider("Panel Z", viewPanelZ, 1, canvasSize.z);
+            }
+            else if (canvasViewMode == CanvasViewMode.PanelXY)
+            {
+                viewPanelZ = EditorGUILayout.IntSlider("Panel Z", viewPanelZ, 1, canvasSize.z);
+            }
+            else if (canvasViewMode == CanvasViewMode.PanelYZ)
+            {
+                viewPanelX = EditorGUILayout.IntSlider("Panel X", viewPanelX, 1, canvasSize.x);
+            }
+            else if (canvasViewMode == CanvasViewMode.PanelXZ)
+            {
+                viewPanelY = EditorGUILayout.IntSlider("Panel Y", viewPanelY, 1, canvasSize.y);
+            }
             EditorGUI.indentLevel--;
             selectedPanelIndex = GUILayout.Toolbar(selectedPanelIndex, panelNames);
             if (selectedPanelIndex == 0)
@@ -277,17 +311,34 @@ namespace GameFramework
 
         public void OnSceneGUI()
         {
-            Color faceColor = new Color(1, 1, 1, 0.2f);
-            Color lineColor = new Color(1, 0.38f, 0, 1f);
-            this.DrawBackgroundGrid(canvasSize.x, canvasSize.z, faceColor, lineColor);
-            var bounds = CreateHitBoundsXZ(0, canvasSize.x, canvasSize.z);
+//            this.DrawBackgroundGrid(canvasSize.x, canvasSize.z, faceColor, lineColor);
+            List<Bounds> bounds = new List<Bounds>();
+            if (canvasViewMode == CanvasViewMode.PanelXY)
+            {
+                this.DrawBgGridXY(viewPanelZ, canvasSize.x, canvasSize.y);
+                bounds = CreateHitBoundsXY(viewPanelZ, canvasSize.x, canvasSize.y);
+            }
+            else if (canvasViewMode == CanvasViewMode.PanelYZ)
+            {
+                this.DrawBgGridYZ(viewPanelX, canvasSize.y, canvasSize.z);
+                bounds = CreateHitBoundsYZ(viewPanelX, canvasSize.y, canvasSize.z);
+            }
+            else if (canvasViewMode == CanvasViewMode.PanelXZ)
+            {
+                this.DrawBgGridXZ(viewPanelY, canvasSize.x, canvasSize.z);
+                bounds = CreateHitBoundsXZ(viewPanelY, canvasSize.x, canvasSize.z);
+            }
+            else if (canvasViewMode == CanvasViewMode.Free)
+            {
+            }
             Ray mouseRay = HandleUtility.GUIPointToWorldRay(Event.current.mousePosition);
             var hitBounds = CheckHitBounds(mouseRay, bounds);
             var oldColor = Handles.color;
             Handles.color = Color.green;
             foreach (var hb in hitBounds)
             {
-                Handles.DrawWireCube(hb.center, hb.size);        
+//                Handles.DrawWireCube(hb.center, hb.size);
+                this.DrawHitBoundsRect(hb);
             }
             Handles.color = oldColor;
 
@@ -295,7 +346,7 @@ namespace GameFramework
             foreach (var hb in hitBounds)
             {
                 Vector3 p = new Vector3(hb.center.x - 0.5f, hb.center.y - 0.5f, hb.center.z - 0.5f);
-                GUILayout.Label("当前选择图块坐标："+p.ToString());
+                GUILayout.Label("当前选择图块坐标：" + p.ToString());
             }
             Handles.EndGUI();
 
@@ -304,6 +355,47 @@ namespace GameFramework
 
         #region 场景视图绘制函数
 
+        public void DrawHitBoundsRect(Bounds b)
+        {
+            if (canvasViewMode == CanvasViewMode.PanelXY)
+            {
+                //绘制z轴面的矩形
+                var center = b.center;
+                var extend = b.extents;
+                Vector3 v1 = new Vector3(center.x - extend.x, center.y - extend.y, center.z - extend.z);
+                Vector3 v2 = new Vector3(center.x + extend.x, center.y - extend.y, center.z - extend.z);
+                Vector3 v3 = new Vector3(center.x + extend.x, center.y + extend.y, center.z - extend.z);
+                Vector3 v4 = new Vector3(center.x - extend.x, center.y + extend.y, center.z - extend.z);
+                this.DrawBackgroundGrid(v1, v2, v3, v4, hitFaceColor, hitLineColor);
+            }
+            else if (canvasViewMode == CanvasViewMode.PanelYZ)
+            {
+                //绘制x轴面的矩形
+                var center = b.center;
+                var extend = b.extents;
+                Vector3 v1 = new Vector3(center.x - extend.x, center.y - extend.y, center.z - extend.z);
+                Vector3 v2 = new Vector3(center.x - extend.x, center.y + extend.y, center.z - extend.z);
+                Vector3 v3 = new Vector3(center.x - extend.x, center.y + extend.y, center.z + extend.z);
+                Vector3 v4 = new Vector3(center.x - extend.x, center.y - extend.y, center.z + extend.z);
+                this.DrawBackgroundGrid(v1, v2, v3, v4, hitFaceColor, hitLineColor);
+            }
+            else if (canvasViewMode == CanvasViewMode.PanelXZ)
+            {
+                //绘制y轴面的矩形
+                var center = b.center;
+                var extend = b.extents;
+                Vector3 v1 = new Vector3(center.x - extend.x, center.y - extend.y, center.z - extend.z);
+                Vector3 v2 = new Vector3(center.x + extend.x, center.y - extend.y, center.z - extend.z);
+                Vector3 v3 = new Vector3(center.x + extend.x, center.y - extend.y, center.z + extend.z);
+                Vector3 v4 = new Vector3(center.x - extend.x, center.y - extend.y, center.z + extend.z);
+                this.DrawBackgroundGrid(v1, v2, v3, v4, hitFaceColor, hitLineColor);
+
+            }
+            else
+            {
+                
+            }
+        }
         public void DrawBackgroundGrid(int width, int depth, Color faceColor, Color lineColor)
         {
             Vector3[] vectors = new Vector3[4]
@@ -316,7 +408,43 @@ namespace GameFramework
             Handles.DrawSolidRectangleWithOutline(vectors, faceColor, lineColor);
         }
 
-        public List<Bounds> CreateHitBoundsXZ(int y,int width,int depth)
+        public void DrawBackgroundGrid(Vector3 v1, Vector3 v2, Vector3 v3, Vector3 v4, Color faceColor, Color lineColor)
+        {
+            Vector3[] vectors = new Vector3[4]
+            {
+                v1, v2, v3, v4
+            };
+            Handles.DrawSolidRectangleWithOutline(vectors, faceColor, lineColor);
+        }
+
+        public void DrawBgGridXY(int z, int width, int height)
+        {
+            Vector3 v1 = new Vector3(0, 0, z - 1);
+            Vector3 v2 = new Vector3(width, 0, z - 1);
+            Vector3 v3 = new Vector3(width, height, z - 1);
+            Vector3 v4 = new Vector3(0, height, z - 1);
+            this.DrawBackgroundGrid(v1, v2, v3, v4, faceColor, lineColor);
+        }
+
+        public void DrawBgGridXZ(int y, int width, int depth)
+        {
+            Vector3 v1 = new Vector3(0, y - 1, 0);
+            Vector3 v2 = new Vector3(width, y - 1, 0);
+            Vector3 v3 = new Vector3(width, y - 1, depth);
+            Vector3 v4 = new Vector3(0, y - 1, depth);
+            this.DrawBackgroundGrid(v1, v2, v3, v4, faceColor, lineColor);
+        }
+
+        public void DrawBgGridYZ(int x, int height, int depth)
+        {
+            Vector3 v1 = new Vector3(x - 1, 0, 0);
+            Vector3 v2 = new Vector3(x - 1, height, 0);
+            Vector3 v3 = new Vector3(x - 1, height, depth);
+            Vector3 v4 = new Vector3(x - 1, 0, depth);
+            this.DrawBackgroundGrid(v1, v2, v3, v4, faceColor, lineColor);
+        }
+
+        public List<Bounds> CreateHitBoundsXZ(int y, int width, int depth)
         {
             List<Bounds> bounds = new List<Bounds>();
             for (int z = 0; z < depth; z++)
@@ -330,7 +458,35 @@ namespace GameFramework
             return bounds;
         }
 
-        public List<Bounds> CheckHitBounds(Ray mouseRay,List<Bounds> bounds)
+        public List<Bounds> CreateHitBoundsXY(int z, int width, int height)
+        {
+            List<Bounds> bounds = new List<Bounds>();
+            for (int y = 0; y < height; y++)
+            {
+                for (int x = 0; x < width; x++)
+                {
+                    var b = new Bounds(new Vector3(x + 0.5f, y + 0.5f, z + 0.5f), new Vector3(1, 1, 1));
+                    bounds.Add(b);
+                }
+            }
+            return bounds;
+        }
+
+        public List<Bounds> CreateHitBoundsYZ(int x, int height, int depth)
+        {
+            List<Bounds> bounds = new List<Bounds>();
+            for (int z = 0; z < depth; z++)
+            {
+                for (int y = 0; y < height; y++)
+                {
+                    var b = new Bounds(new Vector3(x + 0.5f, y + 0.5f, z + 0.5f), new Vector3(1, 1, 1));
+                    bounds.Add(b);
+                }
+            }
+            return bounds;
+        }
+
+        public List<Bounds> CheckHitBounds(Ray mouseRay, List<Bounds> bounds)
         {
             List<Bounds> hitBounds = new List<Bounds>();
             foreach (var b in bounds)

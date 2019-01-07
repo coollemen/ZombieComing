@@ -92,7 +92,7 @@ namespace GameFramework
                 {
                     for (int x = 0; x < data.Width; x++)
                     {
-                        blocks[x, y, z] = data.blocks[x, y, z];
+                        blocks[x, y, z] = data.blocks[x][ y][ z];
                     }
                 }
             }
@@ -109,7 +109,7 @@ namespace GameFramework
                 {
                     for (int x = 0; x < data.Width; x++)
                     {
-                        data.blocks[x, y, z] = blocks[x, y, z];
+                        data.blocks[x][ y][ z] = blocks[x, y, z];
                     }
                 }
             }
@@ -130,7 +130,7 @@ namespace GameFramework
         /// </summary>
         public void InitBlocks()
         {
-            blocks = data.blocks;
+            blocks = data.GetBlocks();
         }
 
         /// <summary>
@@ -139,7 +139,7 @@ namespace GameFramework
         /// <param name="data">断面数据</param>
         public void SetBlocks(BlockObjectData data)
         {
-            this.blocks = data.blocks;
+            this.blocks = data.GetBlocks();
             isDirty = true;
         }
 

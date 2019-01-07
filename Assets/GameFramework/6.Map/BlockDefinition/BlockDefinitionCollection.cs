@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace GameFramework
 {
-    [Serializable]
+    [System.Serializable]
     public class BlockDefinitionCollection : ISerializationCallbackReceiver
     {
         [NonSerialized]

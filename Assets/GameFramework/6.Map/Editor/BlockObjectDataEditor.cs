@@ -5,7 +5,7 @@ using UnityEditor;
 
 namespace GameFramework
 {
-    [CustomEditor(typeof(BlockObjectData))]
+//    [CustomEditor(typeof(BlockObjectData))]
     public class BlockObjectDataEditor : Editor
     {
         public override void OnInspectorGUI()
