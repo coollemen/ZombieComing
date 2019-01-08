@@ -74,6 +74,10 @@ namespace GameFramework
             if (boEditor == null)
             {
                 boEditor = target as BlockObjectRTE;
+                if (boEditor.data.blocks.Count == 0)
+                {
+                    boEditor.data.ResizeBlocksArray(canvasSize.x, canvasSize.y, canvasSize.z);
+                }
             }
             base.OnInspectorGUI();
             //            this.boEditor.data = EditorGUILayout.ObjectField(boEditor.data, typeof(BlockObjectData)) as BlockObjectData;
@@ -311,8 +315,12 @@ namespace GameFramework
 
         public void OnSceneGUI()
         {
-//            this.DrawBackgroundGrid(canvasSize.x, canvasSize.z, faceColor, lineColor);
-            List<Bounds> bounds = new List<Bounds>();
+            if (boEditor == null)
+            {
+                boEditor = target as BlockObjectRTE;
+            }
+            //            this.DrawBackgroundGrid(canvasSize.x, canvasSize.z, faceColor, lineColor);
+                List<Bounds> bounds = new List<Bounds>();
             if (canvasViewMode == CanvasViewMode.PanelXY)
             {
                 this.DrawBgGridXY(viewPanelZ, canvasSize.x, canvasSize.y);
@@ -347,7 +355,7 @@ namespace GameFramework
                 if (e.type == EventType.MouseDown && e.button==0)
                 {
                     var point = GetPointFromBounds(hitBounds[0]);
-                    boEditor.SetBlock(point.x, point.y, point.z, (byte)selectedBlockIndex);
+                    boEditor.SetBlock(point.x, point.y, point.z, (byte)(selectedBlockIndex+1));
                     e.Use();
                 }
                 else if (e.type == EventType.MouseDown && e.button==1)
@@ -359,6 +367,10 @@ namespace GameFramework
             {
                 boEditor.Init();
             }
+            if (boEditor.blocks ==null|| boEditor.blocks.Length == 0)
+            {
+                boEditor.InitBlocks();
+            }
             //如果图块定义有变化，重新创建图块池
             if (boEditor.isDefDirty)
             {
@@ -367,6 +379,7 @@ namespace GameFramework
             //如果图块数据有变化，重新创建mesh
             if (boEditor.isDirty)
             {
+                boEditor.isDirty = false;
                 EditorCoroutineUtility.StartCoroutine(boEditor.CreateMeshAsyn(), this);
             }
             //ongui

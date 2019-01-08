@@ -19,6 +19,7 @@ namespace GameFramework
         {
             this.LoadFromData();
             this.CreateBlockPool();
+
             isInit = true;
         }
         //        public void SetMeshToMeshFilter()

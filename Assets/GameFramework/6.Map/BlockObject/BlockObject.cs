@@ -187,18 +187,20 @@ namespace GameFramework
         /// <returns></returns>
         public IEnumerator CreateMeshAsyn()
         {
-            while (isWorking)
-            {
-                yield return null;
-            }
-
-            isWorking = true;
+            Debug.Log("Start BlockObject Create Mesh Asyn");
+//            while (isWorking)
+//            {
+//                yield return null;
+//            }
+//
+//            isWorking = true;
             //创建顶点、索引、uv
             //初始化列表
             mesh = new Mesh();
             mesh.name = data.name;
             vertices.Clear();
             triangles.Clear();
+            colors.Clear();
             uv.Clear();
             //把所有面的点和面的索引添加进去
             for (int x = 0; x < data.Width; x++)
@@ -208,7 +210,7 @@ namespace GameFramework
                     for (int z = 0; z < data.Depth; z++)
                     {
                         //获取当前坐标的Block对象
-                        Block block = this.GetBlock((byte) (this.blocks[x, y, z] - 1));
+                        Block block = this.GetBlock((byte) (this.blocks[x, y, z]));
                         if (block == null) continue;
                         if (IsBlockTransparent(x + 1, y, z))
                         {
@@ -239,9 +241,13 @@ namespace GameFramework
                         {
                             AddBottomFace(x, y, z, block);
                         }
-                    }
-                }
-            }
+
+                    }//end z
+
+                }//end y
+//                Debug.Log("Update BlockObject Create Mesh Asyn");
+                yield return null;
+            }//end x
 
             //为点和index赋值
             mesh.vertices = vertices.ToArray();
@@ -257,6 +263,8 @@ namespace GameFramework
 
             mesh.RecalculateNormals();
             mesh.RecalculateBounds();
+            GetComponent<MeshFilter>().mesh = this.mesh;
+            Debug.Log("End BlockObject Create Mesh Asyn");
             isWorking = false;
         }
 
@@ -431,7 +439,7 @@ namespace GameFramework
 
         private Vector3 GetCubePivot(int x, int y, int z)
         {
-            return new Vector3(x - data.Width / 2 + 0.5f, y - data.Height / 2 + 0.5f, z - data.Depth / 2 + 0.5f);
+            return new Vector3(x  + 0.5f, y  + 0.5f, z  + 0.5f);
         }
 
         //前面
