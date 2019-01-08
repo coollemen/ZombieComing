@@ -65,6 +65,8 @@ namespace GameFramework
         /// </summary>
         public bool isDirty = false;
 
+
+
         /// <summary>
         ///当前是否正在生成中
         /// </summary>
@@ -80,6 +82,42 @@ namespace GameFramework
         {
         }
 
+        public void CreateBlockPool()
+        {
+            this.blockPool = new Dictionary<byte, Block>();
+            foreach (var def in data.blockDefs.blockDefs)
+            {
+                var idx = data.blockDefs.blockDefs.IndexOf(def);
+                Block b = null;
+                if (def is ColorBlockDefinition)
+                {
+                    var colorDef = def as ColorBlockDefinition;
+                    b = new Block((byte) idx, colorDef.name, colorDef.color);
+                }
+                else if (def is SpriteBlockDefinition)
+                {
+                    var spriteDef = def as SpriteBlockDefinition;
+                    b = new Block((byte) idx,
+                        spriteDef.name,
+                        spriteDef.top.uv,
+                        spriteDef.bottom.uv,
+                        spriteDef.left.uv,
+                        spriteDef.right.uv,
+                        spriteDef.front.uv,
+                        spriteDef.back.uv);
+                }
+                else
+                {
+                    Debug.LogError("图块定义数据读取失败！");
+                }
+
+                if (b != null)
+                {
+                    blockPool.Add(b.id, b);
+                }
+            }
+        }
+
         /// <summary>
         /// 将数据读取到组件
         /// </summary>
@@ -92,7 +130,7 @@ namespace GameFramework
                 {
                     for (int x = 0; x < data.Width; x++)
                     {
-                        blocks[x, y, z] = data.blocks[x][ y][ z];
+                        blocks[x, y, z] = data.blocks[x][y][z];
                     }
                 }
             }
@@ -109,7 +147,7 @@ namespace GameFramework
                 {
                     for (int x = 0; x < data.Width; x++)
                     {
-                        data.blocks[x][ y][ z] = blocks[x, y, z];
+                        data.blocks[x][y][z] = blocks[x, y, z];
                     }
                 }
             }
@@ -216,6 +254,7 @@ namespace GameFramework
             {
                 mesh.uv = uv.ToArray();
             }
+
             mesh.RecalculateNormals();
             mesh.RecalculateBounds();
             isWorking = false;

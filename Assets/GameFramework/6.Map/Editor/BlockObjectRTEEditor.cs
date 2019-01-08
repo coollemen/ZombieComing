@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
-
+using Unity.EditorCoroutines.Editor;
 namespace GameFramework
 {
     [CustomEditor(typeof(BlockObjectRTE))]
@@ -340,6 +340,36 @@ namespace GameFramework
 //                Handles.DrawWireCube(hb.center, hb.size);
                 this.DrawHitBoundsRect(hb);
             }
+            //process event
+            var e = Event.current;
+            if (hitBounds.Count > 0)
+            {
+                if (e.type == EventType.MouseDown && e.button==0)
+                {
+                    var point = GetPointFromBounds(hitBounds[0]);
+                    boEditor.SetBlock(point.x, point.y, point.z, (byte)selectedBlockIndex);
+                    e.Use();
+                }
+                else if (e.type == EventType.MouseDown && e.button==1)
+                {
+                }
+            }
+
+            if (boEditor.isInit == false)
+            {
+                boEditor.Init();
+            }
+            //如果图块定义有变化，重新创建图块池
+            if (boEditor.isDefDirty)
+            {
+                boEditor.CreateBlockPool();
+            }
+            //如果图块数据有变化，重新创建mesh
+            if (boEditor.isDirty)
+            {
+                EditorCoroutineUtility.StartCoroutine(boEditor.CreateMeshAsyn(), this);
+            }
+            //ongui
             Handles.color = oldColor;
 
             Handles.BeginGUI();
@@ -355,6 +385,10 @@ namespace GameFramework
 
         #region 场景视图绘制函数
 
+        public Vector3Int GetPointFromBounds(Bounds b)
+        {
+            return new Vector3Int((int)(b.center.x - 0.5f), (int)(b.center.y - 0.5f), (int)(b.center.z - 0.5f));
+        }
         public void DrawHitBoundsRect(Bounds b)
         {
             if (canvasViewMode == CanvasViewMode.PanelXY)

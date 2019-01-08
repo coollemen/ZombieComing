@@ -31,9 +31,10 @@ namespace GameFramework
             }
             EditorSceneManager.NewScene(NewSceneSetup.DefaultGameObjects, NewSceneMode.Single);
             go = new GameObject("Block Object");
-            go.AddComponent<MeshFilter>();
+            var filter= go.AddComponent<MeshFilter>();
             go.AddComponent<MeshRenderer>();
             var bo= go.AddComponent<BlockObject>();
+            filter.mesh = bo.mesh;
             bo.data = this.data;
             Selection.activeGameObject = go;
             SceneView.onSceneGUIDelegate += this.OnSceneViewGUI;
