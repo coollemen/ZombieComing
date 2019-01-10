@@ -24,7 +24,7 @@ namespace GameFramework
         /// <summary>
         /// 默认数组大小
         /// </summary>
-        private int defaultSize = 128;
+        private int defaultSize =16;
 
         /// <summary>
         /// 图块定义数组

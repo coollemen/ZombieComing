@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 using Unity.EditorCoroutines.Editor;
+
 namespace GameFramework
 {
     [CustomEditor(typeof(BlockObjectRTE))]
@@ -55,8 +56,19 @@ namespace GameFramework
         public Dictionary<string, EditorTool> tools = new Dictionary<string, EditorTool>();
         public BlockObjectRTE boEditor;
 
+        public void Awake()
+        {
+//            Debug.Log("Black Object Editor Awake");
+        }
+
         private void OnEnable()
         {
+            Debug.Log("Black Object Editor Enable");
+            if (boEditor == null)
+            {
+                boEditor = target as BlockObjectRTE;
+            }
+            this.canvasSize = new Vector3Int(boEditor.data.Width, boEditor.data.Height, boEditor.data.Depth);
         }
 
         private void OnDisable()
@@ -104,6 +116,11 @@ namespace GameFramework
                 viewPanelY = EditorGUILayout.IntSlider("Panel Y", viewPanelY, 1, canvasSize.y);
             }
             EditorGUI.indentLevel--;
+            if (GUILayout.Button("创建空画布"))
+            {
+                this.boEditor.data.ResizeBlocksArray(canvasSize.x, canvasSize.y, canvasSize.z);
+                EditorCoroutineUtility.StartCoroutine(boEditor.CreateMeshAsyn(), this);
+            }
             selectedPanelIndex = GUILayout.Toolbar(selectedPanelIndex, panelNames);
             if (selectedPanelIndex == 0)
             {
@@ -138,13 +155,13 @@ namespace GameFramework
             {
                 if (selectedBlockDefTypeIndex == 0)
                 {
-                    var def = new ColorBlockDefinition((byte) boEditor.data.blockDefs.Count, blockDefName,
+                    var def = new ColorBlockDefinition((byte) (boEditor.data.blockDefs.Count + 1), blockDefName,
                         blockDefColor);
                     boEditor.data.blockDefs.Add(def);
                 }
                 else if (selectedBlockDefTypeIndex == 1)
                 {
-                    var def = new SpriteBlockDefinition((byte) boEditor.data.blockDefs.Count, blockDefName,
+                    var def = new SpriteBlockDefinition((byte) (boEditor.data.blockDefs.Count + 1), blockDefName,
                         blockDefSprite);
                     boEditor.data.blockDefs.Add(def);
                 }
@@ -320,21 +337,24 @@ namespace GameFramework
                 boEditor = target as BlockObjectRTE;
             }
             //            this.DrawBackgroundGrid(canvasSize.x, canvasSize.z, faceColor, lineColor);
-                List<Bounds> bounds = new List<Bounds>();
+            List<Bounds> bounds = new List<Bounds>();
             if (canvasViewMode == CanvasViewMode.PanelXY)
             {
-                this.DrawBgGridXY(viewPanelZ, canvasSize.x, canvasSize.y);
-                bounds = CreateHitBoundsXY(viewPanelZ, canvasSize.x, canvasSize.y);
+                var realPanelZ = viewPanelZ - 1;
+                this.DrawBgGridXY(realPanelZ, canvasSize.x, canvasSize.y);
+                bounds = CreateHitBoundsXY(realPanelZ, canvasSize.x, canvasSize.y);
             }
             else if (canvasViewMode == CanvasViewMode.PanelYZ)
             {
-                this.DrawBgGridYZ(viewPanelX, canvasSize.y, canvasSize.z);
-                bounds = CreateHitBoundsYZ(viewPanelX, canvasSize.y, canvasSize.z);
+                var realPanelX = viewPanelX - 1;
+                this.DrawBgGridYZ(realPanelX, canvasSize.y, canvasSize.z);
+                bounds = CreateHitBoundsYZ(realPanelX, canvasSize.y, canvasSize.z);
             }
             else if (canvasViewMode == CanvasViewMode.PanelXZ)
             {
-                this.DrawBgGridXZ(viewPanelY, canvasSize.x, canvasSize.z);
-                bounds = CreateHitBoundsXZ(viewPanelY, canvasSize.x, canvasSize.z);
+                var realPanelY = viewPanelY - 1;
+                this.DrawBgGridXZ(realPanelY, canvasSize.x, canvasSize.z);
+                bounds = CreateHitBoundsXZ(realPanelY, canvasSize.x, canvasSize.z);
             }
             else if (canvasViewMode == CanvasViewMode.Free)
             {
@@ -352,13 +372,13 @@ namespace GameFramework
             var e = Event.current;
             if (hitBounds.Count > 0)
             {
-                if (e.type == EventType.MouseDown && e.button==0)
+                if (e.type == EventType.MouseDown && e.button == 0)
                 {
                     var point = GetPointFromBounds(hitBounds[0]);
-                    boEditor.SetBlock(point.x, point.y, point.z, (byte)(selectedBlockIndex+1));
+                    boEditor.SetBlock(point.x, point.y, point.z, (byte) (selectedBlockIndex + 1));
                     e.Use();
                 }
-                else if (e.type == EventType.MouseDown && e.button==1)
+                else if (e.type == EventType.MouseDown && e.button == 1)
                 {
                 }
             }
@@ -367,7 +387,7 @@ namespace GameFramework
             {
                 boEditor.Init();
             }
-            if (boEditor.blocks ==null|| boEditor.blocks.Length == 0)
+            if (boEditor.blocks == null || boEditor.blocks.Length == 0)
             {
                 boEditor.InitBlocks();
             }
@@ -391,7 +411,7 @@ namespace GameFramework
                 Vector3 p = new Vector3(hb.center.x - 0.5f, hb.center.y - 0.5f, hb.center.z - 0.5f);
                 var rect = new Rect(0, 0, 300, 30);
                 rect.y += hitBounds.IndexOf(hb) * 30;
-                GUI.Label(rect,"当前选择图块坐标：" + p.ToString());
+                GUI.Label(rect, "当前选择图块坐标：" + p.ToString());
             }
             Handles.EndGUI();
 
@@ -402,8 +422,9 @@ namespace GameFramework
 
         public Vector3Int GetPointFromBounds(Bounds b)
         {
-            return new Vector3Int((int)(b.center.x - 0.5f), (int)(b.center.y - 0.5f), (int)(b.center.z - 0.5f));
+            return new Vector3Int((int) (b.center.x - 0.5f), (int) (b.center.y - 0.5f), (int) (b.center.z - 0.5f));
         }
+
         public void DrawHitBoundsRect(Bounds b)
         {
             if (canvasViewMode == CanvasViewMode.PanelXY)
@@ -438,13 +459,12 @@ namespace GameFramework
                 Vector3 v3 = new Vector3(center.x + extend.x, center.y - extend.y, center.z + extend.z);
                 Vector3 v4 = new Vector3(center.x - extend.x, center.y - extend.y, center.z + extend.z);
                 this.DrawBackgroundGrid(v1, v2, v3, v4, hitFaceColor, hitLineColor);
-
             }
             else
             {
-                
             }
         }
+
         public void DrawBackgroundGrid(int width, int depth, Color faceColor, Color lineColor)
         {
             Vector3[] vectors = new Vector3[4]
@@ -468,28 +488,28 @@ namespace GameFramework
 
         public void DrawBgGridXY(int z, int width, int height)
         {
-            Vector3 v1 = new Vector3(0, 0, z - 1);
-            Vector3 v2 = new Vector3(width, 0, z - 1);
-            Vector3 v3 = new Vector3(width, height, z - 1);
-            Vector3 v4 = new Vector3(0, height, z - 1);
+            Vector3 v1 = new Vector3(0, 0, z);
+            Vector3 v2 = new Vector3(width, 0, z);
+            Vector3 v3 = new Vector3(width, height, z);
+            Vector3 v4 = new Vector3(0, height, z);
             this.DrawBackgroundGrid(v1, v2, v3, v4, faceColor, lineColor);
         }
 
         public void DrawBgGridXZ(int y, int width, int depth)
         {
-            Vector3 v1 = new Vector3(0, y - 1, 0);
-            Vector3 v2 = new Vector3(width, y - 1, 0);
-            Vector3 v3 = new Vector3(width, y - 1, depth);
-            Vector3 v4 = new Vector3(0, y - 1, depth);
+            Vector3 v1 = new Vector3(0, y, 0);
+            Vector3 v2 = new Vector3(width, y, 0);
+            Vector3 v3 = new Vector3(width, y, depth);
+            Vector3 v4 = new Vector3(0, y, depth);
             this.DrawBackgroundGrid(v1, v2, v3, v4, faceColor, lineColor);
         }
 
         public void DrawBgGridYZ(int x, int height, int depth)
         {
-            Vector3 v1 = new Vector3(x - 1, 0, 0);
-            Vector3 v2 = new Vector3(x - 1, height, 0);
-            Vector3 v3 = new Vector3(x - 1, height, depth);
-            Vector3 v4 = new Vector3(x - 1, 0, depth);
+            Vector3 v1 = new Vector3(x, 0, 0);
+            Vector3 v2 = new Vector3(x, height, 0);
+            Vector3 v3 = new Vector3(x, height, depth);
+            Vector3 v4 = new Vector3(x, 0, depth);
             this.DrawBackgroundGrid(v1, v2, v3, v4, faceColor, lineColor);
         }
 

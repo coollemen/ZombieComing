@@ -92,12 +92,12 @@ namespace GameFramework
                 if (def is ColorBlockDefinition)
                 {
                     var colorDef = def as ColorBlockDefinition;
-                    b = new Block((byte) idx, colorDef.name, colorDef.color);
+                    b = new Block((byte) colorDef.id, colorDef.name, colorDef.color);
                 }
                 else if (def is SpriteBlockDefinition)
                 {
                     var spriteDef = def as SpriteBlockDefinition;
-                    b = new Block((byte) idx,
+                    b = new Block((byte)spriteDef.id,
                         spriteDef.name,
                         spriteDef.top.uv,
                         spriteDef.bottom.uv,
@@ -160,6 +160,10 @@ namespace GameFramework
         /// <returns>图块</returns>
         public Block GetBlock(byte id)
         {
+            if (this.blockPool==null|| this.blockPool.Count == 0)
+            {
+                this.CreateBlockPool();
+            }
             return this.blockPool.ContainsKey(id) ? blockPool[id] : null;
         }
 
@@ -212,6 +216,7 @@ namespace GameFramework
                         //获取当前坐标的Block对象
                         Block block = this.GetBlock((byte) (this.blocks[x, y, z]));
                         if (block == null) continue;
+//                        Debug.Log(string.Format("P({0},{1},{2})={3}", x, y, z, block.name));
                         if (IsBlockTransparent(x + 1, y, z))
                         {
                             AddRightFace(x, y, z, block);
@@ -264,6 +269,8 @@ namespace GameFramework
             mesh.RecalculateNormals();
             mesh.RecalculateBounds();
             GetComponent<MeshFilter>().mesh = this.mesh;
+            GetComponent<MeshRenderer>().sharedMaterial = new Material(Shader.Find("Standard"));
+            GetComponent<MeshRenderer>().sharedMaterial.color = Color.blue;
             Debug.Log("End BlockObject Create Mesh Asyn");
             isWorking = false;
         }
