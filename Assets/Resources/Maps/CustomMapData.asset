@@ -20,33 +20,12 @@ MonoBehaviour:
   - id: 0
     name: "\u6CE5\u5730"
     iconName: 
-    direction: 0
-    front: {fileID: 21300004, guid: 3d4899b08e630f24092c3839507b162d, type: 3}
-    back: {fileID: 21300004, guid: 3d4899b08e630f24092c3839507b162d, type: 3}
-    top: {fileID: 21300004, guid: 3d4899b08e630f24092c3839507b162d, type: 3}
-    bottom: {fileID: 21300004, guid: 3d4899b08e630f24092c3839507b162d, type: 3}
-    left: {fileID: 21300004, guid: 3d4899b08e630f24092c3839507b162d, type: 3}
-    right: {fileID: 21300004, guid: 3d4899b08e630f24092c3839507b162d, type: 3}
   - id: 1
     name: "\u8349\u5730"
     iconName: 
-    direction: 0
-    front: {fileID: 21300006, guid: 3d4899b08e630f24092c3839507b162d, type: 3}
-    back: {fileID: 21300006, guid: 3d4899b08e630f24092c3839507b162d, type: 3}
-    top: {fileID: 21300000, guid: 3d4899b08e630f24092c3839507b162d, type: 3}
-    bottom: {fileID: 21300004, guid: 3d4899b08e630f24092c3839507b162d, type: 3}
-    left: {fileID: 21300006, guid: 3d4899b08e630f24092c3839507b162d, type: 3}
-    right: {fileID: 21300006, guid: 3d4899b08e630f24092c3839507b162d, type: 3}
   - id: 2
     name: "\u77F3\u5757"
     iconName: 
-    direction: 0
-    front: {fileID: 21300012, guid: 3d4899b08e630f24092c3839507b162d, type: 3}
-    back: {fileID: 21300012, guid: 3d4899b08e630f24092c3839507b162d, type: 3}
-    top: {fileID: 21300012, guid: 3d4899b08e630f24092c3839507b162d, type: 3}
-    bottom: {fileID: 21300012, guid: 3d4899b08e630f24092c3839507b162d, type: 3}
-    left: {fileID: 21300012, guid: 3d4899b08e630f24092c3839507b162d, type: 3}
-    right: {fileID: 21300012, guid: 3d4899b08e630f24092c3839507b162d, type: 3}
   layers:
   - start: 0
     end: 255

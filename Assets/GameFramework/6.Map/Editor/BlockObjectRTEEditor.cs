@@ -389,7 +389,9 @@ namespace GameFramework
             foreach (var hb in hitBounds)
             {
                 Vector3 p = new Vector3(hb.center.x - 0.5f, hb.center.y - 0.5f, hb.center.z - 0.5f);
-                GUILayout.Label("当前选择图块坐标：" + p.ToString());
+                var rect = new Rect(0, 0, 300, 30);
+                rect.y += hitBounds.IndexOf(hb) * 30;
+                GUI.Label(rect,"当前选择图块坐标：" + p.ToString());
             }
             Handles.EndGUI();
 
