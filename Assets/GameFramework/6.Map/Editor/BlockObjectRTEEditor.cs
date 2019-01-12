@@ -9,52 +9,8 @@ namespace GameFramework
     [CustomEditor(typeof(BlockObjectRTE))]
     public class BlockObjectRTEEditor : Editor
     {
-        #region CanvasViewMode定义
-
-        public enum CanvasViewMode
-        {
-            PanelXY,
-            PanelYZ,
-            PanelXZ,
-            Free
-        }
-
-        #endregion
-
-        public Vector3Int canvasSize = new Vector3Int(100, 100, 100);
-        public CanvasViewMode canvasViewMode = CanvasViewMode.PanelXZ;
-        public int viewPanelX = 1;
-        public int viewPanelY = 1;
-        public int viewPanelZ = 1;
-        public string[] panelNames = new string[] {"工具栏", "图块", "设置"};
-        public int selectedPanelIndex = 0;
-
-        public string[] blockDefTypes = new string[] {"单色", "贴图"};
-        public int selectedBlockDefTypeIndex = 0;
-        public string blockDefName = "block";
-        public Color blockDefColor = Color.white;
-        public Sprite blockDefSprite;
-        public string[] sprBlockCreateModes = new string[] {"One Tex", "Two Tex", "Tree Tex", "Six Tex"};
-        public int selectedSprBlockCreateModeIndex = 0;
-
-        public int selectedBlockDefIndex = 0;
-
-        public List<string> blockNames = new List<string>();
-        public int selectedBlockIndex = 0;
-
-        public string[] toolNames = new string[] {"画笔", "油漆桶", "选择工具", "移动工具", "几何体"};
-        public int selectedToolIndex = 0;
-
-        public string[] geometryNames = new string[] {"正方体", "球", "圆柱体"};
-        public int selectedGeometeryIndex = 0;
-
-        Color faceColor = new Color(1, 1, 1, 0.2f);
-        Color hitFaceColor = new Color(0, 1, 0, 0.2f);
-        Color lineColor = new Color(1, 0.38f, 0, 1f);
-        Color hitLineColor = new Color(1, 1, 1, 0.5f);
-
-        public Dictionary<string, EditorTool> tools = new Dictionary<string, EditorTool>();
-        public BlockObjectRTE boEditor;
+     
+        public BlockObjectRTE rte;
 
         public void Awake()
         {
@@ -64,69 +20,69 @@ namespace GameFramework
         private void OnEnable()
         {
             Debug.Log("Black Object Editor Enable");
-            if (boEditor == null)
+            if (rte == null)
             {
-                boEditor = target as BlockObjectRTE;
+                rte = target as BlockObjectRTE;
             }
-            this.canvasSize = new Vector3Int(boEditor.data.Width, boEditor.data.Height, boEditor.data.Depth);
+            rte.canvasSize = new Vector3Int(rte.data.Width, rte.data.Height, rte.data.Depth);
         }
 
         private void OnDisable()
         {
-            EditorUtility.SetDirty(boEditor.data);
+            EditorUtility.SetDirty(rte.data);
         }
 
         private void OnDestroy()
         {
-            EditorUtility.SetDirty(boEditor.data);
+            EditorUtility.SetDirty(rte.data);
         }
 
         public override void OnInspectorGUI()
         {
-            if (boEditor == null)
+            if (rte == null)
             {
-                boEditor = target as BlockObjectRTE;
-                if (boEditor.data.blocks.Count == 0)
+                rte = target as BlockObjectRTE;
+                if (rte.data.blocks.Count == 0)
                 {
-                    boEditor.data.ResizeBlocksArray(canvasSize.x, canvasSize.y, canvasSize.z);
+                    rte.data.ResizeBlocksArray(rte.canvasSize.x, rte.canvasSize.y, rte.canvasSize.z);
                 }
             }
             base.OnInspectorGUI();
-            //            this.boEditor.data = EditorGUILayout.ObjectField(boEditor.data, typeof(BlockObjectData)) as BlockObjectData;
+            //            this.rte.data = EditorGUILayout.ObjectField(rte.data, typeof(BlockObjectData)) as BlockObjectData;
             EditorGUILayout.LabelField("Canvas");
             EditorGUI.indentLevel++;
-            this.canvasSize = EditorGUILayout.Vector3IntField("Size", canvasSize);
-            this.canvasViewMode = (CanvasViewMode) EditorGUILayout.EnumPopup("View Mode", canvasViewMode);
-            if (canvasViewMode == CanvasViewMode.Free)
+            rte.canvasSize = EditorGUILayout.Vector3IntField("Size", rte.canvasSize);
+            rte.canvasViewMode = (BlockObjectRTE.CanvasViewMode) EditorGUILayout.EnumPopup("View Mode", rte.canvasViewMode);
+            if (rte.canvasViewMode == BlockObjectRTE.CanvasViewMode.Free)
             {
-                viewPanelX = EditorGUILayout.IntSlider("Panel X", viewPanelX, 1, canvasSize.x);
-                viewPanelY = EditorGUILayout.IntSlider("Panel Y", viewPanelY, 1, canvasSize.y);
-                viewPanelZ = EditorGUILayout.IntSlider("Panel Z", viewPanelZ, 1, canvasSize.z);
+                rte.viewPanelX = EditorGUILayout.IntSlider("Panel X", rte.viewPanelX, 1, rte.canvasSize.x);
+                rte.viewPanelY = EditorGUILayout.IntSlider("Panel Y", rte.viewPanelY, 1, rte.canvasSize.y);
+                rte.viewPanelZ = EditorGUILayout.IntSlider("Panel Z", rte.viewPanelZ, 1, rte.canvasSize.z);
             }
-            else if (canvasViewMode == CanvasViewMode.PanelXY)
+            else if (rte.canvasViewMode == BlockObjectRTE.CanvasViewMode.PanelXY)
             {
-                viewPanelZ = EditorGUILayout.IntSlider("Panel Z", viewPanelZ, 1, canvasSize.z);
+                rte.viewPanelZ = EditorGUILayout.IntSlider("Panel Z", rte.viewPanelZ, 1, rte.canvasSize.z);
             }
-            else if (canvasViewMode == CanvasViewMode.PanelYZ)
+            else if (rte.canvasViewMode == BlockObjectRTE.CanvasViewMode.PanelYZ)
             {
-                viewPanelX = EditorGUILayout.IntSlider("Panel X", viewPanelX, 1, canvasSize.x);
+                rte.viewPanelX = EditorGUILayout.IntSlider("Panel X", rte.viewPanelX, 1, rte.canvasSize.x);
             }
-            else if (canvasViewMode == CanvasViewMode.PanelXZ)
+            else if (rte.canvasViewMode == BlockObjectRTE.CanvasViewMode.PanelXZ)
             {
-                viewPanelY = EditorGUILayout.IntSlider("Panel Y", viewPanelY, 1, canvasSize.y);
+                rte.viewPanelY = EditorGUILayout.IntSlider("Panel Y", rte.viewPanelY, 1, rte.canvasSize.y);
             }
             EditorGUI.indentLevel--;
             if (GUILayout.Button("创建空画布"))
             {
-                this.boEditor.data.ResizeBlocksArray(canvasSize.x, canvasSize.y, canvasSize.z);
-                EditorCoroutineUtility.StartCoroutine(boEditor.CreateMeshAsyn(), this);
+                this.rte.data.ResizeBlocksArray(rte.canvasSize.x, rte.canvasSize.y, rte.canvasSize.z);
+                EditorCoroutineUtility.StartCoroutine(rte.CreateMeshAsyn(), this);
             }
-            selectedPanelIndex = GUILayout.Toolbar(selectedPanelIndex, panelNames);
-            if (selectedPanelIndex == 0)
+            rte.selectedPanelIndex = GUILayout.Toolbar(rte.selectedPanelIndex, rte.panelNames);
+            if (rte.selectedPanelIndex == 0)
             {
                 this.DrawBrushPanel();
             }
-            else if (selectedPanelIndex == 1)
+            else if (rte.selectedPanelIndex == 1)
             {
                 this.DrawBlockPanel();
             }
@@ -137,33 +93,33 @@ namespace GameFramework
             EditorGUILayout.LabelField("创建新图块");
             EditorGUI.indentLevel++;
 
-            selectedBlockDefTypeIndex = EditorGUILayout.Popup("图块类型", selectedBlockDefTypeIndex, blockDefTypes);
-            if (selectedBlockDefTypeIndex == 0)
+            rte.selectedBlockDefTypeIndex = EditorGUILayout.Popup("图块类型", rte.selectedBlockDefTypeIndex, rte.blockDefTypes);
+            if (rte.selectedBlockDefTypeIndex == 0)
             {
-                blockDefName = EditorGUILayout.TextField("名称", blockDefName);
-                blockDefColor = EditorGUILayout.ColorField("颜色", blockDefColor);
+                rte.blockDefName = EditorGUILayout.TextField("名称", rte.blockDefName);
+                rte.blockDefColor = EditorGUILayout.ColorField("颜色", rte.blockDefColor);
             }
-            else if (selectedBlockDefTypeIndex == 1)
+            else if (rte.selectedBlockDefTypeIndex == 1)
             {
-                blockDefName = EditorGUILayout.TextField("名称", blockDefName);
-                blockDefSprite = EditorGUILayout.ObjectField("精灵", blockDefSprite, typeof(Sprite)) as Sprite;
+                rte.blockDefName = EditorGUILayout.TextField("名称", rte.blockDefName);
+                rte.blockDefSprite = EditorGUILayout.ObjectField("精灵", rte.blockDefSprite, typeof(Sprite)) as Sprite;
             }
             EditorGUI.indentLevel--;
             GUILayout.BeginHorizontal();
             GUILayout.FlexibleSpace();
             if (GUILayout.Button("添加", GUILayout.Width(80)))
             {
-                if (selectedBlockDefTypeIndex == 0)
+                if (rte.selectedBlockDefTypeIndex == 0)
                 {
-                    var def = new ColorBlockDefinition((byte) (boEditor.data.blockDefs.Count + 1), blockDefName,
-                        blockDefColor);
-                    boEditor.data.blockDefs.Add(def);
+                    var def = new ColorBlockDefinition((byte) (rte.data.blockDefs.Count + 1), rte.blockDefName,
+                        rte.blockDefColor);
+                    rte.data.blockDefs.Add(def);
                 }
-                else if (selectedBlockDefTypeIndex == 1)
+                else if (rte.selectedBlockDefTypeIndex == 1)
                 {
-                    var def = new SpriteBlockDefinition((byte) (boEditor.data.blockDefs.Count + 1), blockDefName,
-                        blockDefSprite);
-                    boEditor.data.blockDefs.Add(def);
+                    var def = new SpriteBlockDefinition((byte) (rte.data.blockDefs.Count + 1), rte.blockDefName,
+                        rte.blockDefSprite);
+                    rte.data.blockDefs.Add(def);
                 }
             }
             if (GUILayout.Button("清空", GUILayout.Width(40)))
@@ -174,16 +130,16 @@ namespace GameFramework
             //显示当前存在的图块定义
             EditorGUILayout.LabelField("图块列表");
             EditorGUI.indentLevel++;
-            for (int i = 0; i < boEditor.data.blockDefs.Count; i++)
+            for (int i = 0; i < rte.data.blockDefs.Count; i++)
             {
-                var def = boEditor.data.blockDefs[i];
-                if (i == selectedBlockDefIndex)
+                var def = rte.data.blockDefs[i];
+                if (i == rte.selectedBlockDefIndex)
                 {
                     EditorGUILayout.Space();
                     EditorGUILayout.BeginVertical((GUIStyle) "MeTransitionSelect", GUILayout.Height(200));
                     GUILayout.Toggle(true, string.Format("ID:{0},Name:{1}", def.id, def.name),
                         (GUIStyle) "MeTransitionSelectHead", GUILayout.Height(30));
-                    def = boEditor.data.blockDefs[i];
+                    def = rte.data.blockDefs[i];
                     if (def is SpriteBlockDefinition)
                     {
                         this.DrawSpriteBlockDefItem(def as SpriteBlockDefinition);
@@ -197,7 +153,7 @@ namespace GameFramework
                     MyGUITools.SetBackgroundColor(Color.red);
                     if (GUILayout.Button("Del", GUILayout.MinWidth(80)))
                     {
-                        boEditor.data.blockDefs.RemoveAt(selectedBlockDefIndex);
+                        rte.data.blockDefs.RemoveAt(rte.selectedBlockDefIndex);
                     }
                     MyGUITools.RestoreBackgroundColor();
                     EditorGUILayout.EndHorizontal();
@@ -210,7 +166,7 @@ namespace GameFramework
                         (GUIStyle) "OL Title");
                     if (flag == true)
                     {
-                        selectedBlockDefIndex = i;
+                        rte.selectedBlockDefIndex = i;
                     }
                 }
             }
@@ -223,8 +179,8 @@ namespace GameFramework
             sprDef.name = EditorGUILayout.TextField("Name", sprDef.name);
             //贴图设置
             EditorGUILayout.PrefixLabel("CreateMode");
-            selectedSprBlockCreateModeIndex = GUILayout.Toolbar(selectedSprBlockCreateModeIndex, sprBlockCreateModes);
-            if (selectedSprBlockCreateModeIndex == 0)
+            rte.selectedSprBlockCreateModeIndex = GUILayout.Toolbar(rte.selectedSprBlockCreateModeIndex, rte.sprBlockCreateModes);
+            if (rte.selectedSprBlockCreateModeIndex == 0)
             {
                 var temp = EditorGUILayout.ObjectField("All Face", sprDef.top, typeof(Sprite), false) as Sprite;
                 if (temp != null && temp != sprDef.top)
@@ -233,7 +189,7 @@ namespace GameFramework
                     sprDef.bottom = sprDef.front = sprDef.back = sprDef.left = sprDef.right = sprDef.top;
                 }
             }
-            else if (selectedSprBlockCreateModeIndex == 1)
+            else if (rte.selectedSprBlockCreateModeIndex == 1)
             {
                 sprDef.top = EditorGUILayout.ObjectField("Top Face", sprDef.top, typeof(Sprite), false) as Sprite;
                 var temp =
@@ -244,7 +200,7 @@ namespace GameFramework
                     sprDef.front = sprDef.back = sprDef.left = sprDef.right = sprDef.bottom;
                 }
             }
-            else if (selectedSprBlockCreateModeIndex == 2)
+            else if (rte.selectedSprBlockCreateModeIndex == 2)
             {
                 sprDef.top = EditorGUILayout.ObjectField("Top Face", sprDef.top, typeof(Sprite), false) as Sprite;
                 sprDef.bottom =
@@ -257,7 +213,7 @@ namespace GameFramework
                     sprDef.back = sprDef.left = sprDef.right = sprDef.front;
                 }
             }
-            else if (selectedSprBlockCreateModeIndex == 3)
+            else if (rte.selectedSprBlockCreateModeIndex == 3)
             {
                 sprDef.top = EditorGUILayout.ObjectField("Top Face", sprDef.top, typeof(Sprite), false) as Sprite;
                 sprDef.bottom =
@@ -286,43 +242,43 @@ namespace GameFramework
 
         private void DrawBrushPanel()
         {
-            this.blockNames.Clear();
-            for (int i = 0; i < boEditor.data.blockDefs.Count; i++)
+            rte.blockNames.Clear();
+            for (int i = 0; i < rte.data.blockDefs.Count; i++)
             {
-                this.blockNames.Add(boEditor.data.blockDefs[i].name);
+                rte.blockNames.Add(rte.data.blockDefs[i].name);
             }
             EditorGUILayout.LabelField("图块列表");
-            selectedBlockIndex = GUILayout.SelectionGrid(selectedBlockIndex, blockNames.ToArray(), 5);
+            rte.selectedBlockIndex = GUILayout.SelectionGrid(rte.selectedBlockIndex, rte.blockNames.ToArray(), 5);
             EditorGUILayout.LabelField("笔刷工具");
-            selectedToolIndex = GUILayout.Toolbar(selectedToolIndex, toolNames);
-            if (toolNames[selectedToolIndex] == "画笔")
+            rte.selectedToolIndex = GUILayout.Toolbar(rte.selectedToolIndex, rte.toolNames);
+            if (rte.toolNames[rte.selectedToolIndex] == "画笔")
             {
-                if (!tools.ContainsKey("画笔"))
+                if (!rte.tools.ContainsKey("画笔"))
                 {
                     var brushTool = new BrushEditorTool();
-                    this.tools.Add(brushTool.name, brushTool);
+                    rte.tools.Add(brushTool.name, brushTool);
                 }
 
-                this.tools["画笔"].OnGUI();
+                rte.tools["画笔"].OnGUI();
             }
-            else if (toolNames[selectedToolIndex] == "油漆桶")
+            else if (rte.toolNames[rte.selectedToolIndex] == "油漆桶")
             {
             }
-            else if (toolNames[selectedToolIndex] == "选择工具")
+            else if (rte.toolNames[rte.selectedToolIndex] == "选择工具")
             {
             }
-            else if (toolNames[selectedToolIndex] == "移动工具")
+            else if (rte.toolNames[rte.selectedToolIndex] == "移动工具")
             {
             }
-            else if (toolNames[selectedToolIndex] == "几何体")
+            else if (rte.toolNames[rte.selectedToolIndex] == "几何体")
             {
-                if (!tools.ContainsKey("几何体"))
+                if (!rte.tools.ContainsKey("几何体"))
                 {
                     var geometryTool = new GeometryEditorTool();
-                    this.tools.Add(geometryTool.name, geometryTool);
+                    rte.tools.Add(geometryTool.name, geometryTool);
                 }
 
-                tools["几何体"].OnGUI();
+                rte.tools["几何体"].OnGUI();
             }
         }
 
@@ -332,31 +288,31 @@ namespace GameFramework
 
         public void OnSceneGUI()
         {
-            if (boEditor == null)
+            if (rte == null)
             {
-                boEditor = target as BlockObjectRTE;
+                rte = target as BlockObjectRTE;
             }
             //            this.DrawBackgroundGrid(canvasSize.x, canvasSize.z, faceColor, lineColor);
             List<Bounds> bounds = new List<Bounds>();
-            if (canvasViewMode == CanvasViewMode.PanelXY)
+            if (rte.canvasViewMode == BlockObjectRTE.CanvasViewMode.PanelXY)
             {
-                var realPanelZ = viewPanelZ - 1;
-                this.DrawBgGridXY(realPanelZ, canvasSize.x, canvasSize.y);
-                bounds = CreateHitBoundsXY(realPanelZ, canvasSize.x, canvasSize.y);
+                var realPanelZ = rte.viewPanelZ - 1;
+                this.DrawBgGridXY(realPanelZ, rte.canvasSize.x, rte.canvasSize.y);
+                bounds = CreateHitBoundsXY(realPanelZ, rte.canvasSize.x, rte.canvasSize.y);
             }
-            else if (canvasViewMode == CanvasViewMode.PanelYZ)
+            else if (rte.canvasViewMode == BlockObjectRTE.CanvasViewMode.PanelYZ)
             {
-                var realPanelX = viewPanelX - 1;
-                this.DrawBgGridYZ(realPanelX, canvasSize.y, canvasSize.z);
-                bounds = CreateHitBoundsYZ(realPanelX, canvasSize.y, canvasSize.z);
+                var realPanelX = rte.viewPanelX - 1;
+                this.DrawBgGridYZ(realPanelX, rte.canvasSize.y, rte.canvasSize.z);
+                bounds = CreateHitBoundsYZ(realPanelX, rte.canvasSize.y, rte.canvasSize.z);
             }
-            else if (canvasViewMode == CanvasViewMode.PanelXZ)
+            else if (rte.canvasViewMode == BlockObjectRTE.CanvasViewMode.PanelXZ)
             {
-                var realPanelY = viewPanelY - 1;
-                this.DrawBgGridXZ(realPanelY, canvasSize.x, canvasSize.z);
-                bounds = CreateHitBoundsXZ(realPanelY, canvasSize.x, canvasSize.z);
+                var realPanelY = rte.viewPanelY - 1;
+                this.DrawBgGridXZ(realPanelY, rte.canvasSize.x, rte.canvasSize.z);
+                bounds = CreateHitBoundsXZ(realPanelY, rte.canvasSize.x, rte.canvasSize.z);
             }
-            else if (canvasViewMode == CanvasViewMode.Free)
+            else if (rte.canvasViewMode == BlockObjectRTE.CanvasViewMode.Free)
             {
             }
             Ray mouseRay = HandleUtility.GUIPointToWorldRay(Event.current.mousePosition);
@@ -375,7 +331,7 @@ namespace GameFramework
                 if (e.type == EventType.MouseDown && e.button == 0)
                 {
                     var point = GetPointFromBounds(hitBounds[0]);
-                    boEditor.SetBlock(point.x, point.y, point.z, (byte) (selectedBlockIndex + 1));
+                    rte.SetBlock(point.x, point.y, point.z, (byte) (rte.selectedBlockIndex + 1));
                     e.Use();
                 }
                 else if (e.type == EventType.MouseDown && e.button == 1)
@@ -383,24 +339,24 @@ namespace GameFramework
                 }
             }
 
-            if (boEditor.isInit == false)
+            if (rte.isInit == false)
             {
-                boEditor.Init();
+                rte.Init();
             }
-            if (boEditor.blocks == null || boEditor.blocks.Length == 0)
+            if (rte.blocks == null || rte.blocks.Length == 0)
             {
-                boEditor.InitBlocks();
+                rte.InitBlocks();
             }
             //如果图块定义有变化，重新创建图块池
-            if (boEditor.isDefDirty)
+            if (rte.isDefDirty)
             {
-                boEditor.CreateBlockPool();
+                rte.CreateBlockPool();
             }
             //如果图块数据有变化，重新创建mesh
-            if (boEditor.isDirty)
+            if (rte.isDirty)
             {
-                boEditor.isDirty = false;
-                EditorCoroutineUtility.StartCoroutine(boEditor.CreateMeshAsyn(), this);
+                rte.isDirty = false;
+                EditorCoroutineUtility.StartCoroutine(rte.CreateMeshAsyn(), this);
             }
             //ongui
             Handles.color = oldColor;
@@ -427,7 +383,7 @@ namespace GameFramework
 
         public void DrawHitBoundsRect(Bounds b)
         {
-            if (canvasViewMode == CanvasViewMode.PanelXY)
+            if (rte.canvasViewMode == BlockObjectRTE.CanvasViewMode.PanelXY)
             {
                 //绘制z轴面的矩形
                 var center = b.center;
@@ -436,9 +392,9 @@ namespace GameFramework
                 Vector3 v2 = new Vector3(center.x + extend.x, center.y - extend.y, center.z - extend.z);
                 Vector3 v3 = new Vector3(center.x + extend.x, center.y + extend.y, center.z - extend.z);
                 Vector3 v4 = new Vector3(center.x - extend.x, center.y + extend.y, center.z - extend.z);
-                this.DrawBackgroundGrid(v1, v2, v3, v4, hitFaceColor, hitLineColor);
+                this.DrawBackgroundGrid(v1, v2, v3, v4, rte.hitFaceColor, rte.hitLineColor);
             }
-            else if (canvasViewMode == CanvasViewMode.PanelYZ)
+            else if (rte.canvasViewMode == BlockObjectRTE.CanvasViewMode.PanelYZ)
             {
                 //绘制x轴面的矩形
                 var center = b.center;
@@ -447,9 +403,9 @@ namespace GameFramework
                 Vector3 v2 = new Vector3(center.x - extend.x, center.y + extend.y, center.z - extend.z);
                 Vector3 v3 = new Vector3(center.x - extend.x, center.y + extend.y, center.z + extend.z);
                 Vector3 v4 = new Vector3(center.x - extend.x, center.y - extend.y, center.z + extend.z);
-                this.DrawBackgroundGrid(v1, v2, v3, v4, hitFaceColor, hitLineColor);
+                this.DrawBackgroundGrid(v1, v2, v3, v4, rte.hitFaceColor, rte.hitLineColor);
             }
-            else if (canvasViewMode == CanvasViewMode.PanelXZ)
+            else if (rte.canvasViewMode == BlockObjectRTE.CanvasViewMode.PanelXZ)
             {
                 //绘制y轴面的矩形
                 var center = b.center;
@@ -458,7 +414,7 @@ namespace GameFramework
                 Vector3 v2 = new Vector3(center.x + extend.x, center.y - extend.y, center.z - extend.z);
                 Vector3 v3 = new Vector3(center.x + extend.x, center.y - extend.y, center.z + extend.z);
                 Vector3 v4 = new Vector3(center.x - extend.x, center.y - extend.y, center.z + extend.z);
-                this.DrawBackgroundGrid(v1, v2, v3, v4, hitFaceColor, hitLineColor);
+                this.DrawBackgroundGrid(v1, v2, v3, v4, rte.hitFaceColor, rte.hitLineColor);
             }
             else
             {
@@ -492,7 +448,7 @@ namespace GameFramework
             Vector3 v2 = new Vector3(width, 0, z);
             Vector3 v3 = new Vector3(width, height, z);
             Vector3 v4 = new Vector3(0, height, z);
-            this.DrawBackgroundGrid(v1, v2, v3, v4, faceColor, lineColor);
+            this.DrawBackgroundGrid(v1, v2, v3, v4, rte.faceColor, rte.lineColor);
         }
 
         public void DrawBgGridXZ(int y, int width, int depth)
@@ -501,7 +457,7 @@ namespace GameFramework
             Vector3 v2 = new Vector3(width, y, 0);
             Vector3 v3 = new Vector3(width, y, depth);
             Vector3 v4 = new Vector3(0, y, depth);
-            this.DrawBackgroundGrid(v1, v2, v3, v4, faceColor, lineColor);
+            this.DrawBackgroundGrid(v1, v2, v3, v4, rte.faceColor, rte.lineColor);
         }
 
         public void DrawBgGridYZ(int x, int height, int depth)
@@ -510,7 +466,7 @@ namespace GameFramework
             Vector3 v2 = new Vector3(x, height, 0);
             Vector3 v3 = new Vector3(x, height, depth);
             Vector3 v4 = new Vector3(x, 0, depth);
-            this.DrawBackgroundGrid(v1, v2, v3, v4, faceColor, lineColor);
+            this.DrawBackgroundGrid(v1, v2, v3, v4, rte.faceColor, rte.lineColor);
         }
 
         public List<Bounds> CreateHitBoundsXZ(int y, int width, int depth)
