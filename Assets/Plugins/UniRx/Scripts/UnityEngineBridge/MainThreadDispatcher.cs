@@ -118,7 +118,7 @@ namespace UniRx
 
                     var type = current.GetType();
 #if UNITY_2018_3_OR_NEWER
-#pragma warning disable CS0618
+#pragma warning disable 0618
 #endif
                     if (type == typeof(WWW))
                     {
@@ -127,7 +127,7 @@ namespace UniRx
                         return;
                     }
 #if UNITY_2018_3_OR_NEWER
-#pragma warning restore CS0618
+#pragma warning restore 0618
 #endif
                     else if (type == typeof(AsyncOperation))
                     {
@@ -163,7 +163,7 @@ namespace UniRx
             }
 
 #if UNITY_2018_3_OR_NEWER
-#pragma warning disable CS0618
+#pragma warning disable 0618
 #endif
             IEnumerator UnwrapWaitWWW(WWW www, IEnumerator continuation)
             {
@@ -174,7 +174,7 @@ namespace UniRx
                 ConsumeEnumerator(continuation);
             }
 #if UNITY_2018_3_OR_NEWER
-#pragma warning restore CS0618
+#pragma warning restore 0618
 #endif
 
             IEnumerator UnwrapWaitAsyncOperation(AsyncOperation asyncOperation, IEnumerator continuation)

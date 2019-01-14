@@ -6,7 +6,7 @@ using Unity.EditorCoroutines.Editor;
 
 namespace GameFramework
 {
-    [CustomEditor(typeof(BlockObjectRTE))]
+//    [CustomEditor(typeof(BlockObjectRTE))]
     public class BlockObjectRTEEditor : Editor
     {
      

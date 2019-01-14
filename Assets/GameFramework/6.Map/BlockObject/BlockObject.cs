@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using Sirenix.OdinInspector;
 namespace GameFramework
 {
     /// <summary>
@@ -9,22 +9,11 @@ namespace GameFramework
     /// </summary>
     public class BlockObject : MonoBehaviour
     {
+        [Title("引用")]
         /// <summary>
         /// 数据
         /// </summary>
         public BlockObjectData data;
-
-        /// <summary>
-        /// 图块池
-        /// </summary>
-        public Dictionary<byte, Block> blockPool;
-
-        /// <summary>
-        /// 地图块的三维数组，每个块数据类型为byte，
-        /// 存储block的id,如果为0，代表空
-        /// </summary>
-        public byte[,,] blocks;
-
         /// <summary>
         /// 多边形
         /// </summary>
@@ -33,7 +22,22 @@ namespace GameFramework
         /// <summary>
         /// mesh 创建为单色图块还是贴图图块
         /// </summary>
+        [EnumToggleButtons]
         public MeshCreateMode createMode;
+        /// <summary>
+        /// 材质
+        /// </summary>
+        public Material material;
+        /// <summary>
+        /// 图块池
+        /// </summary>
+        private Dictionary<byte, Block> blockPool;
+
+        /// <summary>
+        /// 地图块的三维数组，每个块数据类型为byte，
+        /// 存储block的id,如果为0，代表空
+        /// </summary>
+        public byte[,,] blocks;
 
         /// <summary>
         ///顶点列表

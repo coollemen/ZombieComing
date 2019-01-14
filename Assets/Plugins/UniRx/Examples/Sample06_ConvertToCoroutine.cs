@@ -32,7 +32,7 @@ namespace UniRx.Examples
 
 #if !(UNITY_4_0 || UNITY_4_1 || UNITY_4_2 || UNITY_4_3 || UNITY_4_4 || UNITY_4_5 || UNITY_4_6 || UNITY_5_0 || UNITY_5_1 || UNITY_5_2)
 #if UNITY_2018_3_OR_NEWER
-#pragma warning disable CS0618
+#pragma warning disable 0618
 #endif
 
         IEnumerator TestNewCustomYieldInstruction()
@@ -54,7 +54,7 @@ namespace UniRx.Examples
             yield return this.ObserveEveryValueChanged(x => x.transform).FirstOrDefault(x => x.position.y >= 100).ToYieldInstruction();
         }
 #if UNITY_2018_3_OR_NEWER
-#pragma warning restore CS0618
+#pragma warning restore 0618
 #endif
 #endif
 
