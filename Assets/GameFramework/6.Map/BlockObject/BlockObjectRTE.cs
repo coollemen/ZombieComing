@@ -55,11 +55,23 @@ namespace GameFramework
         //tab 1 画笔
 
         //tab 2 图块
+        [Title("图块定义")]
         [ShowInInspector]
+//        [TabGroup("图块")]
         public List<BlockDefinition> BlockDefs
         {
             get { return data.blockDefs; }
-            set { data.blockDefs = value; }
+            set
+            {
+                data.blockDefs = value;
+
+            }
+        }
+        [Button("保存数据到Data",ButtonSizes.Large)]
+        public void SaveData()
+        {
+            Debug.Log("保存图块定义！");
+            EditorUtility.SetDirty(data);
         }
         //tab 3 设置
         [HideInInspector]
