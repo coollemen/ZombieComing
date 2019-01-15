@@ -89,9 +89,9 @@ namespace GameFramework
         public void CreateBlockPool()
         {
             this.blockPool = new Dictionary<byte, Block>();
-            foreach (var def in data.blockDefs.blockDefs)
+            foreach (var def in data.blockDefs)
             {
-                var idx = data.blockDefs.blockDefs.IndexOf(def);
+                var idx = data.blockDefs.IndexOf(def);
                 Block b = null;
                 if (def is ColorBlockDefinition)
                 {

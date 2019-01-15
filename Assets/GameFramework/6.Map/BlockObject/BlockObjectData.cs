@@ -29,7 +29,7 @@ namespace GameFramework
         /// <summary>
         /// 图块定义数组
         /// </summary>
-        public BlockDefinitionCollection blockDefs;
+        public List<BlockDefinition> blockDefs=new List<BlockDefinition>();
 
         /// <summary>
         /// 获取图块数据的宽度(x维度)
