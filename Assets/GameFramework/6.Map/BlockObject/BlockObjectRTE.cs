@@ -57,12 +57,12 @@ namespace GameFramework
             set { data.blockDefs = value; }
         }
 
-        [Button("保存数据到Data", ButtonSizes.Large), PropertyOrder(999)]
-        public void SaveData()
-        {
-            Debug.Log("保存图块定义！");
-            EditorUtility.SetDirty(data);
-        }
+//        [Button("保存数据到Data", ButtonSizes.Large), PropertyOrder(999)]
+//        public void SaveData()
+//        {
+//            Debug.Log("保存图块定义！");
+//            EditorUtility.SetDirty(data);
+//        }
 
         public List<string> BlockNames
         {
@@ -127,7 +127,11 @@ namespace GameFramework
             t.size = EditorGUILayout.IntSlider("Size", t.size, 1, 100);
             t.blockIndex = EditorGUILayout.IntField("Block Index", t.blockIndex);
         }
+        
+        public void OnSceneView()
+        {
 
+        }
         /// <summary>
         /// 是否图块定义需要更新
         /// </summary>
